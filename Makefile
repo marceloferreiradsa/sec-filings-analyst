@@ -23,7 +23,7 @@ PACKAGE   := $(IMAGE).tar.gz
 
 # VPS — used only by `make deploy`
 VPS_HOST  := root@72.60.148.174
-VPS_KEY   := $(HOME)/.ssh/hostinger_key
+VPS_KEY := /c/Users/RDPcolthrane/.ssh/hostinger_key
 VPS_DIR   := /root/sec-analyst
 
 # ── Boilerplate ───────────────────────────────────────────────────────────────
@@ -122,13 +122,19 @@ package: ## Save Docker image to $(PACKAGE) for VPS transfer
 	@echo "Saved: $(PACKAGE)"
 
 deploy: package ## Transfer image to VPS (runs package first)
-	# Dependency: $(VPS_KEY) must exist and be authorised on $(VPS_HOST).
+	# Dependency: $(VPS_KEY) must exist and be authorized on $(VPS_HOST).
 	# To update the key path: edit VPS_KEY at the top of this file.
 	scp -i $(VPS_KEY) $(PACKAGE) $(VPS_HOST):~/
 	@echo ""
 	@echo "Transfer complete. SSH in and run:"
 	@echo "  docker load < ~/$(PACKAGE)"
 	@echo "  cd $(VPS_DIR) && docker compose down && docker compose up -d"
+
+
+test-vps: ## Run full test suite (20 checks) against the live VPS container
+	scp -i $(VPS_KEY) tests/test_deployment.py $(VPS_HOST):~/
+	ssh -i $(VPS_KEY) $(VPS_HOST) "python3 ~/test_deployment.py"
+	ssh -i $(VPS_KEY) $(VPS_HOST) "rm ~/test_deployment.py"
 
 # ── Maintenance ───────────────────────────────────────────────────────────────
 
