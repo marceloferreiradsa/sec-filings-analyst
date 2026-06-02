@@ -51,6 +51,7 @@ ARCHITECTURAL_DECISIONS.md
 EDGAR_TRACK_A_DESIGN.md
 NEXT_FEATURES.md
 DEPLOYMENT.md
+deploy_instructions.txt
 
 # Test scripts archive
 src_archive/
