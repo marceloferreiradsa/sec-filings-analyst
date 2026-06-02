@@ -164,7 +164,7 @@ def load_qa_system():
     if api_key:
         os.environ["OPENAI_API_KEY"] = api_key
 
-    from qa import QA
+    from rag.qa import QA
     return QA(verbose=False)
 
 
@@ -183,7 +183,7 @@ def build_filters(
     section_key : str,
     source_mode : str,
 ) -> "RetrievalFilters | None":
-    from retrieve import RetrievalFilters
+    from rag.retrieve import RetrievalFilters
 
     section_name, section_source = SECTION_MAP[section_key]
 
@@ -535,7 +535,8 @@ def main() -> None:
 
         with st.spinner("Searching filings and generating answer…"):
             try:
-                from retrieve import RetrievalFilters as RF
+                from rag.retrieve import RetrievalFilters as RF
+                from rag.guards import InjectionAttemptError
                 answer = qa.ask(
                     question        = question,
                     top_k           = top_k,
@@ -543,6 +544,12 @@ def main() -> None:
                     max_per_company = max_per_company,
                     show_context    = False,   # handled by render_answer
                 )
+            except InjectionAttemptError as e:
+                st.warning(f"⚠️ {e}")
+                st.stop()
+            except ValueError as e:
+                st.warning(f"⚠️ {e}")
+                st.stop()
             except Exception as e:
                 st.error(f"**Error generating answer:** {e}")
                 st.stop()
