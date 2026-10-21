@@ -144,3 +144,5 @@ clean: ## Remove pipeline intermediates — data/raw and data/processed
 	@echo "Removing data/raw and data/processed..."
 	@rm -rf data/raw data/processed
 	@echo "Done. data/index preserved."
+# Alvos do metodo (ai-project-framework) — ver cabecalho de metodo.mk
+include metodo.mk
