@@ -306,15 +306,14 @@ streamlit) and the `rag/` package. Build time ~2 minutes, image size ~400 MB.
 Full feature specifications with implementation paths and effort estimates
 are in [docs/NEXT_FEATURES.md](docs/NEXT_FEATURES.md).
 
-**Next priorities:**
+**Next priorities** — evidence-driven order in
+[docs/ROADMAP_PRIORITIES.md](docs/ROADMAP_PRIORITIES.md) (ADR-13):
 
-1. **Intelligent query understanding (Feature 9)** — LLM pre-filtering that
-   extracts company, period, and intent from natural language automatically.
-   Eliminates the need for manual sidebar filters.
-2. **Cross-encoder re-ranking (Feature 4)** — re-rank top-20 candidates with
-   a cross-encoder for higher retrieval precision.
-3. **User feedback loop (Feature 5)** — thumbs up/down logging to accumulate
-   fine-tuning data over time.
+1. **Retrieval-level evaluation (P0)** — golden set, Recall@k / MRR, and a
+   long-context baseline, so every later component has to prove its gain.
+2. **Hybrid retrieval (P1)** — BM25 + dense with rank fusion, contextual chunk
+   headers, and reranking through hosted APIs with a visible no-rerank fallback (ADR-14).
+3. **Query understanding (P2)**, **XBRL as a tool (P3)**, **retrieve-then-read (P4)**.
 
 ---
 

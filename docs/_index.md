@@ -34,21 +34,23 @@
 | ADR-10 | Temperature=0 for the generator | Active |
 | ADR-11 | Grounding prompt design | Active |
 | ADR-12 | Continuity-method make targets live in `metodo.mk`, with colliding names renamed | Active |
+| ADR-13 | Adopt the evidence-driven roadmap, under VPS and budget constraints | Active |
+| ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active |
 
 
 ## `docs/NEXT_FEATURES.md`
 
 | ID | Título | Status |
 |---|---|---|
-| FEAT-01 | Hybrid Retrieval with Structured Data Sidecar | Proposed |
-| FEAT-02 | On-Demand Chart Generation | Proposed |
-| FEAT-03 | Section Selection via Configuration File | Proposed |
-| FEAT-04 | Cross-Encoder Re-ranking | Proposed |
-| FEAT-05 | User Feedback Loop (Fine-tuning Data Collection) | Proposed |
-| FEAT-06 | Pre-computed Annual Comparison Summaries | Proposed |
-| FEAT-07 | Segment-Level XBRL Data (Company Extension Tags) | Proposed |
-| FEAT-08 | Query Intent Routing | Proposed |
-| FEAT-09 | Intelligent Query Understanding | Proposed |
+| FEAT-01 | Hybrid Retrieval with Structured Data Sidecar | Planned — roadmap P3, step 4 only (tool-calling) |
+| FEAT-02 | On-Demand Chart Generation | Planned — after roadmap P3 (ADR-13) |
+| FEAT-03 | Section Selection via Configuration File | Planned — later, any time (ADR-13) |
+| FEAT-04 | Cross-Encoder Re-ranking | Superseded — by ADR-14 (rerank via hosted APIs i |
+| FEAT-05 | User Feedback Loop (Fine-tuning Data Collection) | Planned — later; feeds new golden-set questions  |
+| FEAT-06 | Pre-computed Annual Comparison Summaries | Planned — roadmap P3 (ADR-13) |
+| FEAT-07 | Segment-Level XBRL Data (Company Extension Tags) | Planned — later (ADR-13) |
+| FEAT-08 | Query Intent Routing | Superseded — absorbed by FEAT-09 9a (ADR-13) |
+| FEAT-09 | Intelligent Query Understanding | Planned — 9a/9b/9f in roadmap P2; 9c/9d later; 9 |
 | Maintenance | pipeline.py status check |  |
 
 
@@ -65,4 +67,4 @@
 
 ---
 
-*27 registros em 3 documentos.*
+*29 registros em 3 documentos.*

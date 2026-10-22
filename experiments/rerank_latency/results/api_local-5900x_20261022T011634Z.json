@@ -1,0 +1,34 @@
+{
+  "host": {
+    "label": "local-5900x",
+    "hostname": "IACosmo",
+    "timestamp": "2026-10-22T01:16:09+00:00"
+  },
+  "results": [
+    {
+      "provider": "cloudflare",
+      "model": "@cf/baai/bge-reranker-base",
+      "host": "api.cloudflare.com",
+      "cold_s": 1.396,
+      "latency": {
+        "20": {
+          "ok": 15,
+          "p50_s": 0.646,
+          "p95_s": 1.651,
+          "min_s": 0.409,
+          "max_s": 1.597,
+          "errors": []
+        },
+        "40": {
+          "ok": 15,
+          "p50_s": 0.689,
+          "p95_s": 1.587,
+          "min_s": 0.609,
+          "max_s": 1.484,
+          "errors": []
+        }
+      },
+      "tokens_billed": null
+    }
+  ]
+}

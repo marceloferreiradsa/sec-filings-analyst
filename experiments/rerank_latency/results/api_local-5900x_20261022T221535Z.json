@@ -1,0 +1,64 @@
+{
+  "host": {
+    "label": "local-5900x",
+    "hostname": "IACosmo",
+    "timestamp": "2026-10-22T22:14:34+00:00"
+  },
+  "results": [
+    {
+      "provider": "cloudflare",
+      "model": "@cf/baai/bge-reranker-base",
+      "host": "api.cloudflare.com",
+      "cold_s": 0.741,
+      "latency": {
+        "20": {
+          "ok": 30,
+          "p50_s": 0.471,
+          "p95_s": 1.161,
+          "min_s": 0.318,
+          "max_s": 1.23,
+          "errors": []
+        },
+        "40": {
+          "ok": 30,
+          "p50_s": 0.657,
+          "p95_s": 1.194,
+          "min_s": 0.517,
+          "max_s": 1.587,
+          "errors": []
+        }
+      },
+      "tokens_billed": null
+    },
+    {
+      "provider": "subq",
+      "model": "subq-snap-1.1",
+      "host": "api.subq.ai",
+      "cold_s": 0.82,
+      "latency": {
+        "20": {
+          "ok": 29,
+          "p50_s": 0.279,
+          "p95_s": 0.449,
+          "min_s": 0.247,
+          "max_s": 0.49,
+          "errors": [
+            "HTTP 403: {\"detail\":{\"error_type\":\"permission_error\",\"message\":\"Model 'subq-snap-1.1' is not permitted for this API key\"}}"
+          ]
+        },
+        "40": {
+          "ok": 28,
+          "p50_s": 0.431,
+          "p95_s": 0.622,
+          "min_s": 0.296,
+          "max_s": 0.627,
+          "errors": [
+            "HTTP 403: {\"detail\":{\"error_type\":\"permission_error\",\"message\":\"Model 'subq-snap-1.1' is not permitted for this API key\"}}",
+            "HTTP 403: {\"detail\":{\"error_type\":\"permission_error\",\"message\":\"Model 'subq-snap-1.1' is not permitted for this API key\"}}"
+          ]
+        }
+      },
+      "tokens_billed": 479394
+    }
+  ]
+}

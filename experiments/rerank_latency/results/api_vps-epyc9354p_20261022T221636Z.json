@@ -1,0 +1,59 @@
+{
+  "host": {
+    "label": "vps-epyc9354p",
+    "hostname": "srv1157398",
+    "timestamp": "2026-10-22T22:15:37+00:00"
+  },
+  "results": [
+    {
+      "provider": "cloudflare",
+      "model": "@cf/baai/bge-reranker-base",
+      "host": "api.cloudflare.com",
+      "cold_s": 1.543,
+      "latency": {
+        "20": {
+          "ok": 30,
+          "p50_s": 0.489,
+          "p95_s": 0.988,
+          "min_s": 0.332,
+          "max_s": 1.027,
+          "errors": []
+        },
+        "40": {
+          "ok": 30,
+          "p50_s": 0.677,
+          "p95_s": 1.296,
+          "min_s": 0.487,
+          "max_s": 1.506,
+          "errors": []
+        }
+      },
+      "tokens_billed": null
+    },
+    {
+      "provider": "subq",
+      "model": "subq-snap-1.1",
+      "host": "api.subq.ai",
+      "cold_s": 0.836,
+      "latency": {
+        "20": {
+          "ok": 30,
+          "p50_s": 0.264,
+          "p95_s": 0.331,
+          "min_s": 0.235,
+          "max_s": 0.365,
+          "errors": []
+        },
+        "40": {
+          "ok": 30,
+          "p50_s": 0.334,
+          "p95_s": 0.466,
+          "min_s": 0.276,
+          "max_s": 0.466,
+          "errors": []
+        }
+      },
+      "tokens_billed": 507558
+    }
+  ]
+}

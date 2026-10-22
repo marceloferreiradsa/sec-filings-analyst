@@ -1,0 +1,282 @@
+{
+  "host": {
+    "label": "vps-epyc9354p-2vcpu",
+    "cpu_model": "AMD EPYC 9354P 32-Core Processor",
+    "visible_cpus": 2,
+    "cpu_quota": "unlimited",
+    "python": "3.11.17",
+    "timestamp": "2026-10-22T00:26:40+00:00"
+  },
+  "results": [
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-6-v2",
+      "threads": 1,
+      "load_s": 0.34,
+      "peak_rss_mb": 1992.5,
+      "model_disk_mb": 183.4,
+      "latency": {
+        "20": {
+          "p50_s": 2.499,
+          "p95_s": 3.372,
+          "min_s": 1.962,
+          "max_s": 3.321,
+          "min_score_spread": 2.226
+        },
+        "40": {
+          "p50_s": 4.994,
+          "p95_s": 6.284,
+          "min_s": 4.005,
+          "max_s": 6.228,
+          "min_score_spread": 4.792
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-6-v2",
+      "threads": 2,
+      "load_s": 0.3,
+      "peak_rss_mb": 1997.2,
+      "model_disk_mb": 183.4,
+      "latency": {
+        "20": {
+          "p50_s": 1.383,
+          "p95_s": 1.658,
+          "min_s": 1.008,
+          "max_s": 1.657,
+          "min_score_spread": 2.226
+        },
+        "40": {
+          "p50_s": 2.632,
+          "p95_s": 3.224,
+          "min_s": 2.113,
+          "max_s": 3.207,
+          "min_score_spread": 4.792
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-12-v2",
+      "threads": 1,
+      "load_s": 0.52,
+      "peak_rss_mb": 2057.1,
+      "model_disk_mb": 268.8,
+      "latency": {
+        "20": {
+          "p50_s": 5.097,
+          "p95_s": 6.271,
+          "min_s": 3.907,
+          "max_s": 6.245,
+          "min_score_spread": 1.891
+        },
+        "40": {
+          "p50_s": 9.81,
+          "p95_s": 12.042,
+          "min_s": 7.68,
+          "max_s": 11.991,
+          "min_score_spread": 5.081
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-12-v2",
+      "threads": 2,
+      "load_s": 0.43,
+      "peak_rss_mb": 2050.7,
+      "model_disk_mb": 268.8,
+      "latency": {
+        "20": {
+          "p50_s": 2.516,
+          "p95_s": 3.072,
+          "min_s": 1.927,
+          "max_s": 3.065,
+          "min_score_spread": 1.891
+        },
+        "40": {
+          "p50_s": 5.286,
+          "p95_s": 8.508,
+          "min_s": 4.068,
+          "max_s": 8.242,
+          "min_score_spread": 5.081
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-tiny-en",
+      "threads": 1,
+      "load_s": 0.53,
+      "peak_rss_mb": 2010.7,
+      "model_disk_mb": 268.8,
+      "latency": {
+        "20": {
+          "p50_s": 1.911,
+          "p95_s": 2.395,
+          "min_s": 1.589,
+          "max_s": 2.389,
+          "min_score_spread": 0.911
+        },
+        "40": {
+          "p50_s": 4.081,
+          "p95_s": 6.2,
+          "min_s": 3.352,
+          "max_s": 6.016,
+          "min_score_spread": 1.374
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-tiny-en",
+      "threads": 2,
+      "load_s": 0.47,
+      "peak_rss_mb": 2012.9,
+      "model_disk_mb": 268.8,
+      "latency": {
+        "20": {
+          "p50_s": 1.07,
+          "p95_s": 1.753,
+          "min_s": 0.832,
+          "max_s": 1.725,
+          "min_score_spread": 0.911
+        },
+        "40": {
+          "p50_s": 2.208,
+          "p95_s": 3.269,
+          "min_s": 1.749,
+          "max_s": 3.147,
+          "min_score_spread": 1.374
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-turbo-en",
+      "threads": 1,
+      "load_s": 0.57,
+      "peak_rss_mb": 2036.7,
+      "model_disk_mb": 306.7,
+      "latency": {
+        "20": {
+          "p50_s": 3.11,
+          "p95_s": 3.719,
+          "min_s": 2.377,
+          "max_s": 3.701,
+          "min_score_spread": 2.13
+        },
+        "40": {
+          "p50_s": 6.085,
+          "p95_s": 8.84,
+          "min_s": 5.026,
+          "max_s": 8.661,
+          "min_score_spread": 3.336
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-turbo-en",
+      "threads": 2,
+      "load_s": 0.54,
+      "peak_rss_mb": 2045.9,
+      "model_disk_mb": 306.7,
+      "latency": {
+        "20": {
+          "p50_s": 1.587,
+          "p95_s": 2.076,
+          "min_s": 1.212,
+          "max_s": 2.046,
+          "min_score_spread": 2.13
+        },
+        "40": {
+          "p50_s": 3.325,
+          "p95_s": 4.71,
+          "min_s": 2.662,
+          "max_s": 4.706,
+          "min_score_spread": 3.336
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "BAAI/bge-reranker-base",
+      "threads": 1,
+      "load_s": 4.74,
+      "peak_rss_mb": 3534.4,
+      "model_disk_mb": 2259.1,
+      "latency": {
+        "20": {
+          "p50_s": 18.073,
+          "p95_s": 19.615,
+          "min_s": 15.186,
+          "max_s": 19.61,
+          "min_score_spread": 4.656
+        },
+        "40": {
+          "p50_s": 36.354,
+          "p95_s": 49.859,
+          "min_s": 32.042,
+          "max_s": 47.865,
+          "min_score_spread": 5.831
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "BAAI/bge-reranker-base",
+      "threads": 2,
+      "load_s": 4.69,
+      "peak_rss_mb": 3542.1,
+      "model_disk_mb": 2259.1,
+      "latency": {
+        "20": {
+          "p50_s": 9.236,
+          "p95_s": 18.887,
+          "min_s": 7.607,
+          "max_s": 17.788,
+          "min_score_spread": 4.656
+        },
+        "40": {
+          "p50_s": 19.016,
+          "p95_s": 28.996,
+          "min_s": 16.287,
+          "max_s": 27.694,
+          "min_score_spread": 5.831
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    }
+  ]
+}

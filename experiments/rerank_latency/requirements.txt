@@ -1,0 +1,3 @@
+# Benchmark only — not a production dependency (yet).
+# fastembed runs cross-encoders on ONNX Runtime, without torch.
+fastembed==0.8.1

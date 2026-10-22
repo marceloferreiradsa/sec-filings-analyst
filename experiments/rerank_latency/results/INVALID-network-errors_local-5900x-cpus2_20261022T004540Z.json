@@ -1,0 +1,150 @@
+{
+  "host": {
+    "label": "local-5900x-cpus2",
+    "cpu_model": "AMD Ryzen 9 5900X 12-Core Processor",
+    "visible_cpus": 24,
+    "cpu_quota": "2",
+    "python": "3.11.17",
+    "timestamp": "2026-10-22T00:20:32+00:00"
+  },
+  "results": [
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-6-v2",
+      "threads": 1,
+      "error": "ing_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.RemoteProtocolError: Server disconnected without sending a response."
+    },
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-6-v2",
+      "threads": 2,
+      "load_s": 6.67,
+      "peak_rss_mb": 2017.9,
+      "model_disk_mb": 183.4,
+      "latency": {
+        "20": {
+          "p50_s": 1.293,
+          "p95_s": 2.035,
+          "min_s": 0.974,
+          "max_s": 1.97,
+          "min_score_spread": 2.226
+        },
+        "40": {
+          "p50_s": 2.898,
+          "p95_s": 3.765,
+          "min_s": 2.329,
+          "max_s": 3.728,
+          "min_score_spread": 4.792
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-12-v2",
+      "threads": 1,
+      "error": "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)"
+    },
+    {
+      "model": "Xenova/ms-marco-MiniLM-L-12-v2",
+      "threads": 2,
+      "error": "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)"
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-tiny-en",
+      "threads": 1,
+      "error": "               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.ConnectError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1016)"
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-tiny-en",
+      "threads": 2,
+      "error": "ing_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.RemoteProtocolError: Server disconnected without sending a response."
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-turbo-en",
+      "threads": 1,
+      "error": "ing_redirects\n    response = self._send_single_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_client.py\", line 1014, in _send_single_request\n    response = transport.handle_request(request)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 249, in handle_request\n    with map_httpcore_exceptions():\n  File \"/usr/local/lib/python3.11/contextlib.py\", line 158, in __exit__\n    self.gen.throw(typ, value, traceback)\n  File \"/usr/local/lib/python3.11/site-packages/httpx/_transports/default.py\", line 118, in map_httpcore_exceptions\n    raise mapped_exc(message) from exc\nhttpx.RemoteProtocolError: Server disconnected without sending a response."
+    },
+    {
+      "model": "jinaai/jina-reranker-v1-turbo-en",
+      "threads": 2,
+      "load_s": 6.41,
+      "peak_rss_mb": 2063.0,
+      "model_disk_mb": 306.7,
+      "latency": {
+        "20": {
+          "p50_s": 1.606,
+          "p95_s": 2.124,
+          "min_s": 1.274,
+          "max_s": 2.109,
+          "min_score_spread": 2.13
+        },
+        "40": {
+          "p50_s": 3.594,
+          "p95_s": 4.477,
+          "min_s": 2.746,
+          "max_s": 4.435,
+          "min_score_spread": 3.336
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "BAAI/bge-reranker-base",
+      "threads": 1,
+      "load_s": 40.38,
+      "peak_rss_mb": 3566.4,
+      "model_disk_mb": 2259.1,
+      "latency": {
+        "20": {
+          "p50_s": 17.543,
+          "p95_s": 18.698,
+          "min_s": 14.402,
+          "max_s": 18.639,
+          "min_score_spread": 4.656
+        },
+        "40": {
+          "p50_s": 35.708,
+          "p95_s": 37.722,
+          "min_s": 31.098,
+          "max_s": 37.66,
+          "min_score_spread": 5.831
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    },
+    {
+      "model": "BAAI/bge-reranker-base",
+      "threads": 2,
+      "load_s": 3.93,
+      "peak_rss_mb": 3542.4,
+      "model_disk_mb": 2259.1,
+      "latency": {
+        "20": {
+          "p50_s": 9.217,
+          "p95_s": 9.657,
+          "min_s": 7.63,
+          "max_s": 9.652,
+          "min_score_spread": 4.656
+        },
+        "40": {
+          "p50_s": 19.615,
+          "p95_s": 22.92,
+          "min_s": 16.494,
+          "max_s": 22.654,
+          "min_score_spread": 5.831
+        }
+      },
+      "versions": {
+        "fastembed": "0.8.1",
+        "onnxruntime": "1.31.0"
+      }
+    }
+  ]
+}

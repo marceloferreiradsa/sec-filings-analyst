@@ -1,0 +1,34 @@
+{
+  "host": {
+    "label": "vps-epyc9354p",
+    "hostname": "srv1157398",
+    "timestamp": "2026-10-22T01:16:34+00:00"
+  },
+  "results": [
+    {
+      "provider": "cloudflare",
+      "model": "@cf/baai/bge-reranker-base",
+      "host": "api.cloudflare.com",
+      "cold_s": 0.999,
+      "latency": {
+        "20": {
+          "ok": 15,
+          "p50_s": 0.61,
+          "p95_s": 1.521,
+          "min_s": 0.417,
+          "max_s": 1.469,
+          "errors": []
+        },
+        "40": {
+          "ok": 15,
+          "p50_s": 0.662,
+          "p95_s": 2.878,
+          "min_s": 0.559,
+          "max_s": 2.611,
+          "errors": []
+        }
+      },
+      "tokens_billed": null
+    }
+  ]
+}

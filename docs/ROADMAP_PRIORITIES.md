@@ -34,7 +34,8 @@ The roadmap below moves the system in that direction.
 **Why first:** today's eval measures *generation* (15 assertion cases + RAGAS
 faithfulness/relevancy, which `evaluate.py` itself notes varies 0.33–0.94 between runs on
 multi-company questions). Nothing measures *whether the right chunk was retrieved*,
-so we cannot prove that hybrid search or reranking helps — or answer the CTO with data.
+so we cannot prove that hybrid search or reranking helps, nor justify any of the
+choices below with data.
 
 **Scope**
 1. Golden set of **60–100 questions**, each labelled with expected source(s)
@@ -66,9 +67,10 @@ closes the "dense-only" gap.
    tickers, tags like `us-gaap:Revenues`, fiscal labels like `FY2024`, and numbers).
 2. **Fusion** with FAISS via Reciprocal Rank Fusion (RRF); keep existing metadata
    filters and per-company diversity applied *after* fusion.
-3. **Cross-encoder rerank (Feature 4):** fused top 30–50 → top 5–8. Benchmark
-   `ms-marco-MiniLM-L-6-v2` against a stronger reranker (e.g. a `bge-reranker` model) —
-   the MS MARCO model is general-domain.
+3. **Rerank (Feature 4):** fused top 30–50 → top 5–8, through **hosted APIs in a
+   fallback chain** — Cloudflare `bge-reranker-base` → SubQ Snap → no rerank, with an
+   explicit notice on the page (ADR-14). Local cross-encoders were measured and
+   rejected for the VPS (`experiments/rerank_latency/README.md`).
 4. **Contextual chunk headers** (if not already present): prepend
    `company · form · fiscal period · section` to each chunk's text before embedding *and*
    BM25 indexing. Cheap (metadata already exists), consistent gains in the benchmark.
@@ -144,7 +146,7 @@ How to read the estimate:
 - What Claude Code compresses most: boilerplate (BM25 index, RRF, eval metrics, tool-calling
   loop in `qa.py`, tests). What it compresses least: **labelling and verifying the golden set**
   (it can draft questions and propose expected sources from the corpus, but a person must check
-  them — this is the asset that convinces leadership), judging eval results, and Feature 7's
+  them — the golden set is the evidence every later decision rests on), judging eval results, and Feature 7's
   per-company XBRL tag discovery.
 - Not included: wall-clock waits (re-embedding after contextual headers, `ragas-real` runs of
   ~5 min each, several runs to average out faithfulness noise) and any surprises from the data.
@@ -153,18 +155,105 @@ How to read the estimate:
 
 ---
 
-## 4. The experiment to show leadership
+## 4. The experiment — proof of concept and grounds for each choice
 
-Once P0 and P1 are in, run three configurations on the same golden set:
+The experiment is not a demo: it is what justifies each component of the system.
+It must show **when** a robust hybrid RAG is worth it and when a simpler option is
+enough — including the cases where the simpler option wins.
 
-1. **Long context only** (single-filing questions only — the others don't fit)
-2. **Current RAG** (dense only)
-3. **Hybrid + rerank** (+ P2/P3 when available)
+Once P0 and P1 are in, run on the same golden set:
 
-Report per category: accuracy, Number Match, citation correctness, refusal accuracy,
-cost/query, latency. If long context wins on some single-filing slice, that is a
-useful finding (simplify there). On cross-company, multi-year and exact-figure
-questions, the numbers should make the case for retrieval on their own.
+1. **Retrieval variants** — dense only (current), BM25 only, hybrid (RRF), hybrid +
+   rerank for each tier of the rerank fallback (see section 5), and no rerank.
+2. **Long context vs RAG** — single-filing questions sent whole to a long-context
+   model; for cross-company / multi-year questions, document why they do not fit
+   (window and cost).
+3. **Contextual chunk headers** — with and without.
+4. **Generator** — gpt-4o-mini (current) vs cheaper and stronger alternatives, keeping
+   temperature=0 (ADR-10).
+5. **Latency in the production configuration** (VPS, 2 vCPU).
+
+Report per category: Recall@k / MRR, accuracy, Number Match, citation correctness,
+refusal accuracy, cost/query, latency — and **cost per correct answer**, the metric
+that says when the extra machinery pays for itself. If long context wins on some
+single-filing slice, that is a useful finding (simplify there).
+
+---
+
+## 5. Cost and deploy
+
+**This section is the single place for the roadmap's cost estimates.** Latency
+measurements live in `experiments/rerank_latency/README.md`. Prices checked on the
+official pricing pages on 2026-10-21/22; token counts measured on
+`data/index/chunks.json` (6,396 chunks, mean 283 tokens; a 10-K's indexed sections
+median 44k tokens, max 75k; a section median 9.5k, p90 21k).
+
+### Prices used (USD per 1M tokens, input / output)
+
+| Model | Price | Role |
+|---|---|---|
+| gpt-4o-mini | 0.15 / 0.60 | generator today |
+| gpt-4.1-nano | 0.10 / 0.40 | P2 query understanding |
+| gpt-4.1-mini | 0.40 / 1.60 | judge; long-context arm (1M window) |
+| Gemini 2.5 Flash-Lite | 0.10 / 0.40, free tier | long-context arm alternative (1M window) |
+| text-embedding-3-small | 0.02 | embeddings |
+| Cloudflare `bge-reranker-base` | 0.003; 10k neurons/day free | rerank tier 1 |
+| SubQ `subq-snap-1.1` | 0.04 input, output free; 100M tokens free | rerank tier 2 |
+
+OpenAI Batch is half price — used for the experiment, not for production.
+GPT-5-family models are reasoning models (extra output tokens, and temperature=0 is
+not available as far as known — to verify before testing them as generator).
+
+### Per query in production
+
+Baseline measured from the code: gpt-4o-mini, top-5, ~1.9k input / ~400 output tokens
+≈ **$0.0005**.
+
+| Configuration | $/query | vs today | 100 queries/mo | 1k queries/mo |
+|---|---|---|---|---|
+| Today | 0.0005 | 1× | $0.05 | $0.50 |
+| P1 (BM25 local, rerank via Cloudflare, top-8 to the LLM) | ~0.00065 | 1.3× | $0.07 | $0.65 |
+| + P2 router (gpt-4.1-nano) | +0.0001 | | | |
+| + P3 tool call (~30% of questions) | +0.00015 avg | | | |
+| **P0–P3** | **~0.0009** | **~1.8×** | **$0.09** | **$0.90** |
+| + rerank falls to SubQ (tier 2) | +0.00045 | | | |
+| + P4 whole sections (30k-token cap) on every question | +0.0045 | ~10× | $0.55 | $5.50 |
+
+P4 is the only item that changes the order of magnitude, so it ships only if P0
+shows a gain, and preferably only for narrative questions. One-off costs: re-embedding
+with contextual headers ≈ $0.04; BM25 index $0.
+
+*Would be false if* real answers are much longer than ~400 tokens or real traffic
+needs more than top-8 — both visible in the app's own logs once P1 ships.
+
+### The experiment (P0)
+
+| Item | Estimate |
+|---|---|
+| Golden set (~80 questions) drafted by the agent from the corpus, verified by the owner | $0 OpenAI |
+| Retrieval metrics (Recall@k, MRR) — only question embeddings | ~$0 |
+| ~6 retrieval variants answered by gpt-4o-mini (Batch) | ~$0.25 |
+| Judge, gpt-4.1-mini (Batch) | ~$0.35 |
+| Long-context arm — 40 single-filing questions (~44k tokens each) | $0.13 (4o-mini, Batch) – $0.35 (4.1-mini, Batch); $0 on Flash-Lite free tier |
+| Long-context arm — 20 multi-filing questions (~220k tokens, needs 1M window) | ~$0.90 (4.1-mini, Batch); $0 on Flash-Lite free tier |
+| **One full round** | **≈ $2–3** |
+| Three rounds to average out judge/faithfulness noise | ≈ $6–9 |
+
+Budget agreed with the owner (2026-10-21): the current $10 OpenAI balance plus up to
+$10 more. Rerank calls in the experiment stay inside the Cloudflare and SubQ free
+tiers.
+
+### Fits the VPS?
+
+Measured 2026-10-21: Hostinger VPS, AMD EPYC 9354P, 2 vCPU, 8 GB RAM (5.8 GB free),
+84 GB disk free; the app container uses 225 MB, its image is 1.01 GB.
+
+| Component | Effect on the VPS |
+|---|---|
+| BM25 index (6.4k chunks) | tens of MB of RAM; small dependency — fine |
+| Rerank via API | no CPU or RAM on the VPS; two more secrets (Cloudflare, SubQ) |
+| Local cross-encoder (rejected) | 2–29 s per query and ~2 GB RAM — see the experiment |
+| torch in the image (rejected) | image ~3 GB |
 
 ---
 
@@ -174,3 +263,7 @@ questions, the numbers should make the case for retrieval on their own.
 - From BM25 to Corrective RAG (arXiv 2604.01733): https://arxiv.org/abs/2604.01733
 - Long Context vs. RAG for LLMs: An Evaluation and Revisits (arXiv 2501.01880): https://arxiv.org/pdf/2501.01880
 - RAG vs. Long Context in 2026 (Towards AI): https://pub.towardsai.net/rag-vs-long-context-in-2026-when-retrieval-still-wins-e6ebad9a4096
+- OpenAI pricing: https://developers.openai.com/api/docs/pricing
+- Gemini API pricing: https://ai.google.dev/gemini-api/docs/pricing
+- Cloudflare Workers AI pricing: https://developers.cloudflare.com/workers-ai/platform/pricing/
+- SubQ models and pricing: https://docs.subq.ai/using-the-api/models/

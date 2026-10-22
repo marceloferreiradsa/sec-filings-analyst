@@ -46,11 +46,8 @@ desktop.ini
 # Logs
 *.log
 
-# Additional documents
-ARCHITECTURAL_DECISIONS.md
-EDGAR_TRACK_A_DESIGN.md
-NEXT_FEATURES.md
-DEPLOYMENT.md
+# Additional documents — docs/*.md are versioned (owner decision, 2026-10-22);
+# only the raw deploy notes stay local
 deploy_instructions.txt
 
 # Test scripts archive
@@ -65,3 +62,6 @@ secrets.json
 .harness-out/
 # Imagem Docker exportada por `make package` (~240MB)
 *.tar.gz
+
+# Experiments — derived samples (regenerate with make-sample); results/ stays versioned
+experiments/*/sample.json
