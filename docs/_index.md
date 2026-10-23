@@ -36,6 +36,7 @@
 | ADR-12 | Continuity-method make targets live in `metodo.mk`, with colliding names renamed | Active |
 | ADR-13 | Adopt the evidence-driven roadmap, under VPS and budget constraints | Active |
 | ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active |
+| ADR-15 | Golden set labelled by section + literal evidence, not chunk IDs | Active |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -67,4 +68,4 @@
 
 ---
 
-*29 registros em 3 documentos.*
+*30 registros em 3 documentos.*

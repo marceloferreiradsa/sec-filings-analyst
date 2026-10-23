@@ -793,3 +793,44 @@ then be complexity without return, and tier 3 alone would be the right design.
 > cross-encoders on the production VPS and two hosted APIs, and chose a fallback chain
 > where the system degrades visibly to hybrid search without reranking instead of
 > failing."*
+
+---
+
+## ADR-15 — Golden set labelled by section + literal evidence, not chunk IDs
+
+**Status:** Active
+
+### Context (2026-10-23)
+P0 needs a golden set (~80 questions, six categories: figure, narrative, comparison,
+trend, temporal, out-of-corpus) whose labels say where the answer is, so retrieval can
+be scored with Recall@k / MRR. P1 will change chunk text (contextual headers) and may
+change chunking.
+
+### What was decided
+- Each expected source is `company · filing_type · period_end · section` plus an
+  **evidence phrase copied literally** from the filing. A retrieved chunk counts as
+  relevant if it matches the four fields and contains the evidence (whitespace
+  collapsed).
+- Figure questions carry `expected_figure`: the exact value as it appears in the
+  evidence, plus accepted roundings.
+- File: `eval/golden/golden_set.jsonl`; `eval/golden/validate.py` must pass before
+  review — every evidence found in the corpus, every rounding within 0.05 of the exact
+  value. Each question has `reviewed`, set to true only by the owner.
+- The agent drafts from the corpus (no API cost); the owner reviews in batches as a
+  table.
+- Periods are identified by `period_end` (ADR-05), never by the `fiscal_year` /
+  `fiscal_period` metadata, which is wrong for quarters (see `state/aberto.md`).
+
+### What was rejected
+**Chunk IDs as labels** (`00012_0003`): exact, but every re-chunk silently invalidates
+the whole set — and P1 is about to change chunking.
+
+### Tradeoff accepted
+An evidence phrase can appear in more than one chunk (overlap of 200 chars), so a
+question may have several "relevant" chunks; Recall@k counts any of them.
+
+### Would be false if
+Evidence phrases turn out to be too short to be distinctive (e.g. a margin value that
+appears in several periods' text) — the four metadata fields exist to prevent that.
+Test: report the number of matching chunks per label in `validate.py` (not yet done)
+and flag labels that match many chunks.

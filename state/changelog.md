@@ -18,6 +18,53 @@
 
 ---
 
+## 2026-10-23 — Golden set: lote 2 aprovado
+
+**Mudança:** titular aprovou as 27 perguntas do lote 2 sem ajustes; `reviewed: true` em
+42/42 (sed com invariante: 42 linhas, 27 trocas, 0 restantes, validador passando).
+**Documentos tocados:** `eval/golden/golden_set.jsonl` · `state/aberto.md` (AB-07)
+**Registros:** nenhum
+**Pendente:** lotes de comparison (12), trend (12), temporal (14).
+
+---
+
+## 2026-10-23 — Golden set: lote 2 redigido (narrative + out_of_corpus)
+
+**Mudança:** +27 perguntas: 15 narrativas (3 por empresa, evidência literal de §7 MD&A,
+§1A Riscos e §2 de 10-Q) e 12 de recusa obrigatória (empresa fora, período fora,
+previsão, dado de mercado, fora de domínio). Validador: 42/42 evidências encontradas.
+Achado: FY2022 e NVDA FY2023 sem narrativa no corpus (AB-06 e).
+**Documentos tocados:** `eval/golden/golden_set.jsonl` · `state/aberto.md` (AB-06, AB-07)
+**Registros:** nenhum
+**Pendente:** revisão do lote 2; lotes de comparison, trend, temporal.
+
+---
+
+## 2026-10-23 — Golden set: lote 1 aprovado
+
+**Mudança:** titular revisou as 15 perguntas de número sem ajustes; `reviewed: true` em
+15/15 (sed com invariante: 15 linhas, 15 trocas, validador passando).
+**Documentos tocados:** `eval/golden/golden_set.jsonl` · `state/aberto.md` (AB-07)
+**Registros:** nenhum
+**Pendente:** lotes 2–5 (narrative, comparison, trend, temporal, out_of_corpus).
+
+---
+
+## 2026-10-23 — P0a iniciado: desenho do golden set (ADR-15) e lote 1
+
+**Mudança:** desenho do golden set aprovado pelo titular e registrado no ADR-15 (rótulo =
+seção + evidência literal, não chunk ID). Criados `eval/golden/golden_set.jsonl` (lote 1:
+15 perguntas de número, valores dos resumos XBRL) e `eval/golden/validate.py` (confere
+evidências no corpus e arredondamentos; testado com 3 casos falsos, todos reprovados).
+Achados de dados nos 10-Q registrados na AB-06. Titular pôs teto de gasto na OpenAI.
+**Por quê:** P0 do roadmap (ADR-13) — sem golden set não há métrica de retrieval.
+**Documentos tocados:** `docs/ARCHITECTURAL_DECISIONS.md` (ADR-15) · `eval/golden/*`
+(novo) · `state/aberto.md` (AB-06, AB-07)
+**Registros:** ADR-15 criado · AB-07 aberta
+**Pendente:** revisão do lote 1; lotes 2–5.
+
+---
+
 ## 2026-10-22 (noite) — docs/ realmente entra no git
 
 **Mudança:** o `.gitignore` tinha um bloco *Additional documents* que ignorava
