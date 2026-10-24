@@ -68,6 +68,8 @@ de base atual). Fallback: ordem densa com nota na página.
 2. **AB-12** — barrar injeção/fora do escopo antes da geração. Medido: similaridade não
    serve (contornável e não separa); **P(sim) máxima da SubQ separa** (1,0 vs ≤ 0,05).
    Proposta: porteiro SubQ calibrado no golden set + limite de taxa + ADR-11.
+   Leituras sugeridas (não verificadas) guardadas na AB-12: cascata regex →
+   classificador local (Prompt Guard 2 22M/86M) → LLM.
 3. **AB-10** — latência do rerank multiempresa (4,8 s com 5 empresas): SubQ em
    paralelo; `last_rerank` como estado compartilhado.
 4. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
