@@ -38,13 +38,15 @@
 | ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active |
 | ADR-15 | Golden set labelled by section + literal evidence, not chunk IDs | Active |
 | ADR-16 | Retrieval scored deterministically against the golden set (Recall@k, MRR, nDCG) | Active |
+| ADR-17 | The per-company cap is ignored when the filter pins a single company | Active |
 
 
 ## `docs/EVALUATION.md`
 
 | ID | Título | Status |
 |---|---|---|
-| EV-01 | Retrieval baseline, dense-only (P0b) | Current baseline |
+| EV-01 | Retrieval baseline, dense-only (P0b) | Historical — app column superseded by EV-02 |
+| EV-02 | Retrieval after ADR-17 (app no longer truncates single-company queries) | Current baseline |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -92,4 +94,4 @@
 
 ---
 
-*42 registros em 5 documentos.*
+*44 registros em 5 documentos.*

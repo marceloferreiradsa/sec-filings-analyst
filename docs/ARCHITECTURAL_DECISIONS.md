@@ -31,6 +31,7 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 14 | Rerank via API fallback chain | Measure before choosing; degrade visibly to hybrid search instead of failing |
 | 15 | Golden set labelled by section + evidence | Labels survive re-chunking; every evidence checked against the corpus before review |
 | 16 | Deterministic retrieval scoring | Recall@k / MRR / nDCG by evidence match, with confidence intervals; no LLM judge for retrieval |
+| 17 | Per-company cap ignored for single-company queries | A balancing cap must not truncate a query that already names one company |
 
 ---
 
@@ -898,3 +899,40 @@ The oracle run scores below 1.0 (the scorer is wrong, not the retriever); or, on
 miss review, a large share of "misses" turn out to contain the expected answer — then
 the labels, not the retriever, dominate the score and ADR-15's labelling must be
 revised before any P1 comparison.
+
+---
+
+## ADR-17 — The per-company cap is ignored when the filter pins a single company
+
+**Status:** Active
+
+### Context (2026-10-24)
+P0b (EV-01, `docs/EVALUATION.md`) showed that the app passes `max_per_company=2`
+whenever no company is picked in the sidebar, and that the cap was also applied when
+the question itself names one company (auto-detected filter). 56 of 68 golden-set
+questions received 1–2 chunks although `top_k=5`. ADR-09 already states the cap's
+purpose: balance for "all companies" queries.
+
+### What was decided
+In `Retriever.retrieve()`, when the active filter resolves to exactly one company,
+`max_per_company` is dropped: the cap can only truncate such a query, never balance it.
+Multi-company queries keep per-company retrieval (ADR-09); queries with no company keep
+the cap. Fixed at the source, so every caller (app, `eval/evaluate.py`, QA tests)
+gets the same behaviour.
+
+### What was rejected
+- **Fix in `app.py`** by detecting the company before choosing the cap: duplicates
+  `detect_filters`, and `eval/evaluate.py` (same pattern) would stay wrong.
+- **Remove the cap altogether:** unfiltered cross-company questions would lose the
+  balance ADR-09 describes.
+
+### Measured effect
+App configuration before vs after, golden set, k = 5, paired bootstrap (10,000
+resamples): Recall@5 **0.338 → 0.518, +0.180 [95% CI +0.099, +0.268]**; figure +0.400,
+trend +0.188 detectable. The app now scores identically to the uncapped run. Result
+files: `retrieval_2026-10-24T165428Z_app.json` (before), `retrieval_2026-10-24T165929Z_app.json` (after); details in
+EV-02.
+
+### Would be false if
+A question that names one company needs the cap for answer quality (e.g. answers get
+worse with 5 chunks than with 2) — checked in P0c, where generation is scored.

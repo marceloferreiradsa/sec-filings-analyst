@@ -9,7 +9,7 @@
 
 ## EV-01 — Retrieval baseline, dense-only (P0b)
 
-**Status:** Current baseline
+**Status:** Historical — app column superseded by EV-02
 
 **Run:** 2026-10-24 · commit `4926d1c` · golden set 80 questions, 68 scored (12
 out-of-corpus excluded, scored in P0c) · `python eval/golden/score.py run --config …`
@@ -64,6 +64,24 @@ Margin: 32.0%") matched GOOGL's summary — a different company, correctly rejec
 the four-field label. 2 of 45 (~4%) is far from "labels dominate the score" (ADR-16's
 falsifier). Widening those two labels needs an alternatives field in the schema and
 the owner's approval — pending in `state/aberto.md`.
+
+---
+
+## EV-02 — Retrieval after ADR-17 (app no longer truncates single-company queries)
+
+**Status:** Current baseline
+
+**Run:** 2026-10-24 · commit `f899e05` + ADR-17 change in `rag/retrieve.py` ·
+`eval/results/retrieval_2026-10-24T165929Z_app.json` (config app; 0 embedding calls, cached).
+
+The app configuration now scores **identically to EV-01's plain column** on every
+metric and k (Recall@5 0.518, Recall@20 0.698; per category as in EV-01 plain).
+Paired bootstrap vs EV-01 app, k = 5: Recall@5 +0.180 [+0.099, +0.268], All@5
++0.147 [+0.074, +0.235]. Sanity check: a question naming no company still gets ≤ 2
+chunks per company; a question naming Apple now gets 5 Apple chunks.
+
+Readings 2–4 of EV-01 stand; reading 1 is resolved by ADR-17. **This is the baseline
+P1 is compared against.**
 
 ---
 **Última revisão:** 2026-10-24 · detalhe em `state/changelog.md`

@@ -352,6 +352,14 @@ class Retriever:
                 question, active_filters, top_k, t_start
             )
 
+        # The per-company cap only balances results across companies. When the
+        # filter already pins one company it can only truncate them (ADR-17).
+        single = companies if isinstance(companies, str) else (
+            companies[0] if isinstance(companies, list) and len(companies) == 1 else None
+        )
+        if single is not None:
+            max_per_company = None
+
         # ── Single-company or unfiltered: standard path ────────────────
         t_embed = time.time()
         q_vector = self._embed_query(question)

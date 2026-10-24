@@ -18,6 +18,21 @@
 
 ---
 
+## 2026-10-24 — Teto por empresa deixa de cortar perguntas de uma empresa (ADR-17)
+
+**Mudança:** titular aprovou corrigir AB-08 (a). Em `Retriever.retrieve()`, quando o
+filtro resolve para uma única empresa, `max_per_company` é ignorado (o teto só serve
+para equilibrar várias empresas, como já dizia o ADR-09). Corrigido na fonte, não no
+`app.py`, para valer também no `eval/evaluate.py`. Medido: Recall@5 do app 0,338 →
+0,518 (IC 95% +0,099 a +0,268), idêntico à rodada sem teto; pergunta sem empresa
+continua com ≤ 2 trechos por empresa. pytest não está no venv; `tests/` só tem teste de
+deploy (Docker), não rodado.
+**Documentos tocados:** `rag/retrieve.py` · `docs/ARCHITECTURAL_DECISIONS.md` (ADR-17,
+Quick Reference) · `docs/EVALUATION.md` (EV-02; EV-01 vira histórico) ·
+`eval/results/retrieval_2026-10-24T165929Z_app.json` · `state/aberto.md` (AB-08)
+**Registros:** ADR-17 criado · EV-02 · AB-08 (a) resolvido
+**Pendente:** publicar na VPS (a demo pública ainda corta) — ação do titular
+
 ## 2026-10-24 — P0b: avaliação de retrieval fundamentada e medida (ADR-16)
 
 **Mudança:** titular pediu fundamentação teórica do desenho; pesquisadas e conferidas 10
