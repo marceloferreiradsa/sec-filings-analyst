@@ -172,7 +172,8 @@ correção)
 - Claude Code instalado via npm global (2.1.307); auto-update falhando. Sugerido
   `claude install` (nativo) com todas as sessões fechadas.
 - **Dados — 10-Q (2026-10-23, vistos ao redigir o golden set; afetam respostas reais):**
-  (a) `fiscal_year`/`fiscal_period` dos trimestres seguem o **calendário**, não o ano
+  (a) ~~`fiscal_year`/`fiscal_period` dos trimestres seguem o **calendário**~~ *resolvido
+  em 2026-10-24 (ADR-19, EV-03).* Texto original:, não o ano
   fiscal (AAPL 2025-12-27 marcado "FY2025 Q4", é Q1 FY2026); o filtro "Fiscal Year" da
   UI herda isso. (b) **Capex dos 10-Q é acumulado no ano** (GOOGL 2025-09-30 = US$63,6B,
   9 meses) ao lado de receita trimestral, sem aviso. (c) Caixa do GOOGL em 2026-03-31 =

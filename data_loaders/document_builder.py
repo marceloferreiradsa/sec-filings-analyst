@@ -36,11 +36,11 @@ WHY this schema:
 """
 
 from pathlib import Path
-from typing import Optional
 
 from langchain_core.documents import Document
 
 from data_loaders.edgar_api import build_financial_summaries
+from data_loaders.fiscal import fiscal_year_period
 from data_loaders.html_parser import parse_filing
 
 
@@ -94,34 +94,6 @@ def build_financial_documents(
 # Track B: narrative section documents
 # ---------------------------------------------------------------------------
 
-def _infer_fiscal_period(period_end: str, fiscal_year: Optional[int]) -> str:
-    """
-    Infer fiscal period label from period end date.
-    For 10-Qs we don't always have explicit FP labels, so we approximate
-    from the month of the period end date.
-
-    This is imprecise for companies with non-calendar fiscal years (e.g.
-    Apple's fiscal year ends in September). The fiscal_year field in metadata
-    should be used for year-level filtering; fiscal_period for intra-year.
-    """
-    if not period_end:
-        return ""
-
-    try:
-        month = int(period_end[5:7])
-        # Rough mapping: Q1=Jan-Mar, Q2=Apr-Jun, Q3=Jul-Sep, Q4=Oct-Dec
-        if month <= 3:
-            return "Q1"
-        elif month <= 6:
-            return "Q2"
-        elif month <= 9:
-            return "Q3"
-        else:
-            return "Q4"
-    except (ValueError, IndexError):
-        return ""
-
-
 def build_narrative_documents(
     raw_data_path: Path,
     ticker: str,
@@ -153,11 +125,10 @@ def build_narrative_documents(
             filed_date = meta.get("filed_date", "")
             period_end = meta.get("period_end", "")
 
-            # Approximate fiscal year from period end date
-            fiscal_year = int(period_end[:4]) if period_end else None
-            fiscal_period = (
-                "FY" if form_type == "10-K"
-                else _infer_fiscal_period(period_end, fiscal_year)
+            # Fiscal year and period from the company's fiscal calendar (ADR-19)
+            fiscal_year, fiscal_period = (
+                fiscal_year_period(ticker, period_end, form_type)
+                if period_end else (None, "")
             )
 
             for item_num, section_data in sections.items():

@@ -40,6 +40,7 @@
 | ADR-16 | Retrieval scored deterministically against the golden set (Recall@k, MRR, nDCG) | Active |
 | ADR-17 | The per-company cap is ignored when the filter pins a single company | Active |
 | ADR-18 | Golden-set labels are not widened after scoring; undercount accepted | Active |
+| ADR-19 | Fiscal year and quarter from each company's fiscal calendar; dated period headers | Active |
 
 
 ## `docs/EVALUATION.md`
@@ -47,7 +48,8 @@
 | ID | Título | Status |
 |---|---|---|
 | EV-01 | Retrieval baseline, dense-only (P0b) | Historical — app column superseded by EV-02 |
-| EV-02 | Retrieval after ADR-17 (app no longer truncates single-company queries) | Current baseline |
+| EV-02 | Retrieval after ADR-17 (app no longer truncates single-company queries) | Historical — superseded by EV-03 |
+| EV-03 | Retrieval after ADR-19 (fiscal calendar, dated headers) | Current baseline |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -95,4 +97,4 @@
 
 ---
 
-*45 registros em 5 documentos.*
+*47 registros em 5 documentos.*

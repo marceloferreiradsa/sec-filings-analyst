@@ -33,6 +33,7 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 16 | Deterministic retrieval scoring | Recall@k / MRR / nDCG by evidence match, with confidence intervals; no LLM judge for retrieval |
 | 17 | Per-company cap ignored for single-company queries | A balancing cap must not truncate a query that already names one company |
 | 18 | Golden-set labels not widened after scoring | A score biased low is preferable to one inflated by post-hoc relabelling |
+| 19 | Fiscal calendar per company; dated period headers | A year means the fiscal year; a date with a month means the calendar period; summaries say both |
 
 ---
 
@@ -975,3 +976,65 @@ property of test collections (REF-04).
 The miss review after any P1 run finds label gaps in **more than 5% of misses**
 (today 2/45 ≈ 4%), or a P1 comparison flips sign when those questions are excluded —
 then the undercount is no longer negligible and this decision is reopened.
+
+---
+
+## ADR-19 — Fiscal year and quarter from each company's fiscal calendar; dated period headers
+
+**Status:** Active
+
+### Context (2026-10-24)
+10-Q labels were derived from the calendar month (`fiscal_year = period_end[:4]`,
+Q1 = Jan–Mar), wrong for the three companies whose fiscal year does not end in
+December: Apple's quarter ended 2025-12-27 was "FY2025 Q4" (it is FY2026 Q1);
+24 of 40 10-Qs were mislabelled (AB-06 a). Because `detect_filters` turns a year in
+the question into a `fiscal_year` filter, a question naming the fiscal quarter
+**excluded the right chunk before ranking** — 6 of 14 temporal questions scored 0
+even at k = 20 (EV-02). The wrong label also reached the user in the citation.
+
+### What was decided
+1. **Fiscal calendar per company** (`data_loaders/fiscal.py`): fiscal year = calendar
+   year in which it ends; quarter counted from the month after the fiscal year-end
+   (AAPL Sep, MSFT Jun, NVDA Jan, GOOGL/META Dec). Still derived from `period_end`,
+   never from XBRL `fy`/`fp` (ADR-05). No 10-K label changes.
+2. **Meaning of a year in a question** (owner's rule): a year is a **fiscal** year by
+   default ("Apple's profit in 2025" = the year in which that profit was generated);
+   when the question contains a **date with a month** ("quarter ended September 30,
+   2025", "Sept. 2025", "2025-09-30"), its years match the **calendar** year of
+   `period_end` (`RetrievalFilters.calendar_year`). The sidebar's explicit "Fiscal Year"
+   filter stays strictly fiscal. Year detection extended to 2020–2029 (FY2027 exists).
+3. **Dated period headers**: every financial summary states both — "Period: FY2026 Q2
+   (quarter ended December 31, 2025)", "FY2025 (fiscal year ended September 27, 2025)".
+   A deterministic, metadata-derived form of contextual chunk headers (REF-09, REF-08)
+   and of ADR-03's natural-language rendering: the text a calendar-dated question
+   embeds against now contains the date.
+4. **Applied to the existing corpus without re-ingesting**
+   (`stages/migrate_fiscal_labels.py`, idempotent, backup in
+   `data/processed/backup_pre_adr19/`): re-ingesting would pull filings published
+   since, and the effect could not be attributed. Changed only `fiscal_year` /
+   `fiscal_period` and the 40 summary headers; exactly those 40 vectors re-embedded.
+
+### What was rejected
+- **Fiscal only, no date exception:** measured — fig-15, tmp-15, tmp-16 (dates copied
+  from 10-Q cover pages) fall out entirely (EV-03, intermediate run).
+- **Year matches fiscal *or* calendar always:** never excludes the right chunk, but
+  "Apple's profit in 2025" would also admit FY2026's December quarter; the owner
+  ruled that a bare year means the fiscal year.
+- **Detect the word "fiscal":** brittle — "Apple's 2025 revenue" means fiscal without
+  saying it.
+- **Fiscal label alone in the header** (first version): fig-13 fell from rank 3 to 9
+  with the *same* candidate set — the old wrong header "FY2025 Q4" matched "2025" by
+  accident; the correct "FY2026 Q2" carried no calendar cue.
+
+### Measured effect (EV-03)
+Golden set 70 scored questions, k = 5, paired bootstrap vs before ADR-19: temporal
+Recall@5 **0.500 → 0.812** (+0.312, 95% CI +0.125 to +0.562); overall **0.532 →
+0.607** (+0.075, CI +0.014 to +0.146); figure stays 1.000 with MRR 0.561 → 0.797; no
+category decreases.
+
+### Would be false if
+A fiscal-year question on a non-calendar company retrieves a quarter of the adjacent
+fiscal year as its top source (the label or the rule is wrong) — or a question with
+a month that is *not* a period date (e.g. "Apple's guidance given in May 2025 for
+fiscal 2026") is filtered by calendar year and loses the right chunk. The second is a
+known edge of the rule; watch for it in P0c answers.

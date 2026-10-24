@@ -28,6 +28,8 @@ import time
 from datetime import date as _date
 from typing import Optional
 
+from data_loaders.fiscal import fiscal_year_period, period_label
+
 # SEC requires an identifying User-Agent — not authentication, just courtesy
 HEADERS = {
     "User-Agent": "Aina-TI marcelo@ainati.com.br",
@@ -255,29 +257,6 @@ def extract_metric(
 # Summary assembly helpers
 # ---------------------------------------------------------------------------
 
-def _infer_fiscal_period(period_end: str) -> str:
-    """
-    Infer quarter label from the month of the period end date.
-    Approximate — works correctly for calendar-year companies (MSFT, META,
-    GOOGL). Off by one quarter for non-calendar-year companies (NVDA ends
-    January, AAPL ends September). Acknowledged limitation in Design Spec
-    Section 7; fiscal_year derived from period_end[:4] is the reliable
-    temporal anchor for filtering.
-    """
-    try:
-        month = int(period_end[5:7])
-        if month <= 3:
-            return "Q1"
-        elif month <= 6:
-            return "Q2"
-        elif month <= 9:
-            return "Q3"
-        else:
-            return "Q4"
-    except (ValueError, IndexError):
-        return ""
-
-
 def _fmt_billions(val: Optional[float]) -> str:
     """Format a USD value as $X.XXB. Returns 'N/A' for missing data."""
     if val is None:
@@ -320,7 +299,8 @@ def build_financial_summaries(
       entry has fy=2026 because it was last reported as a comparative in the
       FY2026 10-K. Using fy in the key would fragment the same period into
       multiple buckets when different metrics' entries came from different
-      filing years. fiscal_year is derived from period_end[:4] instead.
+      filing years. fiscal_year/fiscal_period come from period_end and the
+      company's fiscal calendar instead (data_loaders/fiscal.py, ADR-19).
 
     FILED DATE NOTE:
       filed_date in the output reflects the date of the most recently filed
@@ -404,19 +384,11 @@ def build_financial_summaries(
             # data. Skip without consuming a limit slot.
             continue
 
-        # Derive fiscal year and period from period_end date.
-        # Do NOT use the fy/fp fields from XBRL entries — see module docstring.
-        fiscal_year = int(period_end[:4])
-        fiscal_period = (
-            "FY"
-            if form_type == "10-K"
-            else _infer_fiscal_period(period_end)
-        )
-        period_label = (
-            f"FY{fiscal_year}"
-            if fiscal_period == "FY"
-            else f"FY{fiscal_year} {fiscal_period}"
-        )
+        # Derive fiscal year and period from period_end and the company's
+        # fiscal calendar (ADR-19). Do NOT use the fy/fp fields from XBRL
+        # entries — see module docstring.
+        fiscal_year, fiscal_period = fiscal_year_period(ticker, period_end, form_type)
+        label = period_label(ticker, period_end, form_type)
 
         # Period range for display
         period_start = data["period_start"]
@@ -445,7 +417,7 @@ def build_financial_summaries(
 
         text = (
             f"{company_name} ({ticker}) — {form_type} Financial Summary\n"
-            f"Period: {period_label} | Range: {period_range} | "
+            f"Period: {label} | Range: {period_range} | "
             f"Filed: {data['filed_date']}"
             f"{ytd_note}\n"
             f"\n"

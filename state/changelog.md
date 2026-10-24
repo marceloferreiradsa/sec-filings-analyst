@@ -18,6 +18,46 @@
 
 ---
 
+## 2026-10-24 — Rótulos fiscais concluídos: cabeçalho com data, ADR-19, EV-03
+
+**Mudança:** titular aprovou o cabeçalho com data por extenso e as perguntas tmp-15/16
+(`reviewed: true`; 82/82). `period_label()` em `data_loaders/fiscal.py` usado pelo
+gerador de resumos e pela migração (agora reescreve os 40 resumos, 10-K e 10-Q;
+idempotente — 2ª rodada muda 0). Contra o backup pré-ADR-19: 40 textos e os mesmos 40
+vetores, só a linha "Period". Medido: temporal R@5 0,500 → 0,812, geral 0,532 → 0,607
+(IC +0,014 a +0,146), figure de volta a 1,000 (fig-13 da posição 9 para 1); nenhuma
+categoria cai. Titular perguntou se o enriquecimento de cabeçalho tem amparo: sim —
+REF-09 (Contextual Retrieval) e REF-08 (ganhos consistentes de contextual retrieval);
+REFERENCES atualizado.
+**Documentos tocados:** `data_loaders/fiscal.py` · `data_loaders/edgar_api.py` ·
+`stages/migrate_fiscal_labels.py` · `docs/ARCHITECTURAL_DECISIONS.md` (ADR-19, Quick
+Reference) · `docs/EVALUATION.md` (EV-03; EV-02 vira histórico) · `docs/REFERENCES.md`
+· `eval/golden/golden_set.jsonl` · `eval/results/` · `state/aberto.md` (AB-06 a)
+**Registros:** ADR-19 criado · EV-03 · AB-06 (a) resolvido
+**Pendente:** publicar na VPS (índice novo vai na imagem)
+
+## 2026-10-24 — Rótulos fiscais dos 10-Q corrigidos (AB-06 a) — em curso, ADR-19 a escrever
+
+**Mudança:** titular aprovou o desenho e a regra "fiscal por padrão, calendário quando a
+pergunta tem data com mês". Feito: `data_loaders/fiscal.py` (calendário fiscal por
+empresa; 17 casos conhecidos ok, nenhum 10-K muda, 24/40 10-Q corrigidos) ligado aos
+dois carregadores; `stages/migrate_fiscal_labels.py` aplicado aos dados atuais sem
+reingerir (só `fiscal_year`/`fiscal_period` mudaram, 12 textos e os mesmos 12 vetores
+re-embedados; backup em `data/processed/backup_pre_adr19/`); índice reconstruído;
+`detect_filters` ganhou `calendar_year` para datas com mês e anos até 2029. Golden set
++2 perguntas (tmp-15, tmp-16, `reviewed: false`) antes de medir. Medido (70 perguntas):
+temporal R@5 0,500 → 0,812 (IC +0,125 a +0,562); figure 1,000 → 0,867 (não
+detectável): fig-13 caiu da posição 3 para 9 com o mesmo conjunto de candidatos —
+causa: o cabeçalho do resumo perdeu o ano de calendário ("FY2025 Q4" → "FY2026 Q2").
+Corrigi também uma afirmação minha: o golden set já tinha perguntas de data de
+calendário para empresa não-calendário (fig-13, fig-15), que eu não tinha visto.
+**Documentos tocados:** `data_loaders/fiscal.py` (novo) · `data_loaders/edgar_api.py` ·
+`data_loaders/document_builder.py` · `stages/migrate_fiscal_labels.py` (novo) ·
+`rag/retrieve.py` · `eval/golden/golden_set.jsonl` · `eval/results/` (3 rodadas)
+**Registros:** nenhum ainda
+**Pendente:** decisão do titular sobre cabeçalho com data por extenso; ADR-19, EV-03,
+revisão de tmp-15/16, publicar na VPS (índice novo vai na imagem)
+
 ## 2026-10-24 — Rótulos do golden set não são ampliados após medir (ADR-18)
 
 **Mudança:** titular recusou AB-08 (b) depois de analisar do ponto de vista do usuário

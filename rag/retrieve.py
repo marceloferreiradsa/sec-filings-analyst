@@ -117,12 +117,14 @@ class RetrievalFilters:
     section_name  : Optional[str]             = None   # "Risk Factors" etc.
     fiscal_year   : Optional[list[int] | int] = None
     fiscal_period : Optional[str]             = None   # "FY" | "Q1" etc.
+    calendar_year : Optional[list[int] | int] = None   # year of period_end (ADR-19)
 
     def is_empty(self) -> bool:
         return all(
             v is None for v in [
                 self.company, self.filing_type, self.source_type,
                 self.section_name, self.fiscal_year, self.fiscal_period,
+                self.calendar_year,
             ]
         )
 
@@ -138,6 +140,8 @@ class RetrievalFilters:
             parts.append(f"section={self.section_name!r}")
         if self.fiscal_year:
             parts.append(f"year={self.fiscal_year}")
+        if self.calendar_year:
+            parts.append(f"calendar_year={self.calendar_year}")
         if self.fiscal_period:
             parts.append(f"period={self.fiscal_period}")
         return ", ".join(parts) if parts else "none"
@@ -160,12 +164,23 @@ def _matches(chunk_meta: dict, filters: RetrievalFilters) -> bool:
         check(chunk_meta.get("section_name"),  filters.section_name),
         check(chunk_meta.get("fiscal_year"),   filters.fiscal_year),
         check(chunk_meta.get("fiscal_period"), filters.fiscal_period),
+        check(str(chunk_meta.get("period_end", ""))[:4], filters.calendar_year),
     ])
 
 
 # ---------------------------------------------------------------------------
 # Auto-detection helpers
 # ---------------------------------------------------------------------------
+
+# A date that names a month ("September 30, 2025", "Sept. 2025", "2025-09-30")
+_DATE_WITH_MONTH = re.compile(
+    r"\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|"
+    r"aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)"
+    r"\.?\s+(?:\d{1,2},?\s+)?20\d\d\b"
+    r"|\b20\d\d-\d\d(?:-\d\d)?\b",
+    re.IGNORECASE,
+)
+
 
 def detect_filters(question: str) -> RetrievalFilters:
     """
@@ -183,7 +198,9 @@ def detect_filters(question: str) -> RetrievalFilters:
         → company=["AAPL"]
 
     Auto-detection is deliberately conservative — it only fires on
-    explicit company names/tickers and 4-digit years in the range 2020-2026.
+    explicit company names/tickers and 4-digit years in the range 2020-2029.
+    A year is a fiscal year by default; when the question contains a date with
+    a month, its years match the calendar year of period_end instead (ADR-19).
     It does not try to infer section type from keywords like "risk" because
     "I want to understand NVIDIA's risk profile" is better served by
     retrieving across all sections than restricting to Risk Factors alone.
@@ -196,8 +213,16 @@ def detect_filters(question: str) -> RetrievalFilters:
             if ticker not in found_tickers:
                 found_tickers.append(ticker)
 
-    year_matches = re.findall(r'\b(20(?:2[0-6]))\b', question)
+    year_matches = re.findall(r'\b(20(?:2[0-9]))\b', question)
     found_years  = [int(y) for y in dict.fromkeys(year_matches)]
+
+    # "Apple's profit in 2025" means fiscal 2025; "the quarter ended
+    # September 30, 2025" names the period itself, whatever its fiscal year.
+    if found_years and _DATE_WITH_MONTH.search(question):
+        return RetrievalFilters(
+            company       = found_tickers if found_tickers else None,
+            calendar_year = found_years,
+        )
 
     return RetrievalFilters(
         company     = found_tickers if found_tickers else None,
@@ -462,6 +487,7 @@ class Retriever:
                 section_name  = base_filters.section_name,
                 fiscal_year   = base_filters.fiscal_year,
                 fiscal_period = base_filters.fiscal_period,
+                calendar_year = base_filters.calendar_year,
             )
             # Temporarily suppress verbose for sub-calls
             self.verbose = False

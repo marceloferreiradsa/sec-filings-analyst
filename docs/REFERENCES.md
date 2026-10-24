@@ -107,7 +107,7 @@
 - **Supports:** on financial text+table documents, BM25 beat dense retrieval; hybrid +
   neural rerank was best. Reports Recall@k, MRR, nDCG and Number Match with paired
   bootstrap significance — the metric set we adopt, so our numbers are comparable.
-- **Cited by:** ROADMAP_PRIORITIES (evidence table, sources), ADR-16.
+- **Cited by:** ROADMAP_PRIORITIES (evidence table, sources), ADR-16, ADR-19.
 
 ### REF-09 — Introducing Contextual Retrieval (Anthropic)
 
@@ -118,7 +118,7 @@
 - **Supports:** industry practice of scoring retrieval as 1 − Recall@20 (top-20
   failure rate); contextual embeddings + contextual BM25 + rerank reduced it in their
   tests. Basis for reporting k = 20 and for P1's contextual headers.
-- **Cited by:** ADR-16.
+- **Cited by:** ADR-16, ADR-19 (dated period headers as a deterministic contextual header).
 
 ### REF-10 — Ragas: Automated Evaluation of Retrieval Augmented Generation (Es et al.)
 

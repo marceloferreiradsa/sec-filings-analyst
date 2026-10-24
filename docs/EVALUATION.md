@@ -69,7 +69,7 @@ the owner's approval — **declined** (ADR-18).
 
 ## EV-02 — Retrieval after ADR-17 (app no longer truncates single-company queries)
 
-**Status:** Current baseline
+**Status:** Historical — superseded by EV-03
 
 **Run:** 2026-10-24 · commit `f899e05` + ADR-17 change in `rag/retrieve.py` ·
 `eval/results/retrieval_2026-10-24T165929Z_app.json` (config app; 0 embedding calls, cached).
@@ -85,7 +85,45 @@ unlabelled chunk; scores are a lower bound. Re-check the share of such misses af
 every P1 run (reopen ADR-18 above 5%).
 
 Readings 2–4 of EV-01 stand; reading 1 is resolved by ADR-17. **This is the baseline
-P1 is compared against.**
+P1 is compared against.** *(superseded by EV-03)*
+
+---
+
+## EV-03 — Retrieval after ADR-19 (fiscal calendar, dated headers)
+
+**Status:** Current baseline
+
+**Run:** 2026-10-24 · commit `9232e99` + ADR-19 changes · golden set **82 questions,
+70 scored** (+tmp-15, tmp-16: calendar dates on non-calendar fiscal years, added and
+reviewed before this run) · config app.
+
+| run | file | what |
+|---|---|---|
+| before | `retrieval_2026-10-24T173416Z_app.json` | EV-02 code and index, 70 questions |
+| fiscal strict | `retrieval_2026-10-24T173517Z_app.json` | labels fixed, year = fiscal only |
+| + date exception | `retrieval_2026-10-24T173641Z_app.json` | + calendar year for dates with month |
+| **final** | `retrieval_2026-10-24T174141Z_app.json` | + dated period headers |
+
+| category | n | R@5 before | R@5 final | MRR@5 final | R@20 final |
+|---|---|---|---|---|---|
+| figure | 15 | 1.000 | 1.000 | 0.797 | 1.000 |
+| narrative | 15 | 0.267 | 0.267 | 0.189 | 0.667 |
+| comparison | 12 | 0.542 | 0.542 | 0.507 | 0.725 |
+| trend | 12 | 0.312 | 0.333 | 0.547 | 0.500 |
+| temporal | 16 | 0.500 | **0.812** | 0.596 | 0.938 |
+| **all** | 70 | 0.532 | **0.607** | 0.528 | 0.781 |
+
+Paired bootstrap, k = 5, before → final: temporal **+0.312 [+0.125, +0.562]**, overall
+**+0.075 [+0.014, +0.146]**, both detectable; no category decreases. Intermediate
+steps: fiscal strict dropped figure to 0.800 (fig-13, fig-15 are calendar-dated);
+the date exception recovered fig-15/tmp-15/tmp-16; the dated header moved fig-13
+from rank 9 to 1 with the same candidates.
+
+**Still failing (ranking, not labels — P1 territory):** tmp-02 and tmp-03 ("latest
+quarter", ranks 8 and 12), tmp-14 (right 10-Q at rank 1, but the chunk with the
+revenue sentence is outside the top 20), fig-03 at rank 5.
+
+**Known undercount (ADR-18)** unchanged. **This is the baseline P1 is compared against.**
 
 ---
 **Última revisão:** 2026-10-24 · detalhe em `state/changelog.md`
