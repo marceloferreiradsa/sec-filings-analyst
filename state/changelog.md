@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-10-24 — AB-12: leituras sugeridas guardadas
+
+**Mudança:** titular trouxe uma lista de leituras sobre filtros antes da geração
+(OWASP, Prompt Guard 2, StackOne, RAG-PIF, regex guards, injeção indireta). Guardada
+em AB-12 como "não verificada", separando o que serve para pergunta direta e custo do
+que trata de injeção via documentos.
+**Documentos tocados:** `state/aberto.md` (AB-12)
+**Registros:** nenhum
+**Pendente:** AB-12
+
+---
+
 ## 2026-10-24 — AB-12: similaridade não serve de porteiro; nota da SubQ separa
 
 **Mudança:** titular mostrou que colar texto do domínio na pergunta infla a

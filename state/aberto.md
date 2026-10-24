@@ -288,6 +288,35 @@ por consulta; o porteiro só poupa a geração) + prompt de ancoragem (ADR-11) c
 camadas. Seria falso se, no golden set completo, perguntas respondíveis tiverem P(sim)
 máxima perto das de fora do corpus.
 Ligado ao P0c (acurácia de recusa nos `out_of_corpus`).
+**Leituras sugeridas (trazidas pelo titular em 2026-10-24, de outra conversa; links e
+números NÃO verificados; o que for usado numa decisão vira `REF-NN` em
+`docs/REFERENCES.md`):**
+Para nós (pergunta direta e custo): cascata do barato ao caro antes da chamada paga:
+regex → classificador pequeno → LLM.
+- Classificadores locais: Meta **Llama Prompt Guard 2** (86M multilíngue; 22M só
+  inglês, ~75% menos latência): https://docs.mozilla.ai/any-guardrail/api-reference/index/prompt-injection/prompt-guard ·
+  **StackOne**, classificador de 22 MB (MiniLM quantizado); argumenta que LLM como
+  juiz pode ser injetado, o mesmo risco já anotado acima:
+  https://www.stackone.com/blog/training-22mb-prompt-injection-classifier/
+- Primeira camada regex (<1 ms): https://pypi.org/project/ai-injection-guard/ ·
+  LangChain4j PatternBasedPromptInjectionGuardrail:
+  https://docs.langchain4j.dev/apidocs/dev/langchain4j/guardrails/PatternBasedPromptInjectionGuardrail.html ·
+  https://pypi.org/project/nakata-promptguard/
+- Cascata de referência **RAG-PIF** (regex → similaridade FAISS → RoBERTa):
+  https://huggingface.co/shivateja1253/rag-pif-roberta
+- Base: **OWASP** LLM Prompt Injection Prevention Cheat Sheet:
+  https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
+Menos urgente aqui (injeção indireta via documentos; nosso corpus vem só da SEC, fonte
+confiável): Tian Pan, https://tianpan.co/blog/2026/04/19/prompt-injection-supply-chain-problem
+e https://tianpan.co/blog/2026-04-16-rag-prompt-injection-retrieval-pipeline-security ·
+https://pypi.org/project/rag-sanitizer/ · https://pypi.org/project/protectrag/ ·
+CleanBase https://www.emergentmind.com/papers/2605.00460 · Azure Prompt Shields e
+Spotlighting (gerenciado):
+https://learn.microsoft.com/en-my/Azure/foundry/openai/concepts/content-filter-prompt-shields ·
+https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/-/4458404
+Ressalva da própria fonte: recall de 80–90% em ataques conhecidos e menor em novos.
+Os filtros servem para cortar custo; a segurança continua nas defesas estruturais
+(instrução separada dos dados, ADR-11).
 *aberta desde 2026-10-24*
 
 ## Ação manual
