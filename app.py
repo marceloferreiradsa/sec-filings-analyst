@@ -166,7 +166,13 @@ def load_qa_system():
         os.environ["OPENAI_API_KEY"] = api_key
 
     from rag.qa import QA
-    return QA(verbose=False)
+    from rag.rerank import Reranker
+    from rag.retrieve import Retriever
+
+    # Dense retrieval + SubQ Snap rerank; if SubQ fails, the dense order is used
+    # and the page says so (ADR-22).
+    return QA(verbose=False,
+              retriever=Retriever(verbose=False, reranker=Reranker(chain=("subq",))))
 
 
 def api_key_available() -> bool:
@@ -607,6 +613,11 @@ def main() -> None:
                 st.stop()
 
         render_answer(answer, show_context)
+        if qa.retriever.last_rerank == "none":
+            st.caption(
+                "ℹ️ Reranking was unavailable for this answer, so passages were ordered "
+                "by semantic similarity only. Answers may cite less relevant passages."
+            )
 
         # Store in history (keep last 10)
         st.session_state.history.append((question, answer))

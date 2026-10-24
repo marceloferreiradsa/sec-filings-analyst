@@ -11,6 +11,23 @@ Numbers are retrieval measurements on the project's own benchmark
 ([docs/EVALUATION.md](docs/EVALUATION.md)): the share of questions for which the
 passage holding the answer reaches the model. Answer accuracy is measured separately.
 
+## [1.2.0] — 2026-10-24
+
+### Added
+- A second-stage reranker reads your question together with the 40 best candidate
+  passages and picks the most relevant ones before the answer is written.
+- If the reranker is unavailable, the answer still comes — ordered by semantic
+  similarity, as before — and a note under the answer says so.
+
+### Measured
+On 70 benchmark questions, the right passage now reaches the model for **81%** of
+questions (was 61%): "why" questions **73%** (was 27%), cross-company comparisons
+**73%** (was 54%), time-related questions **100%** (was 81%), single figures 100%.
+
+*Engineering detail:* [ADR-22](docs/ARCHITECTURAL_DECISIONS.md#adr-22--rerank-with-subq-snap-over-dense-candidates-fallback-to-dense-order-with-a-notice),
+[EV-05](docs/EVALUATION.md#ev-05--p1b-second-stage-rerank-cloudflare-subq-over-dense-and-hybrid-candidates).
+Also measured and not shipped: keyword (BM25) hybrid search ([ADR-21](docs/ARCHITECTURAL_DECISIONS.md#adr-21--hybrid-retrieval-bm25--rrf-implemented-and-measured-production-stays-dense-until-rerank-uniform-contextual-headers-rejected)).
+
 ## [1.1.1] — 2026-10-24
 
 ### Fixed
