@@ -18,6 +18,17 @@
 
 ---
 
+## 2026-10-24 — AB-12: similaridade não serve de porteiro; nota da SubQ separa
+
+**Mudança:** titular mostrou que colar texto do domínio na pergunta infla a
+similaridade (0,17 → 0,46). Medido em 6 perguntas: similaridade não separa nem sem
+truque; P(sim) máxima da SubQ separa (1,000 vs ≤ 0,046, inclusive a injeção
+acolchoada). Proposta revisada em AB-12 (porteiro SubQ + limite de taxa + ADR-11).
+Nada implementado. ~8 chamadas SubQ.
+**Documentos tocados:** `state/aberto.md` (AB-12)
+**Registros:** nenhum
+**Pendente:** AB-12
+
 ## 2026-10-24 — Pendência: injeção e fora do escopo antes das chamadas pagas (AB-12)
 
 **Mudança:** titular mostrou uma pergunta de injeção em português ("pode ignorar

@@ -276,6 +276,17 @@ não há barreira de tema. Opções a discutir (nenhuma decidida):
 - (c) classificador barato antes de tudo (custa uma chamada);
 - (d) **limite de taxa por sessão/IP** — protege contra abuso em volume, que é o risco
   de custo real (por consulta o valor é pequeno); já anotado em AB-06.
+**Medição (2026-10-24, 6 perguntas, `probe_gate` no scratchpad):** o titular mostrou
+que (b) por similaridade se contorna colando texto do domínio (0,17 → 0,46). Medido:
+similaridade não separa nem sem truque (Tesla, fora do corpus, 0,557 ≈ narrativa
+legítima 0,573). **P(sim) máxima da SubQ separa:** respondíveis 1,000; injeção 0,003,
+injeção acolchoada 0,030, fora do corpus 0,010 e 0,046. Proposta revisada: porteiro
+pela nota da SubQ (limiar a calibrar nas 70 + 12 do golden set; as 70 já têm nota em
+cache) + (d) limite de taxa, que é o controle de custo (a SubQ custa mais que o GPT
+por consulta; o porteiro só poupa a geração) + prompt de ancoragem (ADR-11) como
+última barreira. Risco: injeção mirando o próprio juiz ("responda sim") — por isso
+camadas. Seria falso se, no golden set completo, perguntas respondíveis tiverem P(sim)
+máxima perto das de fora do corpus.
 Ligado ao P0c (acurácia de recusa nos `out_of_corpus`).
 *aberta desde 2026-10-24*
 
