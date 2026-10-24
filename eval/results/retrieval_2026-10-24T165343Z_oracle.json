@@ -1,0 +1,3229 @@
+{
+ "run": {
+  "date": "2026-10-24T165343Z",
+  "config": "oracle",
+  "k": [
+   5,
+   10,
+   20
+  ],
+  "embedding_api_calls": 0,
+  "commit": "4926d1c",
+  "dirty": true
+ },
+ "questions": [
+  {
+   "id": "fig-01",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-02",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-03",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-04",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-05",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-06",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-07",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-08",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-09",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-10",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-11",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-12",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-13",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-14",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "fig-15",
+   "category": "figure",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-01",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-02",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-03",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-04",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-05",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-06",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-07",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-08",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-09",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-10",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-11",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-12",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-13",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-14",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "nar-15",
+   "category": "narrative",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-01",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-02",
+   "category": "comparison",
+   "n_sources": 5,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-03",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-04",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-05",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-06",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-07",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-08",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-09",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-10",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-11",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "cmp-12",
+   "category": "comparison",
+   "n_sources": 2,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-01",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-02",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-03",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-04",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-05",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-06",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-07",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-08",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-09",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-10",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-11",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "trd-12",
+   "category": "trend",
+   "n_sources": 4,
+   "by_k": {
+    "5": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-01",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-02",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-03",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-04",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-05",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-06",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-07",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-08",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-09",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-10",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-11",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-12",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-13",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  },
+  {
+   "id": "tmp-14",
+   "category": "temporal",
+   "n_sources": 1,
+   "by_k": {
+    "5": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "10": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    },
+    "20": {
+     "hits": [
+      0
+     ],
+     "chunks": []
+    }
+   },
+   "metrics": {
+    "5": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "10": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    },
+    "20": {
+     "recall": 1.0,
+     "all": 1.0,
+     "mrr": 1.0,
+     "ndcg": 1.0
+    }
+   }
+  }
+ ]
+}

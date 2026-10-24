@@ -189,7 +189,9 @@ correção)
 - Teto de gasto na OpenAI: **feito** pelo titular em 2026-10-23.
 *aberta desde 2026-10-21*
 
-**AB-07 — P0a: golden set (~80 perguntas)**
+**~~AB-07 — P0a: golden set (~80 perguntas)~~**
+*resolvida em 2026-10-24: 80/80 aprovadas; consumidas pelo P0b (`eval/golden/score.py`,
+ADR-16, resultados em `docs/EVALUATION.md` EV-01). Histórico abaixo.*
 Desenho aprovado em 2026-10-23 (ADR-15). Lote 1 = 15 perguntas `figure` em
 `eval/golden/golden_set.jsonl`, validadas (`python eval/golden/validate.py --table`),
 **revisadas e aprovadas pelo titular em 2026-10-23 (15/15 `reviewed: true`)**.
@@ -205,6 +207,17 @@ próximo: P0b (métricas de retrieval). Titular dispensou página de revisão co
 revisa pela tabela. Gabarito vem do texto do filing, nunca de resposta do RAG. Nenhuma pergunta usa capex de 10-Q
 nem caixa do GOOGL 2026-03-31 (achados AB-06).
 *aberta desde 2026-10-23*
+
+**AB-08 — Achados do P0b a decidir** (medidos em `docs/EVALUATION.md` EV-01)
+- (a) **Teto por empresa do `app.py` corta perguntas de uma empresa só:** com
+  `max_per_company=2` (aplicado sempre que a barra lateral não tem empresa), 56 de 68
+  perguntas receberam 1–2 trechos com `top_k=5`. Sem o teto, Recall@5 0,338 → 0,518
+  (IC 95% +0,10 a +0,27). Correção é 1 linha, mas muda a demo pública — **decisão do
+  titular**; candidato a DT/ADR. Confirmar efeito na resposta no P0c.
+- (b) **Ampliar 2 rótulos** (nar-02: mesma frase em NVDA 10-K FY2026 §7; cmp-10: mesma
+  frase META no 10-Q 2025-09-30) exige campo de alternativas no schema (ADR-15) —
+  **decisão do titular**; efeito ≤ 2 de 119 fontes.
+*aberta desde 2026-10-24*
 
 ## Ação manual
 

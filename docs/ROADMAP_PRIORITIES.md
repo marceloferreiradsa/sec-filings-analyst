@@ -31,6 +31,10 @@ The roadmap below moves the system in that direction.
 
 ### P0 — Retrieval-level evaluation + long-context baseline *(new, ~1–1.5 days)*
 
+> **Status (2026-10-24):** golden set done (ADR-15); retrieval scoring done (ADR-16) —
+> measured baseline in `docs/EVALUATION.md` (EV-01). Long-context arm and generation
+> metrics (P0c) pending.
+
 **Why first:** today's eval measures *generation* (15 assertion cases + RAGAS
 faithfulness/relevancy, which `evaluate.py` itself notes varies 0.33–0.94 between runs on
 multi-company questions). Nothing measures *whether the right chunk was retrieved*,
@@ -258,6 +262,7 @@ Measured 2026-10-21: Hostinger VPS, AMD EPYC 9354P, 2 vCPU, 8 GB RAM (5.8 GB fre
 ---
 
 ## Sources
+Evaluation-method bibliography (Cranfield, MRR, DPR, FinanceBench, Contextual Retrieval…): `docs/REFERENCES.md`, cited by ADR-16.
 - Chroma Research — Context Rot: https://trychroma.com/research/context-rot
 - HackerNoon — Long Context Beats RAG on Accuracy (cites Hamilton et al., 2026): https://hackernoon.com/long-context-beats-rag-on-accuracyso-why-keep-retrieval
 - From BM25 to Corrective RAG (arXiv 2604.01733): https://arxiv.org/abs/2604.01733

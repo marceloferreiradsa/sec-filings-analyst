@@ -29,6 +29,8 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 11 | Grounding prompt | Five rules that together prevent hallucination, enforce traceability, and handle limitations honestly |
 | 13 | Evidence-driven roadmap | Every component must earn its place with retrieval metrics and cost per correct answer, on the hardware it runs on |
 | 14 | Rerank via API fallback chain | Measure before choosing; degrade visibly to hybrid search instead of failing |
+| 15 | Golden set labelled by section + evidence | Labels survive re-chunking; every evidence checked against the corpus before review |
+| 16 | Deterministic retrieval scoring | Recall@k / MRR / nDCG by evidence match, with confidence intervals; no LLM judge for retrieval |
 
 ---
 
@@ -834,3 +836,65 @@ Evidence phrases turn out to be too short to be distinctive (e.g. a margin value
 appears in several periods' text) — the four metadata fields exist to prevent that.
 Test: report the number of matching chunks per label in `validate.py` (not yet done)
 and flag labels that match many chunks.
+
+---
+
+## ADR-16 — Retrieval scored deterministically against the golden set (Recall@k, MRR, nDCG)
+
+**Status:** Active
+
+### Context (2026-10-24)
+P0a is done: 80 reviewed questions (ADR-15). P0b must turn them into a retrieval
+baseline that every P1 change (BM25, rerank, contextual headers) is compared against.
+Sources are cited by id from `docs/REFERENCES.md`.
+
+### What was decided
+- **Method: a Cranfield-style test collection** (REF-01, REF-02) — fixed corpus, fixed
+  questions, fixed relevance labels — so one component can be changed at a time and
+  its effect isolated. This is also the grounding of ADR-15's labels: a chunk is
+  relevant if it *contains the evidence*, as in DPR's answer-containment accuracy
+  (REF-06) and FinanceBench's evidence strings over filings (REF-07).
+- **What runs:** `eval/golden/score.py` imports the production `Retriever`
+  (`rag/retrieve.py`) with production settings (auto-detected filters, per-company
+  search, ADR-08/09). Locally; never touches the VPS. The 12 `out_of_corpus`
+  questions have no expected source and are scored in P0c (refusal), not here.
+- **Metrics, per category and overall, at k = 5, 10, 20:**
+  - **Recall@k** — share of expected sources found in the top k.
+  - **All-sources@k** — every expected source found (matters for comparisons).
+  - **MRR** — 1/rank of the first relevant chunk (REF-05).
+  - **nDCG@k** — binary relevance.
+  This is the metric set of REF-08 (financial text+table retrieval), so our numbers
+  can be read against theirs. k = 5 is production; k = 20 follows the industry
+  practice of 1 − Recall@20 (REF-09) and shows what a reranker could recover.
+- **Uncertainty:** with ~68 scored questions (12–15 per category), small differences
+  reverse easily on another sample (REF-03). Every comparison between two
+  configurations reports a **paired bootstrap 95% confidence interval** (as REF-08); a
+  difference whose interval contains 0 is recorded as "not detectable", never as a gain.
+- **Incomplete labels:** a figure can appear in chunks the label does not point to,
+  and an unlabelled correct chunk counts as a miss (REF-04). After the baseline run,
+  top-k misses are checked for the expected figure/evidence; a label is widened only
+  with the owner's approval, recorded in the changelog.
+- **Self-check of the scorer:** an oracle run that returns the labelled chunks must
+  score 1.0 on every metric; and the number of chunks matching each label is reported
+  (the test ADR-15 left pending). Engineering practice, not a literature claim.
+- **Cost:** only question embeddings (~68 calls, < $0.001 per run); query vectors are
+  cached on disk so P1 runs compare identical queries at no extra cost.
+- **Output:** one JSON per run under `eval/results/` (date, git commit, config,
+  per-question ranks); the summary table lives in a single document, which the
+  roadmap points to.
+
+### What was rejected
+**Ragas context recall as the primary retrieval metric** (REF-10): it uses an LLM
+judge — paid per run, not deterministic, and dependent on a second model agreeing.
+The evidence match is free and repeatable. Ragas stays for generation quality in P0c.
+
+### Tradeoff accepted
+Evidence matching undercounts when the same fact is phrased differently in another
+chunk (mitigated by the miss review above, not eliminated); and ~68 questions only
+detect large effects per category.
+
+### Would be false if
+The oracle run scores below 1.0 (the scorer is wrong, not the retriever); or, on the
+miss review, a large share of "misses" turn out to contain the expected answer — then
+the labels, not the retriever, dominate the score and ADR-15's labelling must be
+revised before any P1 comparison.

@@ -18,6 +18,24 @@
 
 ---
 
+## 2026-10-24 — P0b: avaliação de retrieval fundamentada e medida (ADR-16)
+
+**Mudança:** titular pediu fundamentação teórica do desenho; pesquisadas e conferidas 10
+fontes (Cranfield/TREC, Voorhees & Buckley sobre tamanho de amostra e julgamento
+incompleto, MRR do TREC-8 QA, DPR, FinanceBench, Akarsu et al., Contextual Retrieval,
+Ragas). A literatura corrigiu o desenho: +nDCG, +bootstrap pareado com IC 95%, +revisão
+de erros por rótulo incompleto. Titular aprovou e dispensou o rascunho. Escrito
+`eval/golden/score.py` (run / compare / labels; cache de embeddings em
+`data/eval_cache/`). Oráculo = 1,000; 116/119 rótulos casam 1 trecho. Linha de base
+medida nas configurações app e plain (68 embeddings, < US$0,001). Achado principal: o
+teto `max_per_company=2` do `app.py` deixa 56/68 perguntas com 1–2 trechos.
+**Documentos tocados:** `docs/REFERENCES.md` (novo) · `docs/ARCHITECTURAL_DECISIONS.md`
+(ADR-16; Quick Reference 15 e 16, que faltava o 15) · `docs/EVALUATION.md` (novo, EV-01)
+· `docs/ROADMAP_PRIORITIES.md` (status do P0, ponteiro em Sources) ·
+`eval/golden/score.py` · `eval/results/` (3 rodadas) · `state/aberto.md`
+**Registros:** ADR-16 criado · REF-01..10 · EV-01 · AB-07 resolvida · AB-08 aberta
+**Pendente:** AB-08 (a) teto do app e (b) ampliar 2 rótulos — decisões do titular
+
 ## 2026-10-24 — Golden set concluído: lote 4 aprovado (P0a)
 
 **Mudança:** titular aprovou as 14 perguntas `temporal` → `reviewed: true`. Invariantes:

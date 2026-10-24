@@ -37,6 +37,14 @@
 | ADR-13 | Adopt the evidence-driven roadmap, under VPS and budget constraints | Active |
 | ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active |
 | ADR-15 | Golden set labelled by section + literal evidence, not chunk IDs | Active |
+| ADR-16 | Retrieval scored deterministically against the golden set (Recall@k, MRR, nDCG) | Active |
+
+
+## `docs/EVALUATION.md`
+
+| ID | Título | Status |
+|---|---|---|
+| EV-01 | Retrieval baseline, dense-only (P0b) | Current baseline |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -55,6 +63,22 @@
 | Maintenance | pipeline.py status check |  |
 
 
+## `docs/REFERENCES.md`
+
+| ID | Título | Status |
+|---|---|---|
+| REF-01 | The Philosophy of Information Retrieval Evaluation (Voorhees) | Secondary (abstract and bibliographic record, 20 |
+| REF-02 | TREC: continuing IR's tradition of experimentation (Voorhees, CACM) | Secondary (bibliographic record and summary, 202 |
+| REF-03 | The Effect of Topic Set Size on Retrieval Experiment Error (Voorhees & Buckley) | Verified (NIST abstract, 2026-10-24) |
+| REF-04 | Retrieval Evaluation with Incomplete Information (Buckley & Voorhees) | Verified (abstract, 2026-10-24) |
+| REF-05 | The TREC-8 Question Answering Track (Voorhees) | Secondary (bibliographic record and NIST slides, |
+| REF-06 | Dense Passage Retrieval for Open-Domain Question Answering (Karpukhin et al.) | Verified (paper landing page, 2026-10-24) |
+| REF-07 | FinanceBench: A New Benchmark for Financial Question Answering (Islam et al.) | Verified (arXiv abstract, 2026-10-24) |
+| REF-08 | From BM25 to Corrective RAG: Benchmarking Retrieval Strategies for Text-and-Table Documents (Akarsu et al.) | Verified (arXiv abstract, 2026-10-24) |
+| REF-09 | Introducing Contextual Retrieval (Anthropic) | Verified (official post, 2026-10-24) |
+| REF-10 | Ragas: Automated Evaluation of Retrieval Augmented Generation (Es et al.) | Verified (arXiv abstract, 2026-10-24) |
+
+
 ## `docs/ROADMAP_PRIORITIES.md`
 
 | ID | Título |
@@ -68,4 +92,4 @@
 
 ---
 
-*30 registros em 3 documentos.*
+*42 registros em 5 documentos.*
