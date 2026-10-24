@@ -210,6 +210,16 @@ def build_filters(
 
 # ─── Helper: render a source card ─────────────────────────────────────────
 
+def escape_dollars(text: str, html: bool = False) -> str:
+    """Keep "$" literal. Streamlit renders text between two "$" as LaTeX: an answer
+    with "$416.16 billion ... $391.04 billion" showed that span as a small green
+    formula and dropped both dollar signs. Markdown takes "\\$"; inside raw HTML
+    the entity "&#36;" is used instead (a backslash would be shown)."""
+    if html:
+        return text.replace("$", "&#36;")
+    return re.sub(r"(?<!\\)\$", r"\\$", text)
+
+
 def render_source_card(chunk) -> str:
     color   = COMPANY_COLOR.get(chunk.company, "#888")
     period  = (
@@ -374,7 +384,7 @@ def render_header():
     version, released, notes = latest_release()
     if version:
         with st.popover(f"v{version} · What's new"):
-            st.markdown(f"**v{version}** — {released}\n\n{notes}")
+            st.markdown(f"**v{version}** — {released}\n\n{escape_dollars(notes)}")
             st.markdown(f"[Full changelog]({CHANGELOG_URL})")
     st.divider()
 
@@ -433,7 +443,7 @@ def render_answer(answer, show_context: bool) -> None:
 
     # ── Answer text ───────────────────────────────────────────────────
     st.markdown("### Answer")
-    st.markdown(answer.answer_text)
+    st.markdown(escape_dollars(answer.answer_text))
 
     # ── Source cards ──────────────────────────────────────────────────
     if answer.chunks_used:
@@ -486,7 +496,7 @@ def render_answer(answer, show_context: bool) -> None:
                     f'<div style="border-left:3px solid {color};padding-left:12px;margin-bottom:16px">'
                     f'<small><strong>{chunk.company} · {chunk.filing_type} {period} · '
                     f'{chunk.section_name}</strong> &nbsp; score: {chunk.score:.4f}</small><br><br>'
-                    f'{chunk.content}'
+                    f'{escape_dollars(chunk.content, html=True)}'
                     f'</div>',
                     unsafe_allow_html=True,
                 )
@@ -502,7 +512,7 @@ def render_history(history: list) -> None:
 
     for i, (q, a) in enumerate(reversed(history), start=1):
         with st.expander(f"Q{len(history)-i+1}: {q[:80]}{'…' if len(q)>80 else ''}", expanded=False):
-            st.markdown(a.answer_text)
+            st.markdown(escape_dollars(a.answer_text))
             sources = a.unique_sources()
             if sources:
                 st.markdown("**Sources:** " + " · ".join(sources))

@@ -126,4 +126,29 @@ revenue sentence is outside the top 20), fig-03 at rank 5.
 **Known undercount (ADR-18)** unchanged. **This is the baseline P1 is compared against.**
 
 ---
+
+## EV-04 — P1a: BM25, hybrid (RRF) and contextual headers vs EV-03
+
+**Status:** Measured — not shipped (ADR-21); EV-03 remains the production baseline
+
+**Run:** 2026-10-24 · 70 scored questions · config app · `score.py run --mode …`.
+Dense after the refactor is identical to EV-03 chunk by chunk
+(`retrieval_2026-10-24T180638Z_app.json`).
+
+| Recall@5 | dense (EV-03) | bm25 | hybrid | dense + headers | hybrid + headers |
+|---|---|---|---|---|---|
+| figure | 1.000 | 0.933 | 0.933 | 0.600 | 0.867 |
+| narrative | 0.267 | 0.600 | 0.467 | 0.533 | 0.533 |
+| comparison | 0.542 | 0.408 | 0.625 | 0.333 | 0.333 |
+| trend | 0.333 | 0.417 | 0.479 | 0.125 | 0.292 |
+| temporal | 0.812 | 0.438 | 0.688 | 0.500 | 0.438 |
+| **all** | **0.607** | 0.570 | **0.646** | 0.436 | 0.507 |
+| all, Recall@20 | 0.781 | 0.762 | 0.813 | 0.786 | 0.800 |
+
+Files: `…T180643Z_app-bm25`, `…T180648Z_app-hybrid` (no headers); `…T181044Z_app`,
+`…T181049Z_app-bm25`, `…T181055Z_app-hybrid` (with headers, reverted). Bootstrap
+intervals in ADR-21. Hybrid at k = 20: narrative 0.867 vs dense 0.667 — the
+candidate pool for P1b.
+
+---
 **Última revisão:** 2026-10-24 · detalhe em `state/changelog.md`

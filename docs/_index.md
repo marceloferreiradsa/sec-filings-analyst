@@ -42,6 +42,7 @@
 | ADR-18 | Golden-set labels are not widened after scoring; undercount accepted | Active |
 | ADR-19 | Fiscal year and quarter from each company's fiscal calendar; dated period headers | Active |
 | ADR-20 | Versioned releases with "What's new" in the app, from a public CHANGELOG.md | Active |
+| ADR-21 | Hybrid retrieval (BM25 + RRF) implemented and measured; production stays dense until rerank; uniform contextual headers rejected | Active |
 
 
 ## `docs/EVALUATION.md`
@@ -51,6 +52,7 @@
 | EV-01 | Retrieval baseline, dense-only (P0b) | Historical — app column superseded by EV-02 |
 | EV-02 | Retrieval after ADR-17 (app no longer truncates single-company queries) | Historical — superseded by EV-03 |
 | EV-03 | Retrieval after ADR-19 (fiscal calendar, dated headers) | Current baseline |
+| EV-04 | P1a: BM25, hybrid (RRF) and contextual headers vs EV-03 | Measured — not shipped (ADR-21); EV-03 remains t |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -83,6 +85,8 @@
 | REF-08 | From BM25 to Corrective RAG: Benchmarking Retrieval Strategies for Text-and-Table Documents (Akarsu et al.) | Verified (arXiv abstract, 2026-10-24) |
 | REF-09 | Introducing Contextual Retrieval (Anthropic) | Verified (official post, 2026-10-24) |
 | REF-10 | Ragas: Automated Evaluation of Retrieval Augmented Generation (Es et al.) | Verified (arXiv abstract, 2026-10-24) |
+| REF-11 | Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods (Cormack et al.) | Verified (paper PDF, 2026-10-24) |
+| REF-12 | The Probabilistic Relevance Framework: BM25 and Beyond (Robertson & Zaragoza) | Verified (publisher page, 2026-10-24) |
 
 
 ## `docs/ROADMAP_PRIORITIES.md`
@@ -98,4 +102,4 @@
 
 ---
 
-*48 registros em 5 documentos.*
+*52 registros em 5 documentos.*

@@ -18,6 +18,40 @@
 
 ---
 
+## 2026-10-24 — Híbrido aguarda o rerank (ADR-21); "$" corrigido no app (v1.1.1)
+
+**Mudança:** titular aceitou não ligar o híbrido antes do rerank (amparo: REF-08 —
+melhor = híbrido + rerank; perda em temporal é o erro mais caro para o analista).
+ADR-21, EV-04, REF-11 (RRF) e REF-12 (BM25) escritos. Titular reportou trechos da
+resposta em fonte verde menor: causa = Streamlit renderiza texto entre dois "$" como
+LaTeX (e some com os "$"). `escape_dollars()` no `app.py`: "\$" na resposta e no
+histórico, "&#36;" no painel de trechos (HTML). Testado: nenhum "$" sem escape, sem
+duplicar escape existente; AppTest sem exceções. Versão pública 1.1.1 (patch).
+**Documentos tocados:** `app.py` · `CHANGELOG.md` · `docs/ARCHITECTURAL_DECISIONS.md`
+(ADR-21, Quick Reference) · `docs/EVALUATION.md` (EV-04) · `docs/REFERENCES.md`
+**Registros:** ADR-21 criado · EV-04 · REF-11, REF-12
+**Pendente:** publicar v1.1.1; titular confirmar visualmente a fonte no site
+
+## 2026-10-24 — P1a medido: BM25 e híbrido (RRF) implementados; cabeçalhos rejeitados — decisão do titular pendente
+
+**Mudança:** `rag/retrieve.py` ganhou `mode` = dense | bm25 | hybrid (`rank-bm25==0.2.2`,
+RRF k=60); produção segue `dense` até decisão. Refatoração conferida: dense idêntico ao
+EV-03 trecho a trecho. `score.py run --mode`. Medido (70 perguntas, R@5): BM25 sozinho
+0,570 (narrativa 0,267 → 0,600 detectável; temporal 0,812 → 0,438 detectável);
+híbrido 0,646 (+0,039, IC −0,054 a +0,129, não detectável; tendência +0,146
+detectável; temporal −0,125 e figure −0,067 não detectáveis). Custo BM25: 1,5 s de
+construção, ~40 MB, 10 ms/consulta. **Cabeçalhos de contexto nos trechos narrativos
+pioraram tudo menos narrativa** (denso 0,607 → 0,436; figure 1,0 → 0,6): cabeçalho
+idêntico em centenas de trechos do mesmo filing faz narrativa competir com o resumo de
+números. Revertidos dados (backup) e `chunk.py`; dense volta idêntico ao EV-03;
+script de migração removido. Re-embedding custou ~US$0,03. Achado: re-rodar
+`chunk.py` hoje gera 6.712 trechos, não 6.396 — pipeline não reproduz o corpus
+(AB-06 g).
+**Documentos tocados:** `rag/retrieve.py` · `requirements.txt` · `eval/golden/score.py`
+· `eval/results/` (7 rodadas) · `state/aberto.md` (AB-06 g)
+**Registros:** nenhum ainda (ADR-21 após decisão)
+**Pendente:** titular decide se o híbrido vai para produção agora ou só com o rerank
+
 ## 2026-10-24 — v1.1.0 publicada e marcada
 
 **Mudança:** o 1º build falhou — `.dockerignore` exclui `*.md`, e comentário na mesma

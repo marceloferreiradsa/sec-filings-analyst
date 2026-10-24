@@ -72,6 +72,7 @@ from typing import Optional
 import faiss
 import numpy as np
 from openai import OpenAI
+from rank_bm25 import BM25Okapi
 
 
 # ---------------------------------------------------------------------------
@@ -85,6 +86,23 @@ CHUNKS_PATH  = INDEX_DIR / "chunks.json"
 EMBEDDING_MODEL      = "text-embedding-3-small"
 FILTER_AMPLIFICATION = 15    # retrieve top_k × this many candidates before filtering
 DEFAULT_TOP_K        = 5
+
+RETRIEVAL_MODES = ("dense", "bm25", "hybrid")
+DEFAULT_MODE    = "dense"    # production mode; changes only on a measured gain (ADR-21)
+RRF_K           = 60         # Reciprocal Rank Fusion constant, as in REF-11
+
+# BM25 tokens: lowercase words and numbers, keeping inner dots and hyphens so
+# "111.18", "10-k", "us-gaap" and "fy2026" stay whole.
+_TOKEN     = re.compile(r"[a-z0-9]+(?:[.\-][a-z0-9]+)*")
+_STOPWORDS = frozenset(
+    "a an and are as at be by did do does for from had has have how in is it its "
+    "of on or s our that the their this to was were what when which who why will with"
+    .split()
+)
+
+
+def _tokenize(text: str) -> list[str]:
+    return [t for t in _TOKEN.findall(text.lower()) if t not in _STOPWORDS]
 
 
 # ---------------------------------------------------------------------------
@@ -270,6 +288,7 @@ class Retriever:
     chunks_path : path to the aligned chunks JSON
     model       : embedding model name (must match the one used in embed.py)
     verbose     : if True, print timing information on each retrieve() call
+    mode        : "dense" | "bm25" | "hybrid" — how the corpus is ranked (ADR-21)
     """
 
     def __init__(
@@ -278,9 +297,14 @@ class Retriever:
         chunks_path: Path = CHUNKS_PATH,
         model      : str  = EMBEDDING_MODEL,
         verbose    : bool = True,
+        mode       : str  = DEFAULT_MODE,
     ) -> None:
+        if mode not in RETRIEVAL_MODES:
+            raise ValueError(f"mode must be one of {RETRIEVAL_MODES}")
         self.model   = model
         self.verbose = verbose
+        self.mode    = mode
+        self._bm25   : Optional[BM25Okapi] = None
         self.client  = OpenAI()
 
         if self.verbose:
@@ -301,6 +325,42 @@ class Retriever:
             )
 
     # ── Core retrieval ────────────────────────────────────────────────
+
+    def _bm25_index(self) -> BM25Okapi:
+        """BM25 over the chunk texts, built on first use (~seconds, tens of MB)."""
+        if self._bm25 is None:
+            t = time.time()
+            self._bm25 = BM25Okapi([_tokenize(c["page_content"]) for c in self.chunks])
+            if self.verbose:
+                print(f"[RETRIEVER] BM25 index built in {time.time() - t:.1f}s")
+        return self._bm25
+
+    def _rank(self, question: str) -> tuple[np.ndarray, np.ndarray]:
+        """Every corpus position in retrieval order, plus the score shown per position.
+
+        dense  : cosine similarity order (FAISS).
+        bm25   : BM25 order (REF-12).
+        hybrid : Reciprocal Rank Fusion of both, 1/(RRF_K + rank) summed (REF-11).
+        The shown score stays the cosine similarity whenever it exists, so the app's
+        relevance percentage keeps its meaning (ADR-21).
+        """
+        n = len(self.chunks)
+        if self.mode in ("dense", "hybrid"):
+            sims, positions = self.index.search(self._embed_query(question), self.index.ntotal)
+            dense_order = positions[0]
+            dense = np.empty(n, dtype=np.float32)
+            dense[dense_order] = sims[0]
+            if self.mode == "dense":
+                return dense_order, dense
+        bm25 = self._bm25_index().get_scores(_tokenize(question))
+        bm25_order = np.argsort(-bm25, kind="stable")
+        if self.mode == "bm25":
+            return bm25_order, bm25.astype(np.float32)
+        rrf = 1.0 / (RRF_K + np.arange(1, n + 1))
+        fused = np.zeros(n)
+        fused[dense_order] += rrf
+        fused[bm25_order]  += rrf
+        return np.argsort(-fused, kind="stable"), dense
 
     def _embed_query(self, question: str) -> np.ndarray:
         """Embed a question string using the same model as the chunks."""
@@ -386,31 +446,18 @@ class Retriever:
             max_per_company = None
 
         # ── Single-company or unfiltered: standard path ────────────────
-        t_embed = time.time()
-        q_vector = self._embed_query(question)
-        embed_ms = (time.time() - t_embed) * 1000
-            
-        #n_candidates = min(
-        #    top_k * FILTER_AMPLIFICATION,
-        #    self.index.ntotal,
-        #)
-
-        # IndexFlatIP always computes all inner products regardless of k.
-        # Requesting all candidates costs nothing extra and guarantees
-        # every matching chunk is visible to the post-filter step.
-        n_candidates = self.index.ntotal
-        
-        t_search = time.time()
-        scores, positions = self.index.search(q_vector, n_candidates)
-        search_ms = (time.time() - t_search) * 1000
+        # Every chunk is ranked (IndexFlatIP and BM25 score the whole corpus
+        # anyway), so every matching chunk is visible to the post-filter step.
+        t_rank = time.time()
+        order, shown_scores = self._rank(question)
+        rank_ms = (time.time() - t_rank) * 1000
 
         results        : list[RetrievedChunk] = []
         candidates_checked = 0
         company_counts : dict[str, int] = {}
 
-        for score, pos in zip(scores[0], positions[0]):
-            if pos < 0:
-                continue
+        for pos in order:
+            score = shown_scores[pos]
             if len(results) >= top_k:
                 break
 
@@ -439,8 +486,8 @@ class Retriever:
             print(
                 f"[RETRIEVE] {len(results)} results from "
                 f"{candidates_checked} candidates checked  |  "
-                f"embed {embed_ms:.0f}ms  "
-                f"search {search_ms:.2f}ms  "
+                f"mode {self.mode}  "
+                f"rank {rank_ms:.0f}ms  "
                 f"total {total_ms:.0f}ms"
             )
             if len(results) < top_k and not active_filters.is_empty():

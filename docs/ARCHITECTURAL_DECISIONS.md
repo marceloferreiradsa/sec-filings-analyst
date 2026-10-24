@@ -35,6 +35,7 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 18 | Golden-set labels not widened after scoring | A score biased low is preferable to one inflated by post-hoc relabelling |
 | 19 | Fiscal calendar per company; dated period headers | A year means the fiscal year; a date with a month means the calendar period; summaries say both |
 | 20 | Versioned releases shown in the app | Visitors see what changed and how it was measured; the version lives only in CHANGELOG.md |
+| 21 | Hybrid retrieval built, held back until rerank | BM25 + RRF helps prose and trends but costs period questions; ship it only as the reranker's candidate pool |
 
 ---
 
@@ -1076,3 +1077,61 @@ the changelog.
 Visitors don't open it (no analytics today — unverifiable for now), or a release
 ships without a changelog entry: the app would then show an outdated version.
 Guard: the deploy checklist in `state/handoff.md` includes the changelog entry and tag.
+
+---
+
+## ADR-21 — Hybrid retrieval (BM25 + RRF) implemented and measured; production stays dense until rerank; uniform contextual headers rejected
+
+**Status:** Active
+
+### Context (2026-10-24)
+P1a of the roadmap: dense-only retrieval is weak on exact terms in financial text
+(REF-08). EV-03 showed narrative Recall@5 0.267 and no trend question with all four
+years retrieved.
+
+### What was decided
+- **BM25** (`rank-bm25==0.2.2`, REF-12) over the same chunks, built on first use;
+  tokens keep inner dots and hyphens ("111.18", "10-k", "fy2026"). Pure Python +
+  numpy — `bm25s` would add scipy to the VPS image. Cost measured locally: 1.5 s to
+  build, ~40 MB, 10 ms per query.
+- **Fusion by Reciprocal Rank Fusion**, k = 60 (REF-11), over the whole corpus;
+  metadata filters, per-company retrieval (ADR-09) and the cap rule (ADR-17) apply
+  after fusion. The score shown in the app stays the cosine similarity, so its
+  relevance percentage keeps its meaning.
+- `Retriever(mode=...)`: `dense` | `bm25` | `hybrid`; `score.py run --mode`.
+- **Production stays `dense`.** The hybrid ranking is kept as the **candidate pool for
+  the reranker (P1b)** and ships only together with it, if the pair beats EV-03.
+  Owner's decision, on the measured trade-off below.
+
+### Measured (70 scored questions, Recall@5, paired bootstrap vs EV-03 dense)
+| | dense | bm25 | hybrid |
+|---|---|---|---|
+| narrative | 0.267 | **0.600** (+0.333, CI +0.133 to +0.600) | 0.467 (+0.200, CI 0 to +0.400) |
+| trend | 0.333 | 0.417 | **0.479** (+0.146, CI +0.021 to +0.271) |
+| comparison | 0.542 | 0.408 | 0.625 |
+| figure | 1.000 | 0.933 | 0.933 |
+| temporal | 0.812 | 0.438 (−0.375, CI −0.688 to −0.062) | 0.688 (−0.125, n.s.) |
+| **all** | 0.607 | 0.570 | 0.646 (+0.039, CI −0.054 to +0.129, n.s.) |
+
+At k = 20 the hybrid pool holds the right narrative chunk for 0.867 of questions (dense
+0.667) — the gap a reranker is meant to close. Files: `eval/results/retrieval_2026-10-24T1806*`.
+
+### What was rejected
+- **Ship hybrid now:** overall gain not detectable, and the loss falls on period
+  questions — for an analyst the costliest error (a figure from the wrong quarter
+  looks right). REF-08's best result is hybrid **plus** rerank, not hybrid alone.
+- **Tune the RRF weights toward dense:** with 70 questions that tunes the system to
+  its own test (overfitting).
+- **Uniform contextual headers on narrative chunks** ("Apple (AAPL) · 10-K · FY2025
+  (fiscal year ended …) · Item 1A Risk Factors" prepended to every chunk, re-embedded,
+  ≈ $0.03): dense fell to 0.436 overall (figure 1.000 → 0.600, temporal 0.812 → 0.500);
+  only narrative rose (0.533). The header is identical across the hundreds of chunks of
+  one filing, so prose chunks start to resemble figure questions and outrank the
+  financial summary. Contextual Retrieval (REF-09) writes a context *specific to each
+  chunk*; a uniform header does the opposite. (ADR-19's dated header works because
+  each summary is a single chunk.) Data and `chunk.py` reverted; dense re-verified
+  identical to EV-03.
+
+### Would be false if
+Hybrid + rerank (P1b) does not beat EV-03 beyond the confidence interval — then BM25
+stays out of production altogether, or the temporal loss persists after rerank.

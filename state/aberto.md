@@ -187,6 +187,10 @@ correção)
   resumos de AAPL 2025-03-29, GOOGL/META/MSFT 2025-03-31 e NVDA 2025-04-27 dizem
   `Filed:` 2026 — parecem a coluna comparativa do 10-Q de 2026, não o 10-Q próprio
   (`chunks.json`, 2026-10-24). Valores não conferidos; golden set não os usa.
+  (g) **Pipeline não reproduz o corpus:** `python pipeline.py --only chunk` sobre o
+  mesmo `documents.json` gera 6.712 trechos, não os 6.396 do índice (2026-10-24) —
+  provável mudança de versão do splitter. Reconstruir do zero muda fronteiras e ids e
+  invalida comparações; fixar versões (requirements-dev) antes de qualquer rebuild.
 - Teto de gasto na OpenAI: **feito** pelo titular em 2026-10-23.
 *aberta desde 2026-10-21*
 

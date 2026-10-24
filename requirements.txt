@@ -2,7 +2,7 @@
 # These are the ONLY packages needed to run app.py + retrieve.py + qa.py.
 #
 # Verified by reading imports in all three runtime files:
-#   retrieve.py → faiss, numpy, openai
+#   retrieve.py → faiss, numpy, openai, rank_bm25 (pure Python + numpy, ADR-21)
 #   qa.py       → openai  (+ retrieve, local)
 #   app.py      → streamlit  (+ qa, retrieve, local)
 #
@@ -14,4 +14,5 @@
 openai>=1.30.0
 faiss-cpu>=1.8.0
 numpy>=1.26.0
+rank-bm25==0.2.2
 streamlit>=1.35.0

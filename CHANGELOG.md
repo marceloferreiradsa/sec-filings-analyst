@@ -11,6 +11,12 @@ Numbers are retrieval measurements on the project's own benchmark
 ([docs/EVALUATION.md](docs/EVALUATION.md)): the share of questions for which the
 passage holding the answer reaches the model. Answer accuracy is measured separately.
 
+## [1.1.1] — 2026-10-24
+
+### Fixed
+- Dollar amounts in answers display correctly. Text between two "$" signs was being
+  rendered as a math formula — a smaller green font — and the "$" signs disappeared.
+
 ## [1.1.0] — 2026-10-24
 
 ### Changed

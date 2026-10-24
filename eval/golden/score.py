@@ -94,11 +94,11 @@ def load_questions() -> list[dict]:
     return [it for it in items if not it["must_refuse"]]
 
 
-def cached_retriever():
+def cached_retriever(mode: str = "dense"):
     """Production Retriever whose query embeddings are cached on disk."""
     from rag.retrieve import Retriever
 
-    retriever = Retriever(verbose=False)
+    retriever = Retriever(verbose=False, mode=mode)
     cache = json.loads(CACHE_PATH.read_text(encoding="utf-8")) if CACHE_PATH.exists() else {}
     embed = retriever._embed_query
     calls = {"api": 0}
@@ -149,7 +149,7 @@ def run(args) -> None:
                          "by_k": {str(k): {"hits": hits, "chunks": []} for k in K_LIST}})
         label, calls = "oracle", {"api": 0}
     else:
-        retriever, save, calls = cached_retriever()
+        retriever, save, calls = cached_retriever(args.mode)
         cap = CONFIGS[args.config]
         for q in questions:
             by_k = {}
@@ -161,7 +161,7 @@ def run(args) -> None:
             rows.append({"id": q["id"], "category": q["category"],
                          "n_sources": len(q["expected"]), "by_k": by_k})
         save()
-        label = args.config
+        label = args.config if args.mode == "dense" else f"{args.config}-{args.mode}"
 
     for row in rows:
         row["metrics"] = {k: metrics(v["hits"], row["n_sources"], int(k))
@@ -247,6 +247,8 @@ def main() -> None:
     sub = p.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--config", choices=sorted(CONFIGS), default="app")
+    r.add_argument("--mode", choices=("dense", "bm25", "hybrid"), default="dense",
+                   help="retrieval ranking (ADR-21)")
     r.add_argument("--oracle", action="store_true")
     c = sub.add_parser("compare")
     c.add_argument("a"); c.add_argument("b")

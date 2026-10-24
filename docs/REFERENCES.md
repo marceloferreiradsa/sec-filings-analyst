@@ -107,7 +107,7 @@
 - **Supports:** on financial text+table documents, BM25 beat dense retrieval; hybrid +
   neural rerank was best. Reports Recall@k, MRR, nDCG and Number Match with paired
   bootstrap significance — the metric set we adopt, so our numbers are comparable.
-- **Cited by:** ROADMAP_PRIORITIES (evidence table, sources), ADR-16, ADR-19.
+- **Cited by:** ROADMAP_PRIORITIES (evidence table, sources), ADR-16, ADR-19, ADR-21.
 
 ### REF-09 — Introducing Contextual Retrieval (Anthropic)
 
@@ -118,7 +118,8 @@
 - **Supports:** industry practice of scoring retrieval as 1 − Recall@20 (top-20
   failure rate); contextual embeddings + contextual BM25 + rerank reduced it in their
   tests. Basis for reporting k = 20 and for P1's contextual headers.
-- **Cited by:** ADR-16, ADR-19 (dated period headers as a deterministic contextual header).
+- **Cited by:** ADR-16, ADR-19 (dated period headers as a deterministic contextual header),
+  ADR-21 (uniform headers rejected: REF-09's context is chunk-specific).
 
 ### REF-10 — Ragas: Automated Evaluation of Retrieval Augmented Generation (Es et al.)
 
@@ -131,6 +132,33 @@
   metrics. Already used by `make ragas`; rejected as the *primary* retrieval metric in
   ADR-16 (paid, non-deterministic), kept for generation in P0c.
 - **Cited by:** ADR-16.
+
+---
+
+## Retrieval methods
+
+### REF-11 — Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods (Cormack et al.)
+
+**Status:** Verified (paper PDF, 2026-10-24)
+
+- **Citation:** G. V. Cormack, C. L. A. Clarke, S. Büttcher. SIGIR 2009, pp. 758–759.
+  DOI 10.1145/1571941.1572114.
+- **Link:** https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf
+- **Supports:** fusing rankings by summing 1/(k + rank), k = 60 fixed in the paper's
+  pilot; RRF equalled or beat each input system and Condorcet / CombMNZ. Needs no score
+  calibration between dense and BM25.
+- **Cited by:** ADR-21.
+
+### REF-12 — The Probabilistic Relevance Framework: BM25 and Beyond (Robertson & Zaragoza)
+
+**Status:** Verified (publisher page, 2026-10-24)
+
+- **Citation:** S. Robertson, H. Zaragoza. Foundations and Trends in Information
+  Retrieval 3(4), 2009, pp. 333–389. DOI 10.1561/1500000019.
+- **Link:** https://nowpublishers.com/article/Details/INR-019
+- **Supports:** BM25 as the standard lexical ranking function (term frequency
+  saturation, length normalisation).
+- **Cited by:** ADR-21.
 
 ---
 **Última revisão:** 2026-10-24 · detalhe em `state/changelog.md`
