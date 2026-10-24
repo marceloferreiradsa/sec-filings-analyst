@@ -18,6 +18,21 @@
 
 ---
 
+## 2026-10-24 — v1.1.1 publicada; regra global contra heredoc
+
+**Mudança:** antes de publicar, o "What's new" também tinha dois "$" (a própria nota da
+v1.1.1) — escape aplicado ao popover; AppTest confirma. Commit `90c50bc`, tag `v1.1.1`,
+imagem 758 MB (inclui `rank-bm25`; produção em modo dense, BM25 não é construído),
+teste local 20/20, publicada (`:prev` = v1.1.0), `test-vps` 20/20, HTTP 200. Titular
+relatou que o heredoc falha em todos os projetos: diagnóstico pelos 3 erros de hoje —
+barras invertidas reduzidas à metade e aspas quebrando o parsing no transporte do
+comando (Git Bash no Windows). Criado `~/.claude/CLAUDE.md` (global, fora do repo)
+com a regra: script com regex/barra/aspas vai para arquivo via Write e roda com
+`python <arquivo>`.
+**Documentos tocados:** `state/handoff.md` · `~/.claude/CLAUDE.md` (fora do repo)
+**Registros:** nenhum
+**Pendente:** titular confirmar visualmente a fonte no site
+
 ## 2026-10-24 — Híbrido aguarda o rerank (ADR-21); "$" corrigido no app (v1.1.1)
 
 **Mudança:** titular aceitou não ligar o híbrido antes do rerank (amparo: REF-08 —

@@ -3,7 +3,7 @@
 > **Primeiro arquivo a ler ao abrir sessão.** Regenerado do zero ao fim de cada dia
 > de trabalho, a partir de `changelog.md` e `aberto.md`. Teto ~80 linhas.
 
-**Gerado em:** 2026-10-24 (sábado, após publicar a v1.1.0)
+**Gerado em:** 2026-10-24 (sábado, após publicar a v1.1.1)
 
 ---
 
@@ -33,8 +33,8 @@ pergunta? Erro silencioso (número errado com cara de certo) é o pior caso.
 `.sec-analysis/Scripts/python.exe eval/golden/score.py run --config app` · `run
 --oracle` (deve dar 1,000) · `compare A.json B.json` · `labels`. Exportar
 `PYTHONIOENCODING=utf-8` no Git Bash. Embeddings das perguntas em cache.
-Scripts Python longos: gravar em arquivo, não em heredoc (o heredoc já quebrou com
-barras invertidas e aspas).
+Scripts com regex/barra/aspas: gravar em arquivo via Write e rodar (regra global em
+`~/.claude/CLAUDE.md` — o heredoc corrompe barras e aspas nesta máquina).
 
 ## Achados de dados (AB-06) ainda abertos
 
@@ -56,16 +56,19 @@ antiga, inválida, a apagar). Varrer vazamentos antes de cada commit.
 gzip`, `scp -i ~/.ssh/hostinger_key`, na VPS `docker tag …:latest …:prev`, `docker
 load`, `docker compose up -d`; `make test-vps VPS_KEY=~/.ssh/hostinger_key`.
 **Toda publicação:** entrada nova no `CHANGELOG.md` (público, inglês — o app mostra a
-versão de lá, ADR-20) e tag `vX.Y.Z` no commit publicado. **No ar: v1.1.0** (tag
-enviada; VPS com `:prev` = imagem do ADR-19).
+versão de lá, ADR-20) e tag `vX.Y.Z` no commit publicado. **No ar: v1.1.1** (tag
+enviada; VPS com `:prev` = v1.1.0).
 
 ## Próximos passos — por prioridade
 
-1. **P1a** — BM25 + RRF + cabeçalhos de contexto; comparar com EV-03 por
-   `score.py compare`. Alvos: narrativa (R@5 0,267) e tendência (All@20 = 0).
-2. **P1b** — cascata de rerank (ADR-14); folga entre R@5 e R@20 em EV-03.
-3. **AB-06 restante** — antes do P0c.
-4. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
+1. **P1b** — cascata de rerank (ADR-14: Cloudflare → SubQ → sem rerank com aviso)
+   sobre os candidatos do **híbrido** (`mode="hybrid"`, ADR-21 — implementado, fora de
+   produção). Medir híbrido+rerank contra EV-03; só sobe se superar além do IC e não
+   perder em temporal. Cabeçalhos uniformes já medidos e rejeitados (EV-04).
+2. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões
+   antes de qualquer rebuild.
+3. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
+4. Candidato: intenção temporal ("último trimestre", tmp-02/03) — não é busca.
 
 Avulsos: AB-05 (limpar VPS; incluir `.env.bak` e imagem `:prev`) · AB-03 opcional ·
 atualizar Claude Code.
