@@ -41,6 +41,7 @@
 | ADR-17 | The per-company cap is ignored when the filter pins a single company | Active |
 | ADR-18 | Golden-set labels are not widened after scoring; undercount accepted | Active |
 | ADR-19 | Fiscal year and quarter from each company's fiscal calendar; dated period headers | Active |
+| ADR-20 | Versioned releases with "What's new" in the app, from a public CHANGELOG.md | Active |
 
 
 ## `docs/EVALUATION.md`
@@ -97,4 +98,4 @@
 
 ---
 
-*47 registros em 5 documentos.*
+*48 registros em 5 documentos.*

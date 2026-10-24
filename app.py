@@ -26,6 +26,7 @@ DEPLOYMENT (VPS)
 """
 
 import os
+import re
 import time
 from pathlib import Path
 
@@ -322,7 +323,43 @@ def render_sidebar() -> tuple:
             "retrieval with per-company diversity enforcement."
         )
 
+        version, released, _ = latest_release()
+        if version:
+            st.caption(
+                f"**Version {version}** · {released}  \n"
+                f"[What's new]({CHANGELOG_URL}) · [Source code]({REPO_URL}) · "
+                f"[Engineering decisions]({ADRS_URL})"
+            )
+
     return companies, years, section_key, source_mode, top_k, show_context
+
+
+# ─── Release notes (ADR-20) ────────────────────────────────────────────────
+
+REPO_URL       = "https://github.com/marceloferreiradsa/sec-filings-analyst"
+CHANGELOG_URL  = f"{REPO_URL}/blob/main/CHANGELOG.md"
+ADRS_URL       = f"{REPO_URL}/blob/main/docs/ARCHITECTURAL_DECISIONS.md"
+CHANGELOG_PATH = Path(__file__).parent / "CHANGELOG.md"
+
+
+@st.cache_data
+def latest_release() -> tuple[str, str, str]:
+    """(version, date, notes) of the newest CHANGELOG.md entry.
+
+    The version number lives only in CHANGELOG.md; the app reads it from there.
+    Relative doc links become GitHub links; "###" subheadings become bold so the
+    notes fit a popover.
+    """
+    try:
+        text = CHANGELOG_PATH.read_text(encoding="utf-8")
+    except OSError:
+        return "", "", ""
+    m = re.search(r"^## \[(\d+\.\d+\.\d+)\] — (\S+)\n(.*?)(?=^## \[|\Z)", text, re.M | re.S)
+    if not m:
+        return "", "", ""
+    notes = re.sub(r"\]\((docs/[^)]+)\)", rf"]({REPO_URL}/blob/main/\1)", m.group(3).strip())
+    notes = re.sub(r"^### (.+)$", r"**\1**", notes, flags=re.M)
+    return m.group(1), m.group(2), notes
 
 
 # ─── Main content ──────────────────────────────────────────────────────────
@@ -334,6 +371,11 @@ def render_header():
         "Meta, Microsoft,** and **NVIDIA**. Every answer cites its source passage. "
         "The system will not speculate beyond what is written in the filings."
     )
+    version, released, notes = latest_release()
+    if version:
+        with st.popover(f"v{version} · What's new"):
+            st.markdown(f"**v{version}** — {released}\n\n{notes}")
+            st.markdown(f"[Full changelog]({CHANGELOG_URL})")
     st.divider()
 
 

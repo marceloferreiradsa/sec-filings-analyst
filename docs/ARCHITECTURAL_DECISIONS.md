@@ -34,6 +34,7 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 17 | Per-company cap ignored for single-company queries | A balancing cap must not truncate a query that already names one company |
 | 18 | Golden-set labels not widened after scoring | A score biased low is preferable to one inflated by post-hoc relabelling |
 | 19 | Fiscal calendar per company; dated period headers | A year means the fiscal year; a date with a month means the calendar period; summaries say both |
+| 20 | Versioned releases shown in the app | Visitors see what changed and how it was measured; the version lives only in CHANGELOG.md |
 
 ---
 
@@ -1038,3 +1039,40 @@ fiscal year as its top source (the label or the rule is wrong) — or a question
 a month that is *not* a period date (e.g. "Apple's guidance given in May 2025 for
 fiscal 2026") is filtered by calendar year and loses the right chunk. The second is a
 known edge of the rule; watch for it in P0c answers.
+
+---
+
+## ADR-20 — Versioned releases with "What's new" in the app, from a public CHANGELOG.md
+
+**Status:** Active
+
+### Context (2026-10-24)
+The site is a portfolio piece: users and recruiters reach it with no way to see that
+it evolves, what changed, or how a change was justified. The owner asked for a
+version with an easy "what's new" link.
+
+### What was decided
+- **`CHANGELOG.md`** at the repo root, in English, [Keep a Changelog] format,
+  Semantic Versioning (minor = improvement users notice, patch = fix, major =
+  architecture change). It is the **only place** the version number lives; the app
+  parses its newest entry (`latest_release()` in `app.py`). Distinct from
+  `state/changelog.md`, which is internal and in Portuguese.
+- **Two places in the app:** a `vX.Y.Z · What's new` popover under the title (first
+  thing a visitor reads) and a sidebar footer with version, date and links to the
+  changelog, the source code and the ADRs.
+- **Two layers per entry:** what changed for the user, with the measured number, then
+  links to the ADR / EV records for engineers. Numbers state what they measure
+  (retrieval, not answer accuracy) and compare the same question set.
+- **Release step:** each published image gets a git tag `vX.Y.Z`.
+- Retroactive numbering: v1.0.0 = public launch (2026-05-26, untagged — the exact
+  commit deployed then is not recorded); v1.1.0 = ADR-17 + ADR-19.
+
+### What was rejected
+**GitHub Releases only:** invisible to visitors of the site, which is where the
+portfolio is seen. **Version constant in code:** a second place to keep in sync with
+the changelog.
+
+### Would be false if
+Visitors don't open it (no analytics today — unverifiable for now), or a release
+ships without a changelog entry: the app would then show an outdated version.
+Guard: the deploy checklist in `state/handoff.md` includes the changelog entry and tag.

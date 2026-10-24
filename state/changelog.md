@@ -18,6 +18,30 @@
 
 ---
 
+## 2026-10-24 — Versionamento visível no app: v1.1.0 e "What's new" (ADR-20)
+
+**Mudança:** titular pediu versão com link "o que há de novo", fácil para usuários e
+recrutadores. `CHANGELOG.md` público (inglês, Keep a Changelog, SemVer) é o único lugar
+do número de versão; `app.py` lê a entrada mais nova e mostra um popover
+`v1.1.0 · What's new` sob o título e versão + links (changelog, código, ADRs) no pé da
+barra lateral. Números do texto recalculados nas mesmas 68 perguntas (34% → 60%;
+temporais 21% → 79%; número 60% → 100%) — o "34% → 61%" da proposta comparava
+conjuntos diferentes. Verificado com `streamlit.testing.AppTest`: sem exceções, popover
+e rodapé presentes. Dockerfile copia o `CHANGELOG.md`. README ganhou seção Changelog.
+**Documentos tocados:** `CHANGELOG.md` (novo) · `app.py` · `Dockerfile` · `README.md` ·
+`docs/ARCHITECTURAL_DECISIONS.md` (ADR-20, Quick Reference)
+**Registros:** ADR-20 criado
+**Pendente:** publicar e criar a tag `v1.1.0`
+
+## 2026-10-24 — ADR-19 publicado na VPS
+
+**Mudança:** com autorização explícita do titular (o modo automático tinha bloqueado o
+deploy), push `9232e99..62cc8cd` e imagem com o índice migrado enviada à VPS; a imagem
+anterior (ADR-17) virou `:prev`. `test-vps` 20/20, site HTTP 200.
+**Documentos tocados:** nenhum além deste
+**Registros:** nenhum
+**Pendente:** nada
+
 ## 2026-10-24 — Rótulos fiscais concluídos: cabeçalho com data, ADR-19, EV-03
 
 **Mudança:** titular aprovou o cabeçalho com data por extenso e as perguntas tmp-15/16

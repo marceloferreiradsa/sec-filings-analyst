@@ -301,6 +301,11 @@ streamlit) and the `rag/` package. Build time ~2 minutes, image size ~400 MB.
 
 ---
 
+## Changelog
+
+What changed in each release, with measured effects: [CHANGELOG.md](CHANGELOG.md).
+The live app shows the current version and its notes under the title.
+
 ## Roadmap
 
 Full feature specifications with implementation paths and effort estimates

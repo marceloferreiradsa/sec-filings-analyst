@@ -28,7 +28,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ── Source files ──────────────────────────────────────────────────────────────
 # Only the three files needed to serve queries at runtime.
 # Entry point and the rag package are all the container needs at runtime.
-COPY app.py ./
+COPY app.py CHANGELOG.md ./
 COPY rag/ ./rag/
 
 # ── Data files ────────────────────────────────────────────────────────────────

@@ -1,0 +1,37 @@
+# Changelog
+
+What changed in SEC Filings Analyst, release by release. The app shows the latest
+entry under "What's new"; the version number lives only here (ADR-20).
+
+Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) ·
+versions follow [Semantic Versioning](https://semver.org/) — minor = an improvement
+users notice, patch = a fix, major = an architecture change.
+
+Numbers are retrieval measurements on the project's own benchmark
+([docs/EVALUATION.md](docs/EVALUATION.md)): the share of questions for which the
+passage holding the answer reaches the model. Answer accuracy is measured separately.
+
+## [1.1.0] — 2026-10-24
+
+### Changed
+- Fiscal quarters follow each company's fiscal calendar, in answers and citations:
+  Apple's quarter ended December 27, 2025 is now *FY2026 Q1*, not *FY2025 Q4*.
+- Ask by fiscal year ("fiscal 2026") or by the date on the filing ("quarter ended
+  September 30, 2025") — both find the right quarter.
+- Questions about a single company now draw on 5 source passages instead of 2.
+
+### Measured
+On the same 68 benchmark questions, the right passage is retrieved for **60%** of
+questions (was 34%); time-related questions **79%** (was 21%); single-figure
+questions **100%** (was 60%).
+
+*Engineering detail:* [ADR-17](docs/ARCHITECTURAL_DECISIONS.md#adr-17--the-per-company-cap-is-ignored-when-the-filter-pins-a-single-company),
+[ADR-19](docs/ARCHITECTURAL_DECISIONS.md#adr-19--fiscal-year-and-quarter-from-each-companys-fiscal-calendar-dated-period-headers),
+[EV-03](docs/EVALUATION.md#ev-03--retrieval-after-adr-19-fiscal-calendar-dated-headers).
+
+## [1.0.0] — 2026-05-26
+
+### Added
+- Initial public release: grounded Q&A over 10-K and 10-Q filings of Apple, Alphabet,
+  Meta, Microsoft and NVIDIA, with inline citations and refusal to speculate beyond
+  the filings.
