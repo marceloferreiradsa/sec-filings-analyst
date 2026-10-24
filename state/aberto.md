@@ -211,7 +211,7 @@ nem caixa do GOOGL 2026-03-31 (achados AB-06).
 **AB-08 — Achados do P0b a decidir** (medidos em `docs/EVALUATION.md` EV-01)
 - (a) ~~**Teto por empresa do `app.py` corta perguntas de uma empresa só:**~~ *resolvido em
   2026-10-24 (ADR-17, EV-02): teto ignorado quando o filtro fixa uma empresa; Recall@5
-  0,338 → 0,518. Falta publicar na VPS.* com
+  0,338 → 0,518. Publicado na VPS em 2026-10-24 (test-vps 20/20).* com
   `max_per_company=2` (aplicado sempre que a barra lateral não tem empresa), 56 de 68
   perguntas receberam 1–2 trechos com `top_k=5`. Sem o teto, Recall@5 0,338 → 0,518
   (IC 95% +0,10 a +0,27). Correção é 1 linha, mas muda a demo pública — **decisão do

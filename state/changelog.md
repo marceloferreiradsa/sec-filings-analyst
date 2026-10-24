@@ -18,6 +18,20 @@
 
 ---
 
+## 2026-10-24 — Publicado na VPS (ADR-17) e chave OpenAI da VPS trocada
+
+**Mudança:** push `a15773b..1643adf`; imagem reconstruída e testada local (20/20,
+etapas do `make check` rodadas uma a uma); enviada à VPS. A imagem anterior ficou como
+`sec-filings-analyst:prev` para reverter. O `test-vps` acusou 401 `invalid_api_key`:
+a chave OpenAI tinha mudado e o `.env` da VPS guardava a antiga — **a demo respondia
+erro a perguntas desde a troca da chave** (data desconhecida). Linha `OPENAI_API_KEY`
+de `/root/sec-analyst/.env` substituída pela chave do ambiente local, via stdin, sem
+exibir (backup `.env.bak`, permissão 600); container recriado. `test-vps` 20/20.
+**Documentos tocados:** `state/aberto.md` (AB-08) · `state/handoff.md`
+**Registros:** nenhum
+**Pendente:** apagar `/root/sec-analyst/.env.bak` (chave antiga, já inválida) e a
+imagem `:prev` quando a nova estiver estável
+
 ## 2026-10-24 — Teto por empresa deixa de cortar perguntas de uma empresa (ADR-17)
 
 **Mudança:** titular aprovou corrigir AB-08 (a). Em `Retriever.retrieve()`, quando o

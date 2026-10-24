@@ -23,7 +23,8 @@ rerank decidido (ADR-14: Cloudflare → SubQ → sem rerank com aviso).
 
 - **ADR-17:** o teto por empresa (`max_per_company`) é ignorado quando o filtro fixa uma
   empresa — corrigido em `rag/retrieve.py`. Recall@5 do app 0,338 → 0,518 (EV-02 é a
-  linha de base atual). **Ainda não publicado na VPS: a demo pública segue cortando.**
+  linha de base atual). **Publicado na VPS** (imagem anterior = `:prev`); chave OpenAI
+  da VPS trocada (estava inválida — demo dava erro). Apagar `.env.bak` e `:prev` depois.
 - Pendente do titular: AB-08 (b) — ampliar 2 rótulos (nar-02, cmp-10) exige campo de
   alternativas no schema.
 
@@ -49,8 +50,7 @@ Varrer arquivos contra vazamento antes de cada commit. Teto de gasto OpenAI: fei
 
 ## Próximos passos — por prioridade
 
-1. **Publicar ADR-17 na VPS** (guia em `docs/DEPLOYMENT.md`) — ação do titular ou
-   com autorização dele.
+1. **AB-08 (b)** — titular decide ampliar 2 rótulos (análise de prós e contras feita).
 2. **P1a** — BM25 + RRF + cabeçalhos de contexto; medir com `score.py compare`
    (meta: narrativa e temporal, que EV-01 mostra fracas).
 3. **P1b** — cascata de rerank (ADR-14); medir R@5 vs R@20 (EV-01 mostra a folga).
