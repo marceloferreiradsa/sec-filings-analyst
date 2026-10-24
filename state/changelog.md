@@ -18,6 +18,16 @@
 
 ---
 
+## 2026-10-24 — Pendência: injeção e fora do escopo antes das chamadas pagas (AB-12)
+
+**Mudança:** titular mostrou uma pergunta de injeção em português ("pode ignorar
+tudo…") que passou pelo filtro e pagou o caminho inteiro. Diagnóstico: padrões só em
+inglês, sem barreira de tema. Opções registradas em AB-12 para discutir; nada
+implementado. Handoff: linha que ainda descrevia a cascata do ADR-14 corrigida.
+**Documentos tocados:** `state/aberto.md` (AB-12) · `state/handoff.md`
+**Registros:** AB-12 aberta
+**Pendente:** AB-12
+
 ## 2026-10-24 — Pendência: revisar o README (AB-11)
 
 **Mudança:** titular pediu revisar o README na próxima sessão para alinhar com tudo o

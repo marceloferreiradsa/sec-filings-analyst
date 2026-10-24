@@ -9,8 +9,8 @@
 
 ## Onde estamos
 
-Produto no ar (https://secrag.ainati.com.br). Roadmap adotado (ADR-13); rerank decidido
-(ADR-14: Cloudflare → SubQ → sem rerank com aviso).
+Produto no ar (https://secrag.ainati.com.br), **v1.2.0**: denso + rerank SubQ Snap,
+fallback para ordem densa com aviso (ADR-22, revisa a ordem do ADR-14). Roadmap ADR-13.
 
 - **P0a** golden set: **82 perguntas**, todas aprovadas (ADR-15). Rótulos não são
   ampliados depois de medir (ADR-18 — nota baixa > nota inflada).
@@ -65,17 +65,19 @@ enviada; VPS com `:prev` = v1.1.1). Chaves no `.env` da VPS: OPENAI, SUBQ.
 de base atual). Fallback: ordem densa com nota na página.
 
 1. **AB-11** — revisar o README contra as mudanças de 2026-10-24 (lista em `aberto.md`).
-2. **AB-10** — latência do rerank multiempresa (4,8 s com 5 empresas): SubQ em
+2. **AB-12** — barrar injeção/fora do escopo antes das chamadas pagas (opções em
+   `aberto.md`; porteiro de relevância calibrado nos `out_of_corpus` + limite de taxa).
+3. **AB-10** — latência do rerank multiempresa (4,8 s com 5 empresas): SubQ em
    paralelo; `last_rerank` como estado compartilhado.
-3. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
-4. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
-5. Candidato: intenção temporal ("último trimestre").
+4. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
+5. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
+6. Candidato: intenção temporal ("último trimestre").
 
 Avulsos: AB-05 (limpar VPS; incluir `.env.bak` e imagens antigas) · AB-03 opcional ·
 atualizar Claude Code.
 
 ## Pendências abertas — ver `aberto.md`
 
-AB-02 · AB-03 · AB-05 · AB-06 · AB-10 · AB-11 · AD-05 · AD-06.
+AB-02 · AB-03 · AB-05 · AB-06 · AB-10 · AB-11 · AB-12 · AD-05 · AD-06.
 
 Discutir antes de codar.
