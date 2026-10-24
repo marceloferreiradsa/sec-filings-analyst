@@ -43,6 +43,8 @@ test_*.py
 
 # ── Documentation and config ──────────────────────────────────────────────────
 *.md
+# CHANGELOG.md is copied: the app shows the latest release notes (ADR-20)
+!CHANGELOG.md
 .env
 .env.example
 .vscode/
