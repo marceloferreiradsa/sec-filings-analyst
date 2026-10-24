@@ -74,6 +74,8 @@ import numpy as np
 from openai import OpenAI
 from rank_bm25 import BM25Okapi
 
+from rag.rerank import Reranker
+
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -90,6 +92,9 @@ DEFAULT_TOP_K        = 5
 RETRIEVAL_MODES = ("dense", "bm25", "hybrid")
 DEFAULT_MODE    = "dense"    # production mode; changes only on a measured gain (ADR-21)
 RRF_K           = 60         # Reciprocal Rank Fusion constant, as in REF-11
+
+RERANK_CANDIDATES             = 40   # candidates sent to the reranker (latency measured at 40)
+RERANK_CANDIDATES_PER_COMPANY = 20   # per company in multi-company questions (ADR-22)
 
 # BM25 tokens: lowercase words and numbers, keeping inner dots and hyphens so
 # "111.18", "10-k", "us-gaap" and "fy2026" stay whole.
@@ -268,6 +273,7 @@ class RetrievedChunk:
     chunk_id   : str
     content    : str
     metadata   : dict = field(repr=False)
+    rerank_score: Optional[float] = None   # set when a reranker ordered this chunk (ADR-22)
 
 
 # ---------------------------------------------------------------------------
@@ -289,6 +295,8 @@ class Retriever:
     model       : embedding model name (must match the one used in embed.py)
     verbose     : if True, print timing information on each retrieve() call
     mode        : "dense" | "bm25" | "hybrid" — how the corpus is ranked (ADR-21)
+    reranker    : optional rag.rerank.Reranker; reorders the top `rerank_candidates`
+                  filtered candidates before the cap and top_k (ADR-22)
     """
 
     def __init__(
@@ -298,6 +306,8 @@ class Retriever:
         model      : str  = EMBEDDING_MODEL,
         verbose    : bool = True,
         mode       : str  = DEFAULT_MODE,
+        reranker   : Optional[Reranker] = None,
+        rerank_candidates: int = RERANK_CANDIDATES,
     ) -> None:
         if mode not in RETRIEVAL_MODES:
             raise ValueError(f"mode must be one of {RETRIEVAL_MODES}")
@@ -305,6 +315,9 @@ class Retriever:
         self.verbose = verbose
         self.mode    = mode
         self._bm25   : Optional[BM25Okapi] = None
+        self.reranker          = reranker
+        self.rerank_candidates = rerank_candidates
+        self.last_rerank       = "off"   # provider of the last call: off | cloudflare | subq | none
         self.client  = OpenAI()
 
         if self.verbose:
@@ -335,7 +348,7 @@ class Retriever:
                 print(f"[RETRIEVER] BM25 index built in {time.time() - t:.1f}s")
         return self._bm25
 
-    def _rank(self, question: str) -> tuple[np.ndarray, np.ndarray]:
+    def _rank(self, question: str, mode: Optional[str] = None) -> tuple[np.ndarray, np.ndarray]:
         """Every corpus position in retrieval order, plus the score shown per position.
 
         dense  : cosine similarity order (FAISS).
@@ -344,17 +357,18 @@ class Retriever:
         The shown score stays the cosine similarity whenever it exists, so the app's
         relevance percentage keeps its meaning (ADR-21).
         """
+        mode = mode or self.mode
         n = len(self.chunks)
-        if self.mode in ("dense", "hybrid"):
+        if mode in ("dense", "hybrid"):
             sims, positions = self.index.search(self._embed_query(question), self.index.ntotal)
             dense_order = positions[0]
             dense = np.empty(n, dtype=np.float32)
             dense[dense_order] = sims[0]
-            if self.mode == "dense":
+            if mode == "dense":
                 return dense_order, dense
         bm25 = self._bm25_index().get_scores(_tokenize(question))
         bm25_order = np.argsort(-bm25, kind="stable")
-        if self.mode == "bm25":
+        if mode == "bm25":
             return bm25_order, bm25.astype(np.float32)
         rrf = 1.0 / (RRF_K + np.arange(1, n + 1))
         fused = np.zeros(n)
@@ -380,6 +394,7 @@ class Retriever:
         filters         : Optional[RetrievalFilters] = None,
         auto_detect     : bool = True,
         max_per_company : Optional[int] = None,
+        rerank_candidates: Optional[int] = None,
     ) -> list[RetrievedChunk]:
         """
         Embed the question, search the index, apply filters, return top-k.
@@ -452,29 +467,35 @@ class Retriever:
         order, shown_scores = self._rank(question)
         rank_ms = (time.time() - t_rank) * 1000
 
-        results        : list[RetrievedChunk] = []
-        candidates_checked = 0
-        company_counts : dict[str, int] = {}
+        rerank_scores: dict[int, float] = {}
+        if self.reranker is None:
+            picked, candidates_checked = self._collect(order, active_filters, top_k, max_per_company)
+            self.last_rerank = "off"
+        else:
+            # Rerank the filtered candidate pool, then apply the per-company cap to
+            # the new order (ADR-22).
+            n_pool = max(top_k, rerank_candidates or self.rerank_candidates)
+            pool, candidates_checked = self._collect(order, active_filters, n_pool, None)
+            scores, self.last_rerank = self.reranker.score(
+                question, [self.chunks[p]["page_content"] for p in pool]
+            )
+            if scores is None:
+                # No provider answered: fall back to dense order, the best measured
+                # ranking without a reranker (EV-03, ADR-22); the app shows a notice.
+                if self.mode != "dense":
+                    order, shown_scores = self._rank(question, "dense")
+                picked, _ = self._collect(order, active_filters, top_k, max_per_company)
+            else:
+                rerank_scores = dict(zip(pool, scores))
+                reordered = sorted(pool, key=lambda p: rerank_scores[p], reverse=True)
+                picked, _ = self._collect(reordered, active_filters, top_k, max_per_company)
 
-        for pos in order:
-            score = shown_scores[pos]
-            if len(results) >= top_k:
-                break
-
-            chunk = self.chunks[int(pos)]
-            meta  = chunk["metadata"]
-            candidates_checked += 1
-
-            if not _matches(meta, active_filters):
-                continue
-
-            company = meta.get("company", "")
-            if max_per_company is not None:
-                if company_counts.get(company, 0) >= max_per_company:
-                    continue
-                company_counts[company] = company_counts.get(company, 0) + 1
-
-            results.append(self._make_result(chunk, meta, float(score)))
+        results = []
+        for pos in picked:
+            chunk = self.chunks[pos]
+            r = self._make_result(chunk, chunk["metadata"], float(shown_scores[pos]))
+            r.rerank_score = rerank_scores.get(pos)
+            results.append(r)
 
         total_ms = (time.time() - t_start) * 1000
 
@@ -486,7 +507,7 @@ class Retriever:
             print(
                 f"[RETRIEVE] {len(results)} results from "
                 f"{candidates_checked} candidates checked  |  "
-                f"mode {self.mode}  "
+                f"mode {self.mode}  rerank {self.last_rerank}  "
                 f"rank {rank_ms:.0f}ms  "
                 f"total {total_ms:.0f}ms"
             )
@@ -498,6 +519,34 @@ class Retriever:
                 )
 
         return results
+
+    def _collect(
+        self,
+        order   : np.ndarray | list[int],
+        filters : RetrievalFilters,
+        n       : int,
+        cap     : Optional[int],
+    ) -> tuple[list[int], int]:
+        """First n positions of `order` that pass the filters and the per-company cap.
+
+        Returns (positions, candidates checked)."""
+        picked : list[int]      = []
+        counts : dict[str, int] = {}
+        checked = 0
+        for pos in order:
+            if len(picked) >= n:
+                break
+            meta = self.chunks[int(pos)]["metadata"]
+            checked += 1
+            if not _matches(meta, filters):
+                continue
+            if cap is not None:
+                company = meta.get("company", "")
+                if counts.get(company, 0) >= cap:
+                    continue
+                counts[company] = counts.get(company, 0) + 1
+            picked.append(int(pos))
+        return picked, checked
 
     def _retrieve_per_company(
         self,
@@ -519,6 +568,7 @@ class Retriever:
         companies     = base_filters.company
         k_per_company = max(1, -(-top_k // len(companies)))   # ceiling division
         all_results   : list[RetrievedChunk] = []
+        providers     : list[str] = []
 
         if self.verbose:
             print(
@@ -539,11 +589,13 @@ class Retriever:
             # Temporarily suppress verbose for sub-calls
             self.verbose = False
             sub_results = self.retrieve(
-                question    = question,
-                top_k       = k_per_company,
-                filters     = company_filter,
-                auto_detect = False,
+                question          = question,
+                top_k             = k_per_company,
+                filters           = company_filter,
+                auto_detect       = False,
+                rerank_candidates = RERANK_CANDIDATES_PER_COMPANY,
             )
+            providers.append(self.last_rerank)
             self.verbose = True
 
             if self.verbose:
@@ -557,8 +609,14 @@ class Retriever:
 
             all_results.extend(sub_results)
 
-        # Re-rank merged results by score, re-assign ranks
-        all_results.sort(key=lambda r: r.score, reverse=True)
+        # A single failed company sub-call means the answer was not fully reranked
+        self.last_rerank = "none" if "none" in providers else providers[0] if providers else "off"
+
+        # Merge by rerank score when every chunk has one, else by similarity
+        if all_results and all(r.rerank_score is not None for r in all_results):
+            all_results.sort(key=lambda r: r.rerank_score, reverse=True)
+        else:
+            all_results.sort(key=lambda r: r.score, reverse=True)
         for i, r in enumerate(all_results[:top_k], start=1):
             r.rank = i
 

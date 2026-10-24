@@ -47,6 +47,7 @@ from eval.golden.validate import CHUNKS_PATH, GOLDEN_PATH, KEYS, norm  # noqa: E
 
 RESULTS_DIR = Path("eval/results")
 CACHE_PATH  = Path("data/eval_cache/query_embeddings.json")
+RERANK_CACHE = Path("data/eval_cache/rerank_scores.json")
 K_LIST      = (5, 10, 20)
 CONFIGS     = {"app": 2, "plain": None}      # config → max_per_company
 METRICS     = ("recall", "all", "mrr", "ndcg")
@@ -150,6 +151,10 @@ def run(args) -> None:
         label, calls = "oracle", {"api": 0}
     else:
         retriever, save, calls = cached_retriever(args.mode)
+        if args.rerank != "off":
+            from rag.rerank import Reranker
+            chain = ("cloudflare", "subq") if args.rerank == "chain" else (args.rerank,)
+            retriever.reranker = Reranker(chain=chain, cache_path=RERANK_CACHE)
         cap = CONFIGS[args.config]
         for q in questions:
             by_k = {}
@@ -157,11 +162,20 @@ def run(args) -> None:
                 with contextlib.redirect_stdout(io.StringIO()):
                     res = retriever.retrieve(q["question"], top_k=k, max_per_company=cap)
                 by_k[str(k)] = {"hits": credit([(r.metadata, r.content) for r in res], q["expected"]),
-                                "chunks": [r.chunk_id for r in res]}
+                                "chunks": [r.chunk_id for r in res],
+                                "rerank": retriever.last_rerank}
             rows.append({"id": q["id"], "category": q["category"],
                          "n_sources": len(q["expected"]), "by_k": by_k})
         save()
         label = args.config if args.mode == "dense" else f"{args.config}-{args.mode}"
+        if retriever.reranker:
+            retriever.reranker.save_cache()
+            label += f"-rr-{args.rerank}"
+            calls["rerank_calls"]    = retriever.reranker.calls
+            calls["rerank_failures"] = retriever.reranker.failures
+            fell_back = sum(v["rerank"] == "none" for r in rows for v in r["by_k"].values())
+            print(f"[SCORE] rerank calls {calls['rerank_calls']} · failures "
+                  f"{calls['rerank_failures']} · retrievals without rerank {fell_back}")
 
     for row in rows:
         row["metrics"] = {k: metrics(v["hits"], row["n_sources"], int(k))
@@ -169,7 +183,9 @@ def run(args) -> None:
 
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H%M%SZ")
     out = {"run": {"date": stamp, "config": label, "k": list(K_LIST),
-                   "embedding_api_calls": calls["api"], **git_state()},
+                   "embedding_api_calls": calls["api"],
+                   **{k: v for k, v in calls.items() if k.startswith("rerank")},
+                   **git_state()},
            "questions": rows}
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     path = RESULTS_DIR / f"retrieval_{stamp}_{label}.json"
@@ -249,6 +265,8 @@ def main() -> None:
     r.add_argument("--config", choices=sorted(CONFIGS), default="app")
     r.add_argument("--mode", choices=("dense", "bm25", "hybrid"), default="dense",
                    help="retrieval ranking (ADR-21)")
+    r.add_argument("--rerank", choices=("off", "cloudflare", "subq", "chain"), default="off",
+                   help="second-stage reranker (ADR-22); scores cached in data/eval_cache/")
     r.add_argument("--oracle", action="store_true")
     c = sub.add_parser("compare")
     c.add_argument("a"); c.add_argument("b")

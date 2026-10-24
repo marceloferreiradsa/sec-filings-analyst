@@ -53,6 +53,7 @@
 | EV-02 | Retrieval after ADR-17 (app no longer truncates single-company queries) | Historical — superseded by EV-03 |
 | EV-03 | Retrieval after ADR-19 (fiscal calendar, dated headers) | Current baseline |
 | EV-04 | P1a: BM25, hybrid (RRF) and contextual headers vs EV-03 | Measured — not shipped (ADR-21); EV-03 remains t |
+| EV-05 | P1b: second-stage rerank (Cloudflare, SubQ) over dense and hybrid candidates | Measured — not shipped; configuration awaits the |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -102,4 +103,4 @@
 
 ---
 
-*52 registros em 5 documentos.*
+*53 registros em 5 documentos.*

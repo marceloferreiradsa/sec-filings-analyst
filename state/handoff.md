@@ -3,7 +3,7 @@
 > **Primeiro arquivo a ler ao abrir sessão.** Regenerado do zero ao fim de cada dia
 > de trabalho, a partir de `changelog.md` e `aberto.md`. Teto ~80 linhas.
 
-**Gerado em:** 2026-10-24 (sábado, após publicar a v1.1.1)
+**Gerado em:** 2026-10-24 (sábado, fim — P1b medido, não publicado)
 
 ---
 
@@ -61,20 +61,20 @@ enviada; VPS com `:prev` = v1.1.0).
 
 ## Próximos passos — por prioridade
 
-1. **P1b** — cascata de rerank (ADR-14: Cloudflare → SubQ → sem rerank com aviso)
-   sobre os candidatos do **híbrido** (`mode="hybrid"`, ADR-21 — implementado, fora de
-   produção). Medir híbrido+rerank contra EV-03; só sobe se superar além do IC e não
-   perder em temporal. Cabeçalhos uniformes já medidos e rejeitados (EV-04).
-2. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões
-   antes de qualquer rebuild.
+1. **AB-09 — decidir e publicar o P1b.** Rerank pronto e medido (EV-05): SubQ leva o
+   Recall@5 de 0,607 a **0,811** (+0,204, IC +0,12 a +0,30), sem perder em nenhuma
+   categoria; Cloudflare não ajuda; BM25 não acrescenta com SubQ. Proposta: **denso +
+   SubQ, cascata SubQ → ordem densa com aviso** (revisa ADR-14 → ADR-22). Faltam:
+   decisão, aviso no app, chave SubQ na VPS, v1.2.0, deploy (~1 h).
+2. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
 3. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
-4. Candidato: intenção temporal ("último trimestre", tmp-02/03) — não é busca.
+4. Candidato: intenção temporal ("último trimestre").
 
-Avulsos: AB-05 (limpar VPS; incluir `.env.bak` e imagem `:prev`) · AB-03 opcional ·
+Avulsos: AB-05 (limpar VPS; incluir `.env.bak` e imagens antigas) · AB-03 opcional ·
 atualizar Claude Code.
 
 ## Pendências abertas — ver `aberto.md`
 
-AB-02 · AB-03 · AB-05 · AB-06 · AD-05 · AD-06.
+AB-02 · AB-03 · AB-05 · AB-06 · AB-09 · AD-05 · AD-06.
 
 Discutir antes de codar.

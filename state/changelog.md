@@ -18,6 +18,24 @@
 
 ---
 
+## 2026-10-24 — P1b etapas 1–3: rerank implementado e medido (EV-05) — decisão no sábado
+
+**Mudança:** titular aprovou o desenho (40 candidatos, 20 por empresa; cascata;
+fallback para denso em vez de híbrido, por causa do ADR-21). `rag/rerank.py`
+(Cloudflare `bge-reranker-base`, SubQ Snap, só biblioteca padrão, chaves do ambiente,
+cache opcional) e integração no `Retriever` (`reranker=`, `_collect`, `last_rerank`,
+`rerank_score`). Conferido: sem reranker, dense e hybrid idênticos às rodadas
+anteriores; cascata testada com chaves inválidas (CF falha → SubQ; ambas → ordem
+densa, idêntica ao denso puro). Medido: **SubQ +0,204 no Recall@5 (0,607 → 0,811)**,
+denso ou híbrido; Cloudflare 0,000. BM25 não acrescenta com SubQ. Cota da Cloudflare
+medida (≈ 2.900 consultas/dia, confirma ADR-14). Custo: ~170 chamadas SubQ ≈ 1,9M
+tokens dos créditos; Cloudflare grátis. Produção intocada (dense, sem rerank).
+**Documentos tocados:** `rag/rerank.py` (novo) · `rag/retrieve.py` ·
+`eval/golden/score.py` (`--rerank`) · `docs/EVALUATION.md` (EV-05) · `eval/results/`
+· `state/aberto.md` (AB-09) · `state/handoff.md`
+**Registros:** EV-05 · AB-09 aberta
+**Pendente:** decisão do titular sobre a configuração (AB-09); etapas 4–5 no sábado
+
 ## 2026-10-24 — v1.1.1 publicada; regra global contra heredoc
 
 **Mudança:** antes de publicar, o "What's new" também tinha dois "$" (a própria nota da

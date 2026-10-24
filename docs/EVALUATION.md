@@ -151,4 +151,51 @@ intervals in ADR-21. Hybrid at k = 20: narrative 0.867 vs dense 0.667 — the
 candidate pool for P1b.
 
 ---
+
+## EV-05 — P1b: second-stage rerank (Cloudflare, SubQ) over dense and hybrid candidates
+
+**Status:** Measured — not shipped; configuration awaits the owner's decision (ADR-22 to write)
+
+**Run:** 2026-10-24 · commit `a6dcdb1` + rerank code · 70 scored questions · config
+app · 40 filtered candidates reranked (20 per company in multi-company questions),
+then the per-company cap and top-k. Rerank scores cached in
+`data/eval_cache/rerank_scores.json`. Calls: ~85 per configuration; 1 Cloudflare
+failure in one run (fell back to dense, as designed), 0 SubQ failures.
+
+| Recall@5 | EV-03 dense | dense + CF | hybrid + CF | dense + SubQ | hybrid + SubQ |
+|---|---|---|---|---|---|
+| figure | 1.000 | 0.933 | 0.933 | 1.000 | 1.000 |
+| narrative | 0.267 | 0.400 | 0.533 | 0.733 | 0.800 |
+| comparison | 0.542 | 0.417 | 0.375 | 0.733 | 0.733 |
+| trend | 0.333 | 0.479 | 0.417 | 0.500 | 0.500 |
+| temporal | 0.812 | 0.688 | 0.688 | **1.000** | 0.938 |
+| **all** | 0.607 | 0.596 | 0.607 | **0.811** | **0.811** |
+| all, MRR@5 | 0.528 | 0.575 | 0.568 | **0.787** | 0.733 |
+
+Paired bootstrap vs EV-03, k = 5: **dense + SubQ** Recall@5 **+0.204 [+0.119, +0.296]**,
+MRR@5 +0.259 [+0.149, +0.372], narrative +0.467 [+0.200, +0.733], trend +0.167
+[+0.062, +0.271] — all detectable; no category decreases. **hybrid + SubQ** +0.204
+[+0.121, +0.294]. **hybrid + Cloudflare** +0.000 [−0.096, +0.093] — no gain.
+dense + SubQ vs hybrid + SubQ: Recall@5 +0.000 [−0.071, +0.071] — BM25 adds nothing
+once SubQ reranks.
+
+Files: `retrieval_2026-10-24T184412Z_app-rr-subq.json`, `retrieval_2026-10-24T184236Z_app-hybrid-rr-subq.json`,
+`retrieval_2026-10-24T184114Z_app-rr-cloudflare.json`, `retrieval_2026-10-24T183954Z_app-hybrid-rr-cloudflare.json`.
+
+**Readings** (each with what would make it false):
+1. **SubQ Snap is the reranker that works here; `bge-reranker-base` does not.** SubQ
+   is a decision model reading the question with all passages at once; bge-base is a
+   small cross-encoder. *False if* the gap closes on a larger, fresh question set.
+2. **With SubQ, BM25 earns no place** (ADR-13): same Recall@5, lower MRR, temporal
+   0.938 vs 1.000, plus 40 MB RAM and 1.5 s startup. *False if* narrative questions
+   added later separate them beyond the CI.
+3. **Cloudflare as first or second step adds nothing measurable** and drops temporal
+   and comparison (n.s.). *False if* a different Cloudflare reranker model is measured
+   and gains.
+
+**Cloudflare quota (hypothesis in ADR-14 now measured):** the API returns neurons used
+— 0.0226 neurons for 80 tokens, so a 40-candidate query (~12k tokens) ≈ 3.4 neurons;
+10k free neurons/day ≈ 2,900 queries/day. Confirms the estimate.
+
+---
 **Última revisão:** 2026-10-24 · detalhe em `state/changelog.md`
