@@ -154,7 +154,7 @@ candidate pool for P1b.
 
 ## EV-05 — P1b: second-stage rerank (Cloudflare, SubQ) over dense and hybrid candidates
 
-**Status:** Measured — not shipped; configuration awaits the owner's decision (ADR-22 to write)
+**Status:** Measured — dense + SubQ chosen (ADR-22), to deploy
 
 **Run:** 2026-10-24 · commit `a6dcdb1` + rerank code · 70 scored questions · config
 app · 40 filtered candidates reranked (20 per company in multi-company questions),

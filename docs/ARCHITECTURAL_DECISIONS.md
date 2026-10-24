@@ -36,6 +36,7 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 19 | Fiscal calendar per company; dated period headers | A year means the fiscal year; a date with a month means the calendar period; summaries say both |
 | 20 | Versioned releases shown in the app | Visitors see what changed and how it was measured; the version lives only in CHANGELOG.md |
 | 21 | Hybrid retrieval built, held back until rerank | BM25 + RRF helps prose and trends but costs period questions; ship it only as the reranker's candidate pool |
+| 22 | Dense + SubQ Snap rerank; fallback to dense with notice | The measured best: Recall@5 0.607 → 0.811; Cloudflare and BM25 dropped for adding nothing |
 
 ---
 
@@ -748,7 +749,7 @@ and rerank work loses its justification and the roadmap must be re-ordered again
 
 ## ADR-14 — Rerank through hosted APIs in a fallback chain; local cross-encoders rejected
 
-**Status:** Active
+**Status:** Active — provider order revised by ADR-22
 
 ### Context
 P1 adds a reranker over the fused BM25 + dense candidates (40 → top 5–8). The owner's
@@ -1135,3 +1136,52 @@ At k = 20 the hybrid pool holds the right narrative chunk for 0.867 of questions
 ### Would be false if
 Hybrid + rerank (P1b) does not beat EV-03 beyond the confidence interval — then BM25
 stays out of production altogether, or the temporal loss persists after rerank.
+
+---
+
+## ADR-22 — Rerank with SubQ Snap over dense candidates; fallback to dense order with a notice
+
+**Status:** Accepted 2026-10-24 — to deploy (AB-09)
+
+### Context (2026-10-24)
+ADR-14 chose hosted rerankers in a chain, Cloudflare `bge-reranker-base` first
+(stable, free daily quota) and SubQ Snap second (faster, preview, finite credits),
+on latency and availability — quality had not been measured yet. ADR-21 held the
+hybrid retrieval back as the reranker's candidate pool. EV-05 measured both
+rerankers over both pools.
+
+### What was decided
+- **Production pipeline:** dense retrieval (EV-03) → 40 filtered candidates (20 per
+  company in multi-company questions) → **SubQ Snap** scores each passage (P(yes) of a
+  "does this passage help answer the question?" decision) → per-company cap → top-k.
+  Code: `rag/rerank.py`, `Retriever(reranker=…)`.
+- **Chain: SubQ → none.** If SubQ fails or exceeds ~3 s, the answer uses the dense
+  order (the best measured ranking without rerank, EV-03) and the page says that
+  reranking is unavailable.
+- **Cloudflare leaves the chain; BM25 stays out of production** (code kept, ADR-21).
+- This revises ADR-14's order: SubQ was second; Cloudflare is dropped.
+
+### Measured (EV-05, 70 scored questions, Recall@5, paired bootstrap vs EV-03)
+dense + SubQ **0.607 → 0.811 (+0.204, 95% CI +0.119 to +0.296)**, MRR@5 0.528 → 0.787;
+narrative 0.267 → 0.733, comparison 0.542 → 0.733, trend 0.333 → 0.500, temporal
+0.812 → 1.000, figure 1.000 → 1.000 — no category decreases. hybrid + SubQ: same
+Recall@5, lower MRR (0.733), temporal 0.938. hybrid + Cloudflare: +0.000.
+
+### What was rejected
+- **Cloudflare first (ADR-14's order):** measured no gain, so it would serve a
+  reranker that changes nothing; as a fallback it lowers temporal and comparison (n.s.)
+  — the dense order is the better fallback.
+- **Hybrid candidates for SubQ:** no gain over dense, lower MRR, one temporal miss,
+  plus BM25's 40 MB and 1.5 s startup (ADR-13: a component must earn its place).
+
+### Risk accepted
+SubQ Snap is in preview (intermittent HTTP 403 "model not permitted" on 2026-10-22)
+and its credits are finite (≈ 9,000 queries at ~11k tokens each; cost ≈ $0.00045 per
+query after credits). The fallback bounds the damage at today's quality (EV-03).
+The SubQ key goes to the VPS `.env` through stdin, never printed (same as the OpenAI
+key).
+
+### Would be false if
+On the VPS the SubQ latency or failure rate makes the fallback frequent (watch the
+share of answers with the notice), or a larger, fresh question set closes the gap
+between SubQ and no rerank.

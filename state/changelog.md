@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-10-24 — Configuração do rerank decidida (ADR-22)
+
+**Mudança:** titular aceitou denso + SubQ Snap, cascata SubQ → ordem densa com aviso;
+Cloudflare fora; BM25 fora de produção. ADR-22 escrito; ADR-14 marcado como revisado
+na ordem dos provedores. Chave SubQ: fica na variável de máquina, vai à VPS por stdin
+no deploy (sem `.env` local extra).
+**Documentos tocados:** `docs/ARCHITECTURAL_DECISIONS.md` (ADR-22, ADR-14 status,
+Quick Reference) · `docs/EVALUATION.md` (EV-05 status) · `state/aberto.md` (AB-09) ·
+`state/handoff.md`
+**Registros:** ADR-22 criado
+**Pendente:** etapas 4–5 no sábado (AB-09)
+
 ## 2026-10-24 — P1b etapas 1–3: rerank implementado e medido (EV-05) — decisão no sábado
 
 **Mudança:** titular aprovou o desenho (40 candidatos, 20 por empresa; cascata;

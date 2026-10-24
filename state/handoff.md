@@ -61,11 +61,12 @@ enviada; VPS com `:prev` = v1.1.0).
 
 ## Próximos passos — por prioridade
 
-1. **AB-09 — decidir e publicar o P1b.** Rerank pronto e medido (EV-05): SubQ leva o
-   Recall@5 de 0,607 a **0,811** (+0,204, IC +0,12 a +0,30), sem perder em nenhuma
-   categoria; Cloudflare não ajuda; BM25 não acrescenta com SubQ. Proposta: **denso +
-   SubQ, cascata SubQ → ordem densa com aviso** (revisa ADR-14 → ADR-22). Faltam:
-   decisão, aviso no app, chave SubQ na VPS, v1.2.0, deploy (~1 h).
+1. **AB-09 — publicar o P1b (decidido: ADR-22).** Denso + SubQ Snap, cascata
+   SubQ → ordem densa com aviso; Recall@5 0,607 → **0,811** (EV-05). Faltam: ligar
+   `Reranker(chain=("subq",))` no `app.py`/`qa.py`, aviso "sem rerank" na página
+   (`retriever.last_rerank == "none"`), chave SubQ no `.env` da VPS (ler a variável de
+   máquina e mandar por stdin via SSH), CHANGELOG v1.2.0, build, testes, deploy,
+   latência na VPS (~1 h).
 2. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
 3. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
 4. Candidato: intenção temporal ("último trimestre").

@@ -35,7 +35,7 @@
 | ADR-11 | Grounding prompt design | Active |
 | ADR-12 | Continuity-method make targets live in `metodo.mk`, with colliding names renamed | Active |
 | ADR-13 | Adopt the evidence-driven roadmap, under VPS and budget constraints | Active |
-| ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active |
+| ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active — provider order revised by ADR-22 |
 | ADR-15 | Golden set labelled by section + literal evidence, not chunk IDs | Active |
 | ADR-16 | Retrieval scored deterministically against the golden set (Recall@k, MRR, nDCG) | Active |
 | ADR-17 | The per-company cap is ignored when the filter pins a single company | Active |
@@ -43,6 +43,7 @@
 | ADR-19 | Fiscal year and quarter from each company's fiscal calendar; dated period headers | Active |
 | ADR-20 | Versioned releases with "What's new" in the app, from a public CHANGELOG.md | Active |
 | ADR-21 | Hybrid retrieval (BM25 + RRF) implemented and measured; production stays dense until rerank; uniform contextual headers rejected | Active |
+| ADR-22 | Rerank with SubQ Snap over dense candidates; fallback to dense order with a notice | Accepted 2026-10-24 — to deploy (AB-09) |
 
 
 ## `docs/EVALUATION.md`
@@ -53,7 +54,7 @@
 | EV-02 | Retrieval after ADR-17 (app no longer truncates single-company queries) | Historical — superseded by EV-03 |
 | EV-03 | Retrieval after ADR-19 (fiscal calendar, dated headers) | Current baseline |
 | EV-04 | P1a: BM25, hybrid (RRF) and contextual headers vs EV-03 | Measured — not shipped (ADR-21); EV-03 remains t |
-| EV-05 | P1b: second-stage rerank (Cloudflare, SubQ) over dense and hybrid candidates | Measured — not shipped; configuration awaits the |
+| EV-05 | P1b: second-stage rerank (Cloudflare, SubQ) over dense and hybrid candidates | Measured — dense + SubQ chosen (ADR-22), to depl |
 
 
 ## `docs/NEXT_FEATURES.md`
@@ -103,4 +104,4 @@
 
 ---
 
-*53 registros em 5 documentos.*
+*54 registros em 5 documentos.*

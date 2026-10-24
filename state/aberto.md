@@ -228,14 +228,16 @@ nem caixa do GOOGL 2026-03-31 (achados AB-06).
   **decisão do titular**; efeito ≤ 2 de 119 fontes.
 *aberta desde 2026-10-24*
 
-**AB-09 — P1b: escolher a configuração do rerank e publicar** (medido em EV-05)
-Proposta do agente, a decidir pelo titular: **denso + SubQ Snap**, cascata **SubQ →
+**AB-09 — P1b: publicar o rerank** (medido em EV-05)
+**Decidido pelo titular em 2026-10-24 (ADR-22):** **denso + SubQ Snap**, cascata **SubQ →
 sem rerank (ordem densa) com aviso**; Cloudflare fora da cascata (não melhora nada,
 EV-05) e BM25 fora de produção (não acrescenta com SubQ). Isso revisa a ordem do
 ADR-14 (Cloudflare 1º) — registrar no ADR-22 com o motivo (qualidade medida) e o risco
 aceito (SubQ em preview, 403 intermitente em 2026-10-22; créditos finitos ≈ 9.000
 consultas). Depois: aviso "sem rerank" no app, chave SubQ no `.env` da VPS (via stdin),
 CHANGELOG v1.2.0, build, testes, deploy. Medir latência real na VPS.
+Chave SubQ: o titular perguntou como passar; resposta — não passa, já está na
+variável de máquina `SUBQ_SEC_FILINGS_API_KEY`; enviar por stdin via SSH, sem arquivo.
 *aberta desde 2026-10-24*
 
 ## Ação manual
