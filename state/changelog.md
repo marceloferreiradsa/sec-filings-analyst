@@ -18,6 +18,39 @@
 
 ---
 
+## 2026-10-24 — Golden set concluído: lote 4 aprovado (P0a)
+
+**Mudança:** titular aprovou as 14 perguntas `temporal` → `reviewed: true`. Invariantes:
+80 linhas, 0 `false`, LF, validador ok. P0a fechado com 80 perguntas em 6 categorias.
+**Documentos tocados:** `eval/golden/golden_set.jsonl` · `state/aberto.md` (AB-07)
+**Registros:** nenhum (AB-07 segue aberta até o P0b consumir o conjunto)
+**Pendente:** P0b — métricas de retrieval
+
+## 2026-10-24 — Golden set: lote 3 aprovado, lote 4 redigido (temporal)
+
+**Mudança:** titular aprovou o lote 3 (24 perguntas → `reviewed: true`; invariantes: 66
+linhas, 0 `false`, validador ok). Lote 4: +14 perguntas `temporal`, todas de 10-Q, que
+testam o rótulo fiscal errado (AB-06 a): "último trimestre" por empresa, trimestre fiscal
+nomeado (Q1 FY2026 da Apple = dez/2025, Q2 FY2026 da Microsoft = dez/2025 etc.), data de
+calendário ("three months ended") e 2 trimestres de 2023/24 cuja resposta só existe no
+texto do MD&A. Validador: 80/80 com todas as evidências no corpus. Ao redigir, AB-06
+ganhou (f) e o item (d) não se confirmou.
+**Documentos tocados:** `eval/golden/golden_set.jsonl` · `state/aberto.md` (AB-06, AB-07)
+**Registros:** nenhum
+**Pendente:** revisão do lote 4 pelo titular (AB-07)
+
+## 2026-10-24 — Golden set: lote 3 redigido (comparison + trend)
+
+**Mudança:** +24 perguntas: 12 de comparação (8 de número entre 2–5 empresas, 4
+narrativas com uma evidência por empresa) e 12 de tendência (séries FY2022/23→FY2025/26
+dos resumos XBRL dos 10-K). Validador: 66/66 perguntas com todas as evidências no corpus.
+Perguntas multivalor ficam com `expected_figure: null` e valores em `notes`.
+**Documentos tocados:** `eval/golden/golden_set.jsonl` · `state/aberto.md` (AB-07)
+**Registros:** nenhum
+**Pendente:** revisão do lote 3; lote 4 (temporal, 14).
+
+---
+
 ## 2026-10-23 — Golden set: lote 2 aprovado
 
 **Mudança:** titular aprovou as 27 perguntas do lote 2 sem ajustes; `reviewed: true` em

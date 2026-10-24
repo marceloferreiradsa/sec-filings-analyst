@@ -176,12 +176,16 @@ correção)
   fiscal (AAPL 2025-12-27 marcado "FY2025 Q4", é Q1 FY2026); o filtro "Fiscal Year" da
   UI herda isso. (b) **Capex dos 10-Q é acumulado no ano** (GOOGL 2025-09-30 = US$63,6B,
   9 meses) ao lado de receita trimestral, sem aviso. (c) Caixa do GOOGL em 2026-03-31 =
-  US$126,84B, idêntico ao FY2025 — provável valor repetido. (d) Resumos de 10-Q sem
-  `Range`. Candidatos a DT; corrigir antes do P0c, senão a métrica de número mede dado
+  US$126,84B, idêntico ao FY2025 — provável valor repetido. (d) ~~Resumos de 10-Q sem
+  `Range`.~~ Não se confirma: 20/20 resumos de 10-Q têm `Range` (`chunks.json`, 2026-10-24). Candidatos a DT; corrigir antes do P0c, senão a métrica de número mede dado
   errado. (e) **10-K de FY2022 (as 5 empresas) e NVDA FY2023 não têm seção narrativa
   nenhuma no corpus** — só o resumo XBRL (contagem de seções por 10-K em `chunks.json`,
   2026-10-23). O README promete FY2022–FY2026; perguntas "por quê" de 2022 não têm
   resposta. Explica o "10-K com 106 tokens".
+  (f) **Só 20 dos 40 10-Q têm resumo XBRL** (os de período até 2024 só têm texto). E os
+  resumos de AAPL 2025-03-29, GOOGL/META/MSFT 2025-03-31 e NVDA 2025-04-27 dizem
+  `Filed:` 2026 — parecem a coluna comparativa do 10-Q de 2026, não o 10-Q próprio
+  (`chunks.json`, 2026-10-24). Valores não conferidos; golden set não os usa.
 - Teto de gasto na OpenAI: **feito** pelo titular em 2026-10-23.
 *aberta desde 2026-10-21*
 
@@ -190,8 +194,14 @@ Desenho aprovado em 2026-10-23 (ADR-15). Lote 1 = 15 perguntas `figure` em
 `eval/golden/golden_set.jsonl`, validadas (`python eval/golden/validate.py --table`),
 **revisadas e aprovadas pelo titular em 2026-10-23 (15/15 `reviewed: true`)**.
 Lote 2 (2026-10-23) = 15 `narrative` (3 por empresa) + 12 `out_of_corpus`, validadas,
-**aprovadas pelo titular em 2026-10-23** (42/42 `reviewed: true`). Faltam: comparison 12,
-trend 12, temporal 14. Titular dispensou página de revisão com contexto (oferecida) —
+**aprovadas pelo titular em 2026-10-23** (42/42 `reviewed: true`).
+Lote 3 (2026-10-24) = 12 `comparison` (8 de número, 4 narrativas) + 12 `trend` (séries de
+4 anos dos 10-K), validadas, **aprovadas pelo titular em 2026-10-24** (66/66 `reviewed: true`). Perguntas com vários números têm
+`expected_figure: null` e os valores em `notes` — Number Match multivalor fica para o P0c.
+Lote 4 (2026-10-24) = 14 `temporal` (5 "último trimestre", 5 trimestre fiscal nomeado,
+2 data de calendário, 2 trimestres antigos só com texto de MD&A), validadas,
+**aprovadas pelo titular em 2026-10-24** — 80/80 `reviewed: true`. **P0a concluído**;
+próximo: P0b (métricas de retrieval). Titular dispensou página de revisão com contexto (oferecida) —
 revisa pela tabela. Gabarito vem do texto do filing, nunca de resposta do RAG. Nenhuma pergunta usa capex de 10-Q
 nem caixa do GOOGL 2026-03-31 (achados AB-06).
 *aberta desde 2026-10-23*
