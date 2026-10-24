@@ -18,6 +18,21 @@
 
 ---
 
+## 2026-10-24 — v1.2.0 publicada: rerank SubQ no ar
+
+**Mudança:** titular liberou fazer tudo hoje. `app.py` monta o `Retriever` com
+`Reranker(chain=("subq",))` e mostra uma nota sob a resposta quando
+`last_rerank == "none"`. CHANGELOG v1.2.0, tag `v1.2.0`. Imagem testada local 20/20
+com a chave SubQ passada ao container pelo ambiente; chave SubQ gravada no `.env` da
+VPS por stdin (sem exibir; `.env` com OPENAI e SUBQ). Publicada (`:prev` = v1.1.1);
+`test-vps` 20/20; HTTP 200. Latência da busca na VPS: 1,3–2,0 s (1–2 empresas), 4,8 s
+(5 empresas) → AB-10.
+**Documentos tocados:** `app.py` · `CHANGELOG.md` · `docs/ARCHITECTURAL_DECISIONS.md`
+(ADR-22 status e latência) · `docs/EVALUATION.md` (EV-05 produção, EV-03 histórico) ·
+`state/aberto.md` (AB-09 resolvida, AB-10 aberta) · `state/handoff.md`
+**Registros:** AB-09 resolvida · AB-10 aberta
+**Pendente:** AB-10
+
 ## 2026-10-24 — Configuração do rerank decidida (ADR-22)
 
 **Mudança:** titular aceitou denso + SubQ Snap, cascata SubQ → ordem densa com aviso;

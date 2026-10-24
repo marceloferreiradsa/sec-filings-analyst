@@ -3,7 +3,7 @@
 > **Primeiro arquivo a ler ao abrir sessão.** Regenerado do zero ao fim de cada dia
 > de trabalho, a partir de `changelog.md` e `aberto.md`. Teto ~80 linhas.
 
-**Gerado em:** 2026-10-24 (sábado, fim — P1b medido, não publicado)
+**Gerado em:** 2026-10-24 (sábado, fim — v1.2.0 no ar)
 
 ---
 
@@ -56,17 +56,16 @@ antiga, inválida, a apagar). Varrer vazamentos antes de cada commit.
 gzip`, `scp -i ~/.ssh/hostinger_key`, na VPS `docker tag …:latest …:prev`, `docker
 load`, `docker compose up -d`; `make test-vps VPS_KEY=~/.ssh/hostinger_key`.
 **Toda publicação:** entrada nova no `CHANGELOG.md` (público, inglês — o app mostra a
-versão de lá, ADR-20) e tag `vX.Y.Z` no commit publicado. **No ar: v1.1.1** (tag
-enviada; VPS com `:prev` = v1.1.0).
+versão de lá, ADR-20) e tag `vX.Y.Z` no commit publicado. **No ar: v1.2.0** (tag
+enviada; VPS com `:prev` = v1.1.1). Chaves no `.env` da VPS: OPENAI, SUBQ.
 
 ## Próximos passos — por prioridade
 
-1. **AB-09 — publicar o P1b (decidido: ADR-22).** Denso + SubQ Snap, cascata
-   SubQ → ordem densa com aviso; Recall@5 0,607 → **0,811** (EV-05). Faltam: ligar
-   `Reranker(chain=("subq",))` no `app.py`/`qa.py`, aviso "sem rerank" na página
-   (`retriever.last_rerank == "none"`), chave SubQ no `.env` da VPS (ler a variável de
-   máquina e mandar por stdin via SSH), CHANGELOG v1.2.0, build, testes, deploy,
-   latência na VPS (~1 h).
+**No ar: v1.2.0** — denso + rerank SubQ Snap (ADR-22), Recall@5 0,811 (EV-05, linha
+de base atual). Fallback: ordem densa com nota na página.
+
+1. **AB-10** — latência do rerank em perguntas multiempresa (4,8 s com 5 empresas):
+   chamadas SubQ em paralelo; e `last_rerank` como estado compartilhado.
 2. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
 3. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
 4. Candidato: intenção temporal ("último trimestre").
@@ -76,6 +75,6 @@ atualizar Claude Code.
 
 ## Pendências abertas — ver `aberto.md`
 
-AB-02 · AB-03 · AB-05 · AB-06 · AB-09 · AD-05 · AD-06.
+AB-02 · AB-03 · AB-05 · AB-06 · AB-10 · AD-05 · AD-06.
 
 Discutir antes de codar.

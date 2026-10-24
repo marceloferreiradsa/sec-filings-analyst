@@ -91,7 +91,7 @@ P1 is compared against.** *(superseded by EV-03)*
 
 ## EV-03 — Retrieval after ADR-19 (fiscal calendar, dated headers)
 
-**Status:** Current baseline
+**Status:** Historical — superseded by EV-05 (dense + SubQ) as production baseline
 
 **Run:** 2026-10-24 · commit `9232e99` + ADR-19 changes · golden set **82 questions,
 70 scored** (+tmp-15, tmp-16: calendar dates on non-calendar fiscal years, added and
@@ -154,7 +154,7 @@ candidate pool for P1b.
 
 ## EV-05 — P1b: second-stage rerank (Cloudflare, SubQ) over dense and hybrid candidates
 
-**Status:** Measured — dense + SubQ chosen (ADR-22), to deploy
+**Status:** Current production baseline — dense + SubQ (ADR-22), live in v1.2.0
 
 **Run:** 2026-10-24 · commit `a6dcdb1` + rerank code · 70 scored questions · config
 app · 40 filtered candidates reranked (20 per company in multi-company questions),

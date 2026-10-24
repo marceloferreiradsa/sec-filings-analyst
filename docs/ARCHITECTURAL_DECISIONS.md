@@ -1141,7 +1141,7 @@ stays out of production altogether, or the temporal loss persists after rerank.
 
 ## ADR-22 — Rerank with SubQ Snap over dense candidates; fallback to dense order with a notice
 
-**Status:** Accepted 2026-10-24 — to deploy (AB-09)
+**Status:** Active — deployed in v1.2.0 (2026-10-24)
 
 ### Context (2026-10-24)
 ADR-14 chose hosted rerankers in a chain, Cloudflare `bge-reranker-base` first
@@ -1180,6 +1180,11 @@ and its credits are finite (≈ 9,000 queries at ~11k tokens each; cost ≈ $0.0
 query after credits). The fallback bounds the damage at today's quality (EV-03).
 The SubQ key goes to the VPS `.env` through stdin, never printed (same as the OpenAI
 key).
+
+### Latency on the VPS (2026-10-24, retrieval only, before answer generation)
+1.3–2.0 s for one- or two-company questions; 4.8 s for a five-company comparison,
+which makes five sequential SubQ calls (one per company). Parallel per-company calls
+are the obvious next step (AB-10).
 
 ### Would be false if
 On the VPS the SubQ latency or failure rate makes the fallback frequent (watch the
