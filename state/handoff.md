@@ -3,7 +3,7 @@
 > **Primeiro arquivo a ler ao abrir sessão.** Regenerado do zero ao fim de cada dia
 > de trabalho, a partir de `changelog.md` e `aberto.md`. Teto ~80 linhas.
 
-**Gerado em:** 2026-10-24 (sábado, fim do dia)
+**Gerado em:** 2026-10-24 (sábado, após publicar a v1.1.0)
 
 ---
 
@@ -56,7 +56,8 @@ antiga, inválida, a apagar). Varrer vazamentos antes de cada commit.
 gzip`, `scp -i ~/.ssh/hostinger_key`, na VPS `docker tag …:latest …:prev`, `docker
 load`, `docker compose up -d`; `make test-vps VPS_KEY=~/.ssh/hostinger_key`.
 **Toda publicação:** entrada nova no `CHANGELOG.md` (público, inglês — o app mostra a
-versão de lá, ADR-20) e tag `vX.Y.Z` no commit publicado. Versão atual: 1.1.0.
+versão de lá, ADR-20) e tag `vX.Y.Z` no commit publicado. **No ar: v1.1.0** (tag
+enviada; VPS com `:prev` = imagem do ADR-19).
 
 ## Próximos passos — por prioridade
 
