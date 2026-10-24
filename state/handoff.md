@@ -64,17 +64,18 @@ enviada; VPS com `:prev` = v1.1.1). Chaves no `.env` da VPS: OPENAI, SUBQ.
 **No ar: v1.2.0** — denso + rerank SubQ Snap (ADR-22), Recall@5 0,811 (EV-05, linha
 de base atual). Fallback: ordem densa com nota na página.
 
-1. **AB-10** — latência do rerank em perguntas multiempresa (4,8 s com 5 empresas):
-   chamadas SubQ em paralelo; e `last_rerank` como estado compartilhado.
-2. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
-3. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
-4. Candidato: intenção temporal ("último trimestre").
+1. **AB-11** — revisar o README contra as mudanças de 2026-10-24 (lista em `aberto.md`).
+2. **AB-10** — latência do rerank multiempresa (4,8 s com 5 empresas): SubQ em
+   paralelo; `last_rerank` como estado compartilhado.
+3. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
+4. **P0c** — geração + braço de contexto longo (pago, ≈ US$2–3/rodada).
+5. Candidato: intenção temporal ("último trimestre").
 
 Avulsos: AB-05 (limpar VPS; incluir `.env.bak` e imagens antigas) · AB-03 opcional ·
 atualizar Claude Code.
 
 ## Pendências abertas — ver `aberto.md`
 
-AB-02 · AB-03 · AB-05 · AB-06 · AB-10 · AD-05 · AD-06.
+AB-02 · AB-03 · AB-05 · AB-06 · AB-10 · AB-11 · AD-05 · AD-06.
 
 Discutir antes de codar.

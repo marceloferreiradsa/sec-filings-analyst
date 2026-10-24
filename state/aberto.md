@@ -249,6 +249,19 @@ chamadas em paralelo (threads) ou uma chamada única com cota por empresa. Tamb�
 com usuários simultâneos o aviso pode sair na resposta errada; mover para o retorno.
 *aberta desde 2026-10-24*
 
+**AB-11 — Revisar o README contra tudo o que mudou em 2026-10-24** (pedido do titular)
+Varredura rápida (sem editar) achou desatualizados: arquitetura e diagrama só com
+FAISS + filtros (falta rerank SubQ, ADR-22); "Key design decisions" para no ADR-11;
+`requirements.txt` "4 packages" (agora inclui `rank-bm25`); imagem "~400 MB" (é
+~758 MB local / 1,01 GB na VPS); "20 assertion tests" (são 10, AB-06); "Fiscal
+calendar alignment" em Known limitations (resolvido pelo ADR-19, e datas com mês
+funcionam); "Evaluation baseline" (agora EV-05 em `docs/EVALUATION.md`, golden set
+`eval/golden/`); Costs (rerank SubQ ≈ US$0,00045/consulta após créditos); Roadmap (P0
+e P1 feitos: BM25 medido e fora, rerank no ar); variáveis de ambiente (SUBQ). Revisar
+também "Period: FY2022" (FY2022 sem narrativa, AB-06 e). Um fato, um lugar: números
+apontam para EVALUATION/CHANGELOG em vez de repetir.
+*aberta desde 2026-10-24*
+
 ## Ação manual
 
 **AB-02 — Migrar os alvos do método quando o framework padronizar o prefixo**

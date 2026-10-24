@@ -18,6 +18,14 @@
 
 ---
 
+## 2026-10-24 — Pendência: revisar o README (AB-11)
+
+**Mudança:** titular pediu revisar o README na próxima sessão para alinhar com tudo o
+que mudou hoje. Varredura sem edição registrou os pontos desatualizados em AB-11.
+**Documentos tocados:** `state/aberto.md` (AB-11) · `state/handoff.md`
+**Registros:** AB-11 aberta
+**Pendente:** AB-11
+
 ## 2026-10-24 — v1.2.0 publicada: rerank SubQ no ar
 
 **Mudança:** titular liberou fazer tudo hoje. `app.py` monta o `Retriever` com
