@@ -288,35 +288,35 @@ por consulta; o porteiro só poupa a geração) + prompt de ancoragem (ADR-11) c
 camadas. Seria falso se, no golden set completo, perguntas respondíveis tiverem P(sim)
 máxima perto das de fora do corpus.
 Ligado ao P0c (acurácia de recusa nos `out_of_corpus`).
-**Leituras sugeridas (trazidas pelo titular em 2026-10-24, de outra conversa; links e
-números NÃO verificados; o que for usado numa decisão vira `REF-NN` em
-`docs/REFERENCES.md`):**
-Para nós (pergunta direta e custo): cascata do barato ao caro antes da chamada paga:
-regex → classificador pequeno → LLM.
-- Classificadores locais: Meta **Llama Prompt Guard 2** (86M multilíngue; 22M só
-  inglês, ~75% menos latência): https://docs.mozilla.ai/any-guardrail/api-reference/index/prompt-injection/prompt-guard ·
-  **StackOne**, classificador de 22 MB (MiniLM quantizado); argumenta que LLM como
-  juiz pode ser injetado, o mesmo risco já anotado acima:
-  https://www.stackone.com/blog/training-22mb-prompt-injection-classifier/
-- Primeira camada regex (<1 ms): https://pypi.org/project/ai-injection-guard/ ·
-  LangChain4j PatternBasedPromptInjectionGuardrail:
-  https://docs.langchain4j.dev/apidocs/dev/langchain4j/guardrails/PatternBasedPromptInjectionGuardrail.html ·
-  https://pypi.org/project/nakata-promptguard/
-- Cascata de referência **RAG-PIF** (regex → similaridade FAISS → RoBERTa):
-  https://huggingface.co/shivateja1253/rag-pif-roberta
-- Base: **OWASP** LLM Prompt Injection Prevention Cheat Sheet:
-  https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
-Menos urgente aqui (injeção indireta via documentos; nosso corpus vem só da SEC, fonte
-confiável): Tian Pan, https://tianpan.co/blog/2026/04/19/prompt-injection-supply-chain-problem
-e https://tianpan.co/blog/2026-04-16-rag-prompt-injection-retrieval-pipeline-security ·
-https://pypi.org/project/rag-sanitizer/ · https://pypi.org/project/protectrag/ ·
-CleanBase https://www.emergentmind.com/papers/2605.00460 · Azure Prompt Shields e
-Spotlighting (gerenciado):
-https://learn.microsoft.com/en-my/Azure/foundry/openai/concepts/content-filter-prompt-shields ·
-https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/-/4458404
-Ressalva da própria fonte: recall de 80–90% em ataques conhecidos e menor em novos.
-Os filtros servem para cortar custo; a segurança continua nas defesas estruturais
-(instrução separada dos dados, ADR-11).
+**Bibliografia (verificada em 2026-10-24): REF-13..21 em `docs/REFERENCES.md`.**
+Lista trazida pelo titular de outra conversa, conferida link a link e completada com
+artigos acadêmicos. O que cada fonte muda na proposta:
+- **REF-14** (Liu et al., USENIX Security 2024): nenhuma defesa basta sozinha; LLM
+  como detector erra pouco para menos e **muito para mais** (falso positivo 0,83–0,93)
+  → o porteiro SubQ precisa medir falso positivo nas 70 respondíveis, não só os
+  acertos. **REF-16** (InjecGuard): classificadores barram perguntas legítimas com
+  palavras-gatilho → mesmo teste.
+- **REF-17** (Larson, EMNLP 2019): detectar fora do escopo é difícil mesmo quando o
+  em-escopo vai bem → calibrar nos `out_of_corpus` rotulados e considerar ampliar os 12.
+- **REF-19** (OWASP): filtro de entrada "não é fronteira de segurança"; recomenda
+  **limite de tamanho da entrada** (barato e corta a injeção acolchoada; opção nova,
+  (e)) e limite de taxa por usuário/IP (= d).
+- **REF-20** (Prompt Guard 2): classificador local, 86M multilíngue (PT incluído).
+  Detecta **só tentativa de sobrescrever instruções, não fora do tema**: pegaria a
+  pizzaria ("ignore tudo"), não a Tesla. Hipótese a medir: custo na imagem Docker
+  (torch) e licença Llama (gated).
+- **REF-15** (Spotlighting) sustenta a camada estrutural (ADR-11); REF-13 situa o
+  risco (injeção direta, não indireta); REF-21 (StackOne): o juiz LLM pode ser
+  injetado, mesmo risco anotado acima; REF-18 (NeMo): prática de mercado de regras
+  antes da geração.
+Descartados (não entram na bibliografia): posts de Tian Pan (secundários, números sem
+fonte no texto; a fonte primária que citam é a REF-13); `rag-sanitizer` 0.1.0,
+`protectrag` beta, `ai-injection-guard` alfa (sem avaliação publicada);
+`nakata-promptguard` (o próprio README diz "no working detector yet"; dali vinha o
+"80–90% de recall"); RAG-PIF (30 downloads, sem artigo, 28% de falso positivo em texto
+benigno); LangChain4j (Java; a ideia de regex por categoria OWASP fica coberta pela
+REF-19); CleanBase (artigo sólido, mas trata envenenamento do corpus, risco que não
+temos); post da Microsoft (só o título carregou; o número vem da REF-15).
 *aberta desde 2026-10-24*
 
 ## Ação manual

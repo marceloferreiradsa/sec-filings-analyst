@@ -160,5 +160,118 @@
   saturation, length normalisation).
 - **Cited by:** ADR-21.
 
+## Input gating and prompt injection
+
+### REF-13 — Not what you've signed up for: Indirect Prompt Injection (Greshake et al.)
+
+**Status:** Verified (arXiv abstract, 2026-10-24)
+
+- **Citation:** K. Greshake, S. Abdelnabi, S. Mishra, C. Endres, T. Holz, M. Fritz.
+  arXiv:2302.12173, 2023.
+- **Link:** https://arxiv.org/abs/2302.12173
+- **Supports:** the distinction between direct injection (typed by the user) and
+  indirect injection (planted in data the application retrieves), with a taxonomy of
+  impacts. Here the corpus is SEC-only and ingested by the project, so the live risk
+  is direct injection and cost abuse.
+- **Cited by:** AB-12 (candidate, no decision yet).
+
+### REF-14 — Formalizing and Benchmarking Prompt Injection Attacks and Defenses (Liu et al.)
+
+**Status:** Verified (paper HTML, defenses section, 2026-10-24)
+
+- **Citation:** Y. Liu, Y. Jia, R. Geng, J. Jia, N. Z. Gong. USENIX Security 2024.
+  arXiv:2310.12815.
+- **Link:** https://arxiv.org/abs/2310.12815
+- **Supports:** no existing defense is sufficient on its own. Perplexity filters miss
+  almost everything because injected text is fluent. A naive LLM-as-detector has near-zero
+  misses but very high false positives (0.83–0.93 on some tasks). Known-answer
+  detection was the best detector and still leaks. Implication for an LLM/reranker
+  gate: measure false positives on legitimate questions, not just catches.
+- **Cited by:** AB-12 (candidate).
+
+### REF-15 — Defending Against Indirect Prompt Injection Attacks With Spotlighting (Hines et al.)
+
+**Status:** Verified (arXiv abstract, 2026-10-24)
+
+- **Citation:** K. Hines, G. Lopez, M. Hall, F. Zarfati, Y. Zunger, E. Kiciman
+  (Microsoft). arXiv:2403.14720, 2024 (preprint).
+- **Link:** https://arxiv.org/abs/2403.14720
+- **Supports:** marking untrusted text so the model can tell data from instructions
+  (delimiting, datamarking, encoding) cut attack success from over 50% to under 2% on
+  GPT-family models with little task loss. This is the structural layer behind ADR-11's
+  grounding prompt. Azure ships it as "Spotlighting" in Prompt Shields:
+  https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/content-filter-prompt-shields
+- **Cited by:** AB-12 (candidate).
+
+### REF-16 — InjecGuard: Over-defense in Prompt Injection Guardrail Models (Li & Liu)
+
+**Status:** Verified (arXiv abstract, 2026-10-24)
+
+- **Citation:** H. Li, X. Liu. arXiv:2410.22770, 2024 (preprint).
+- **Link:** https://arxiv.org/abs/2410.22770
+- **Supports:** injection classifiers over-defend. Benign inputs containing trigger
+  words ("ignore", "override") are flagged, and state-of-the-art guards fall to about 60%
+  accuracy on the NotInject benign set. Any classifier gate needs a false-positive test
+  on in-domain questions.
+- **Cited by:** AB-12 (candidate).
+
+### REF-17 — An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction (Larson et al.)
+
+**Status:** Verified (arXiv abstract, 2026-10-24)
+
+- **Citation:** S. Larson et al. EMNLP-IJCNLP 2019. arXiv:1909.02027 (CLINC150).
+- **Link:** https://arxiv.org/abs/1909.02027
+- **Supports:** classifiers that do well on in-scope queries struggle to flag
+  out-of-scope ones. This is why an off-topic gate is calibrated on a labelled
+  out-of-scope set (here the golden set's `out_of_corpus` questions) rather than on intuition.
+- **Cited by:** AB-12 (candidate).
+
+### REF-18 — NeMo Guardrails: Programmable Rails for LLM Applications (Rebedea et al.)
+
+**Status:** Secondary (abstract read; the topical-rail mechanism was not read on the
+primary page)
+
+- **Citation:** T. Rebedea, R. Dinu, M. Sreedhar, C. Parisien, J. Cohen. EMNLP 2023
+  (demo track). arXiv:2310.10501.
+- **Link:** https://arxiv.org/abs/2310.10501
+- **Supports:** industry practice of programmable input rails, separate from the
+  model, that run before generation, including keeping a bot on topic.
+- **Cited by:** AB-12 (candidate).
+
+### REF-19 — LLM Prompt Injection Prevention Cheat Sheet (OWASP)
+
+**Status:** Verified (official page, 2026-10-24)
+
+- **Citation:** OWASP Cheat Sheet Series.
+- **Link:** https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html
+- **Supports:** input screening is "not a security boundary": keyword filters miss
+  paraphrases, other languages and encodings. It recommends normalising text,
+  **limiting input length**, **rate limiting per user/IP**, layered controls, and
+  treating retrieved content as untrusted.
+- **Cited by:** AB-12 (candidate).
+
+### REF-20 — Llama Prompt Guard 2 model card (Meta)
+
+**Status:** Verified (Hugging Face model card, 2026-10-24)
+
+- **Citation:** Meta, Llama Prompt Guard 2 (86M mDeBERTa-base multilingual; 22M
+  DeBERTa-xsmall English-only). Llama 4 Community License, gated repository.
+- **Link:** https://huggingface.co/meta-llama/Llama-Prompt-Guard-2-86M
+- **Supports:** a small local classifier option. Reported recall at 1% FPR: 97.5%
+  (86M) and 88.7% (22M) in English; latency 92 ms and 19 ms on an A100; 512-token window.
+  It flags **only attempts to override instructions**, not off-topic requests.
+- **Cited by:** AB-12 (candidate).
+
+### REF-21 — Training a 22MB Prompt Injection Classifier (StackOne)
+
+**Status:** Verified (vendor blog, 2026-10-24); a practitioner report, not peer-reviewed
+
+- **Citation:** H. Dingeto, StackOne engineering blog, May 2026.
+- **Link:** https://www.stackone.com/blog/training-22mb-prompt-injection-classifier/
+- **Supports:** the argument against an LLM as injection judge (latency, cost,
+  privacy, and the judge itself can be injected), and a quantized MiniLM classifier
+  (about 23 MB, about 45 ms) as the cheap alternative.
+- **Cited by:** AB-12 (candidate).
+
 ---
 **Última revisão:** 2026-10-24 · detalhe em `state/changelog.md`

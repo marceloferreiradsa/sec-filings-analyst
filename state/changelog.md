@@ -18,6 +18,24 @@
 
 ---
 
+## 2026-10-24 — AB-12: leituras verificadas → REF-13..21
+
+**Mudança:** titular pediu verificar os links e manter só os sólidos. Conferidos os
+14 links (PyPI pela API JSON, o resto pela página) e acrescentados artigos
+acadêmicos. Entraram na bibliografia: Greshake 2023, Liu et al. (USENIX Sec 2024),
+Spotlighting (Hines 2024), InjecGuard, Larson/CLINC150 (EMNLP 2019), NeMo
+Guardrails (secundária), OWASP, cartão do Prompt Guard 2, StackOne. Descartados com
+motivo em AB-12 (blogs sem fonte, pacotes alfa/sem avaliação, um sem detector
+funcionando). Achados que mudam a proposta: medir falso positivo do porteiro (REF-14,
+16); limite de tamanho da entrada como opção (e) (REF-19); Prompt Guard não detecta
+fora do tema (REF-20). Handoff regenerado (EV-03 → EV-05; REF-01..21).
+**Documentos tocados:** `docs/REFERENCES.md` · `state/aberto.md` (AB-12) ·
+`state/handoff.md` · `docs/_index.md`
+**Registros:** REF-13..21 criados
+**Pendente:** AB-12
+
+---
+
 ## 2026-10-24 — AB-12: leituras sugeridas guardadas
 
 **Mudança:** titular trouxe uma lista de leituras sobre filtros antes da geração

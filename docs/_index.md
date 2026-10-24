@@ -89,6 +89,15 @@
 | REF-10 | Ragas: Automated Evaluation of Retrieval Augmented Generation (Es et al.) | Verified (arXiv abstract, 2026-10-24) |
 | REF-11 | Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods (Cormack et al.) | Verified (paper PDF, 2026-10-24) |
 | REF-12 | The Probabilistic Relevance Framework: BM25 and Beyond (Robertson & Zaragoza) | Verified (publisher page, 2026-10-24) |
+| REF-13 | Not what you've signed up for: Indirect Prompt Injection (Greshake et al.) | Verified (arXiv abstract, 2026-10-24) |
+| REF-14 | Formalizing and Benchmarking Prompt Injection Attacks and Defenses (Liu et al.) | Verified (paper HTML, defenses section, 2026-10- |
+| REF-15 | Defending Against Indirect Prompt Injection Attacks With Spotlighting (Hines et al.) | Verified (arXiv abstract, 2026-10-24) |
+| REF-16 | InjecGuard: Over-defense in Prompt Injection Guardrail Models (Li & Liu) | Verified (arXiv abstract, 2026-10-24) |
+| REF-17 | An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction (Larson et al.) | Verified (arXiv abstract, 2026-10-24) |
+| REF-18 | NeMo Guardrails: Programmable Rails for LLM Applications (Rebedea et al.) | Secondary (abstract read; the topical-rail mecha |
+| REF-19 | LLM Prompt Injection Prevention Cheat Sheet (OWASP) | Verified (official page, 2026-10-24) |
+| REF-20 | Llama Prompt Guard 2 model card (Meta) | Verified (Hugging Face model card, 2026-10-24) |
+| REF-21 | Training a 22MB Prompt Injection Classifier (StackOne) | Verified (vendor blog, 2026-10-24); a practition |
 
 
 ## `docs/ROADMAP_PRIORITIES.md`
@@ -104,4 +113,4 @@
 
 ---
 
-*54 registros em 5 documentos.*
+*63 registros em 5 documentos.*
