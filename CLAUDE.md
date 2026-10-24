@@ -202,6 +202,14 @@ ela vira uma linha aqui.}
   **FAISS** e `make clean` **apaga `data/raw` e `data/processed`**. Instrução de qualquer
   ferramenta do método que diga `make check`/`make index` é texto antigo — usar o nome
   `docs-*`.
+- **`make check` não roda neste Windows** (o `$(MAKE)` expande para um caminho com espaço
+  e parênteses): rodar `make build`, `make run`, `PYTHONIOENCODING=utf-8 python
+  tests/test_deployment.py` e `docker rm -f sec-analyst` separadamente.
+- **`.dockerignore` exclui `*.md`** e não aceita comentário na mesma linha do padrão.
+  Arquivo `.md` que a imagem precisa (ex.: `CHANGELOG.md`, ADR-20) entra com `!nome.md`
+  em linha própria.
+- **Script Python com regex ou aspas: gravar em arquivo, não em heredoc** — o heredoc
+  do Git Bash já corrompeu barras invertidas e quebrou com aspas.
 
 ---
 

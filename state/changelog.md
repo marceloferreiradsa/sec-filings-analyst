@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-10-24 — v1.1.0 publicada e marcada
+
+**Mudança:** o 1º build falhou — `.dockerignore` exclui `*.md`, e comentário na mesma
+linha do padrão não é aceito; corrigido com `!CHANGELOG.md` em linha própria
+(`83ab4ae`). Tag `v1.1.0` recriada no commit corrigido (não tinha saído da máquina) e
+enviada com o push. Imagem testada local 20/20 com o `CHANGELOG.md` dentro; publicada
+na VPS (`:prev` = imagem do ADR-19); `test-vps` 20/20, site HTTP 200. Duas armadilhas
+viraram convenção no `CLAUDE.md`.
+**Documentos tocados:** `.dockerignore` · `CLAUDE.md` (Convenções)
+**Registros:** nenhum
+**Pendente:** nada
+
 ## 2026-10-24 — Versionamento visível no app: v1.1.0 e "What's new" (ADR-20)
 
 **Mudança:** titular pediu versão com link "o que há de novo", fácil para usuários e
