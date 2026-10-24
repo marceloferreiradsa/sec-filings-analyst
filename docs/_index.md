@@ -39,6 +39,7 @@
 | ADR-15 | Golden set labelled by section + literal evidence, not chunk IDs | Active |
 | ADR-16 | Retrieval scored deterministically against the golden set (Recall@k, MRR, nDCG) | Active |
 | ADR-17 | The per-company cap is ignored when the filter pins a single company | Active |
+| ADR-18 | Golden-set labels are not widened after scoring; undercount accepted | Active |
 
 
 ## `docs/EVALUATION.md`
@@ -94,4 +95,4 @@
 
 ---
 
-*44 registros em 5 documentos.*
+*45 registros em 5 documentos.*

@@ -63,7 +63,7 @@ in NVDA FY2026 10-K §7, not only §1A) and **cmp-10** (same META sentence in th
 Margin: 32.0%") matched GOOGL's summary — a different company, correctly rejected by
 the four-field label. 2 of 45 (~4%) is far from "labels dominate the score" (ADR-16's
 falsifier). Widening those two labels needs an alternatives field in the schema and
-the owner's approval — pending in `state/aberto.md`.
+the owner's approval — **declined** (ADR-18).
 
 ---
 
@@ -79,6 +79,10 @@ metric and k (Recall@5 0.518, Recall@20 0.698; per category as in EV-01 plain).
 Paired bootstrap vs EV-01 app, k = 5: Recall@5 +0.180 [+0.099, +0.268], All@5
 +0.147 [+0.074, +0.235]. Sanity check: a question naming no company still gets ≤ 2
 chunks per company; a question naming Apple now gets 5 Apple chunks.
+
+**Known undercount (ADR-18):** nar-02 and cmp-10 have their evidence also in an
+unlabelled chunk; scores are a lower bound. Re-check the share of such misses after
+every P1 run (reopen ADR-18 above 5%).
 
 Readings 2–4 of EV-01 stand; reading 1 is resolved by ADR-17. **This is the baseline
 P1 is compared against.**

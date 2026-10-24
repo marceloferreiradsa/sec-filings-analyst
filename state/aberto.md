@@ -208,7 +208,8 @@ revisa pela tabela. Gabarito vem do texto do filing, nunca de resposta do RAG. N
 nem caixa do GOOGL 2026-03-31 (achados AB-06).
 *aberta desde 2026-10-23*
 
-**AB-08 — Achados do P0b a decidir** (medidos em `docs/EVALUATION.md` EV-01)
+**~~AB-08 — Achados do P0b a decidir~~** *resolvida em 2026-10-24: (a) ADR-17, (b) ADR-18.*
+ (medidos em `docs/EVALUATION.md` EV-01)
 - (a) ~~**Teto por empresa do `app.py` corta perguntas de uma empresa só:**~~ *resolvido em
   2026-10-24 (ADR-17, EV-02): teto ignorado quando o filtro fixa uma empresa; Recall@5
   0,338 → 0,518. Publicado na VPS em 2026-10-24 (test-vps 20/20).* com
@@ -216,7 +217,8 @@ nem caixa do GOOGL 2026-03-31 (achados AB-06).
   perguntas receberam 1–2 trechos com `top_k=5`. Sem o teto, Recall@5 0,338 → 0,518
   (IC 95% +0,10 a +0,27). Correção é 1 linha, mas muda a demo pública — **decisão do
   titular**; candidato a DT/ADR. Confirmar efeito na resposta no P0c.
-- (b) **Ampliar 2 rótulos** (nar-02: mesma frase em NVDA 10-K FY2026 §7; cmp-10: mesma
+- (b) ~~**Ampliar 2 rótulos**~~ *recusado pelo titular em 2026-10-24 (ADR-18): não afeta o
+  usuário; nota baixa é preferível a nota inflada por reetiquetar depois de medir.* (nar-02: mesma frase em NVDA 10-K FY2026 §7; cmp-10: mesma
   frase META no 10-Q 2025-09-30) exige campo de alternativas no schema (ADR-15) —
   **decisão do titular**; efeito ≤ 2 de 119 fontes.
 *aberta desde 2026-10-24*

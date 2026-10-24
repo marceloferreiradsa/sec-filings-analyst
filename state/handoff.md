@@ -25,8 +25,8 @@ rerank decidido (ADR-14: Cloudflare → SubQ → sem rerank com aviso).
   empresa — corrigido em `rag/retrieve.py`. Recall@5 do app 0,338 → 0,518 (EV-02 é a
   linha de base atual). **Publicado na VPS** (imagem anterior = `:prev`); chave OpenAI
   da VPS trocada (estava inválida — demo dava erro). Apagar `.env.bak` e `:prev` depois.
-- Pendente do titular: AB-08 (b) — ampliar 2 rótulos (nar-02, cmp-10) exige campo de
-  alternativas no schema.
+- **ADR-18:** rótulos não são ampliados depois de medir (nar-02, cmp-10 = subcontagem
+  conhecida). Princípio do titular: nota baixa > nota inflada.
 
 ## Como usar o medidor
 
@@ -50,7 +50,8 @@ Varrer arquivos contra vazamento antes de cada commit. Teto de gasto OpenAI: fei
 
 ## Próximos passos — por prioridade
 
-1. **AB-08 (b)** — titular decide ampliar 2 rótulos (análise de prós e contras feita).
+1. **Decidir a ordem:** AB-06 (a) rótulos fiscais (erro silencioso, o pior para o
+   analista) antes ou junto do P1a.
 2. **P1a** — BM25 + RRF + cabeçalhos de contexto; medir com `score.py compare`
    (meta: narrativa e temporal, que EV-01 mostra fracas).
 3. **P1b** — cascata de rerank (ADR-14); medir R@5 vs R@20 (EV-01 mostra a folga).
@@ -62,6 +63,6 @@ Recarga OpenAI: não precisa até o passo 5.
 
 ## Pendências abertas — ver `aberto.md`
 
-AB-02 · AB-03 · AB-05 · AB-06 · AB-08 · AD-05 · AD-06.
+AB-02 · AB-03 · AB-05 · AB-06 · AD-05 · AD-06.
 
 Discutir antes de codar.

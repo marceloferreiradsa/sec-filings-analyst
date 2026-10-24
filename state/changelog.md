@@ -18,6 +18,20 @@
 
 ---
 
+## 2026-10-24 — Rótulos do golden set não são ampliados após medir (ADR-18)
+
+**Mudança:** titular recusou AB-08 (b) depois de analisar do ponto de vista do usuário
+(analista fundamentalista): os dois casos (nar-02, cmp-10) entregam a mesma frase com
+citação válida, então só a nota cai. Princípio do titular: nota punida indevidamente é
+preferível a nota inflada indevidamente. Registrado como subcontagem conhecida, com
+gatilho de reabertura (> 5% dos erros). Na mesma análise, apontado que o erro mais grave
+para o analista é o trimestre errado sem aviso (AB-06 a) — ordem dos próximos passos
+em discussão.
+**Documentos tocados:** `docs/ARCHITECTURAL_DECISIONS.md` (ADR-18, Quick Reference) ·
+`docs/EVALUATION.md` (EV-01, EV-02) · `state/aberto.md` (AB-08)
+**Registros:** ADR-18 criado · AB-08 resolvida
+**Pendente:** nada
+
 ## 2026-10-24 — Publicado na VPS (ADR-17) e chave OpenAI da VPS trocada
 
 **Mudança:** push `a15773b..1643adf`; imagem reconstruída e testada local (20/20,

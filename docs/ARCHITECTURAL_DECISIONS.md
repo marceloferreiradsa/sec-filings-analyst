@@ -32,6 +32,7 @@ framing for technical interviews. Later records follow the same format: ADR-12
 | 15 | Golden set labelled by section + evidence | Labels survive re-chunking; every evidence checked against the corpus before review |
 | 16 | Deterministic retrieval scoring | Recall@k / MRR / nDCG by evidence match, with confidence intervals; no LLM judge for retrieval |
 | 17 | Per-company cap ignored for single-company queries | A balancing cap must not truncate a query that already names one company |
+| 18 | Golden-set labels not widened after scoring | A score biased low is preferable to one inflated by post-hoc relabelling |
 
 ---
 
@@ -936,3 +937,41 @@ EV-02.
 ### Would be false if
 A question that names one company needs the cap for answer quality (e.g. answers get
 worse with 5 chunks than with 2) — checked in P0c, where generation is scored.
+
+---
+
+## ADR-18 — Golden-set labels are not widened after scoring; undercount accepted
+
+**Status:** Active
+
+### Context (2026-10-24)
+ADR-16's miss review found 2 of 45 missed sources at k = 20 (EV-01, EV-02) whose
+evidence also exists in a chunk the label does not point to: **nar-02** (same sentence
+in NVDA FY2026 10-K §7, label points to §1A) and **cmp-10** (same META sentence in the
+2025-09-30 10-Q, label points to the 10-K §7). Crediting them would need an
+"alternative sources" field in the golden-set schema (ADR-15).
+
+### What was decided
+Labels stay as reviewed. The two cases are recorded as a known undercount, and the
+score is reported as a lower bound. The owner's reasoning: the user is not affected
+(either chunk gives the analyst the same sentence with a valid citation), so the only
+consequence is a lower score — and a score biased low is preferable to one raised by
+relabelling after seeing the results.
+
+### What was rejected
+**Add alternative sources to the schema and widen the two labels.** Measured gain:
+Recall@5 unchanged (0.518); narrative Recall@10 0.533 → 0.600; overall Recall@20
+≈ 0.698 → 0.72. Rejected because (1) it changes nothing the user sees; (2) it costs a
+schema change in `validate.py`, `score.py` and ADR-15; (3) widening labels *after*
+scoring invites inflating the score, the opposite of what the evaluation is for; (4)
+P1 comparisons are paired on the same labels, so the undercount hits both arms.
+
+### Tradeoff accepted
+Retrieval scores, chiefly at k = 10–20, are slightly pessimistic; a reranker that
+promotes the §7 chunk of nar-02 gets no credit for it. Incomplete judgments are a known
+property of test collections (REF-04).
+
+### Would be false if
+The miss review after any P1 run finds label gaps in **more than 5% of misses**
+(today 2/45 ≈ 4%), or a P1 comparison flips sign when those questions are excluded —
+then the undercount is no longer negligible and this decision is reopened.
