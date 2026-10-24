@@ -65,8 +65,9 @@ enviada; VPS com `:prev` = v1.1.1). Chaves no `.env` da VPS: OPENAI, SUBQ.
 de base atual). Fallback: ordem densa com nota na página.
 
 1. **AB-11** — revisar o README contra as mudanças de 2026-10-24 (lista em `aberto.md`).
-2. **AB-12** — barrar injeção/fora do escopo antes das chamadas pagas (opções em
-   `aberto.md`; porteiro de relevância calibrado nos `out_of_corpus` + limite de taxa).
+2. **AB-12** — barrar injeção/fora do escopo antes da geração. Medido: similaridade não
+   serve (contornável e não separa); **P(sim) máxima da SubQ separa** (1,0 vs ≤ 0,05).
+   Proposta: porteiro SubQ calibrado no golden set + limite de taxa + ADR-11.
 3. **AB-10** — latência do rerank multiempresa (4,8 s com 5 empresas): SubQ em
    paralelo; `last_rerank` como estado compartilhado.
 4. **AB-06 restante** — inclui (g): pipeline não reproduz o corpus; fixar versões.
