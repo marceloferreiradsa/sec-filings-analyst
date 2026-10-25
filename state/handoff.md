@@ -21,7 +21,7 @@ fallback para ordem densa com aviso (ADR-22, revisa a ordem do ADR-14). Roadmap 
 - **Feito em 2026-10-24:** teto por empresa (ADR-17); rótulos fiscais (ADR-19); BM25
   medido e fora (ADR-21); rerank SubQ no ar (ADR-22); "What's new" no app (ADR-20).
 - **Método atualizado em 2026-10-25:** comandos do método são `python -m metodo <comando>`
-  (pasta `metodo/`); o `Makefile` é só do projeto. ADR-12 superado, AB-02 fechada.
+  (pasta `metodo/`); o `Makefile` é só do projeto. ADR-12 superado, AB-02 fechada. `adr`/`dt` recebem o título como argumento.
 
 ## Como o titular decide
 

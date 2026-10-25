@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """Cria o próximo ADR em docs/decisoes_arquiteturais.md.
 
+    python -m metodo adr "Título da decisão"
+
 Lê o maior número existente e incrementa. Numeração nunca é reaproveitada:
 um ADR superado muda de status, nunca some — a data histórica preserva a
 rastreabilidade de por que a decisão foi tomada com o que se sabia na época.
+
+O título vem do argumento. Sem argumento, de um terminal (pergunta) ou de um
+pipe (primeira linha). Sem título, sai sem gravar nada: quem roda isto de um
+agente, sem terminal, não pode ficar esperando uma pergunta que ninguém vê.
 """
 import re
 from datetime import date
@@ -40,7 +46,39 @@ tem custo, ele fica aqui.
 """
 
 
+def ler_titulo(pergunta):
+    """Título do argumento, do terminal ou do pipe. None se não houver."""
+    if sys.argv[1:]:
+        return " ".join(sys.argv[1:]).strip() or None
+    if sys.stdin is None:
+        return None
+    if sys.stdin.isatty():
+        try:
+            return input(pergunta).strip() or None
+        except EOFError:
+            return None
+    # Pipe: no Windows chega em cp1252 se não reconfigurar, e o acento corrompe.
+    sys.stdin.reconfigure(encoding="utf-8")
+    return sys.stdin.readline().strip() or None
+
+
+def sem_titulo(comando):
+    print("  Sem título: nada gravado.")
+    print('  uso: python -m metodo ' + comando + ' "Título"')
+    return 1
+
+
+def proximo(texto, prefixo):
+    numeros = [int(m) for m in re.findall(r"^## " + prefixo + r"-(\d+)", texto, re.M)]
+    return max(numeros) + 1 if numeros else 1
+
+
 def main():
+    # O título vem antes de criar qualquer arquivo: sem ele, nada se grava.
+    n = proximo(DOC.read_text(encoding="utf-8") if DOC.exists() else "", "ADR")
+    title = ler_titulo(f"Título do ADR-{n:02d}: ")
+    if not title:
+        return sem_titulo("adr")
     if not DOC.exists():
         DOC.parent.mkdir(parents=True, exist_ok=True)
         DOC.write_text(
@@ -55,13 +93,10 @@ def main():
             encoding="utf-8", newline="\n",
         )
     text = DOC.read_text(encoding="utf-8")
-    numbers = [int(m) for m in re.findall(r"^## ADR-(\d+)", text, re.M)]
-    n = max(numbers) + 1 if numbers else 1
-    title = input(f"Título do ADR-{n:02d}: ").strip() or "TODO"
     DOC.write_text(text.rstrip() + "\n" + TEMPLATE.format(n=n, title=title, today=date.today().isoformat()), encoding="utf-8", newline="\n")
     print(f"  ADR-{n:02d} criado em {DOC}")
     print("  Não esqueça: python -m metodo index")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

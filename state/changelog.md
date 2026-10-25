@@ -583,3 +583,19 @@ ser só do projeto.
 **Pendente:** nenhuma pendência da atualização.
 
 ---
+
+## 2026-10-25 — Atualização do método: `adr` e `dt` com título por argumento
+
+**Mudança:** `python -m metodo atualizar` de novo, do `ai-project-framework` (`2d616f0`,
+gerado de `4296b9b`); origem `b00487d`. Só a pasta `metodo/` mudou: `python -m metodo adr
+"Título"` e `dt "Título"`; sem título, saem sem gravar nada; o pipe é lido em UTF-8, e o
+`PYTHONUTF8=1` deixa de ser preciso. O `atualizar` novo também aponta trecho do
+`CLAUDE.md` que descreve a estrutura antiga e citação antiga no handoff.
+
+**Documentos tocados:** `metodo/` · `state/aberto.md` · `state/handoff.md` · `docs/_index.md` (regenerado)
+
+**Registros:** AT da atualização aberta e resolvida
+
+**Verificado:** `python -m metodo check` com exit 0.
+
+---

@@ -193,6 +193,21 @@ EOF
   echo "===== new_adr (stdin) ====="; printf 'Formato de particionamento\n' | python metodo/new_adr.py 2>&1; echo "[exit=$?]"
   echo "===== new_dt (stdin) ====="
   printf 'Bridge sem relacionamento ativo\n' | python metodo/new_dt.py 2>&1; echo "[exit=$?]"
+  # Titulo por argumento, com acento: e como o agente chama, sem terminal.
+  echo "===== adr e dt por argumento ====="
+  python -m metodo adr "Decisão por argumento" 2>&1; echo "[exit=$?]"
+  python -m metodo dt "Dívida por argumento" 2>&1; echo "[exit=$?]"
+  grep "^## ADR-" docs/decisoes_arquiteturais.md | tail -1
+  grep "^## DT-" docs/dividas_tecnicas.md | tail -1
+  # Sem titulo e sem terminal: sai sem gravar, e sem criar o documento.
+  echo "===== adr e dt sem titulo (nada gravado) ====="
+  antes=$(cat docs/decisoes_arquiteturais.md docs/dividas_tecnicas.md | cksum)
+  python -m metodo adr < /dev/null 2>&1; echo "[exit=$?]"
+  python -m metodo dt < /dev/null 2>&1; echo "[exit=$?]"
+  [ "$antes" = "$(cat docs/decisoes_arquiteturais.md docs/dividas_tecnicas.md | cksum)" ] && echo "documentos intactos"
+  SEM="$STAGE/sem-docs"; mkdir -p "$SEM"; M="$PWD/metodo"
+  (cd "$SEM" && python "$M/new_adr.py" < /dev/null > /dev/null 2>&1; python "$M/new_dt.py" < /dev/null > /dev/null 2>&1)
+  ls "$SEM/docs" 2>/dev/null || echo "nenhum documento criado"
   echo "===== dividas_tecnicas.md apos DT ====="; cat docs/dividas_tecnicas.md
   echo "===== decisoes_arquiteturais.md apos ADR ====="; cat docs/decisoes_arquiteturais.md
   run "gen_index apos ADR"           python metodo/gen_index.py --write
@@ -278,12 +293,18 @@ EOF
   FA="$STAGE/forma-cp"; base "$FA" index
   printf '.PHONY: help index check clean\nhelp:\n\t@python tools/help.py\nindex:\n\t@python tools/gen_index.py --write\ncheck:\n\t@python tools/check.py\nclean:\n\t@find . -name x\n\t@echo "  cache removido (docs/ e state/ intactos)"\n' > "$FA/Makefile"
   printf '# Projeto A\n\nRodar `make check`, depois `make index`. Limpar com `make clean`.\n' > "$FA/CLAUDE.md"
+  # Handoff citando alvo do metodo: o atualizar aponta, nao reescreve.
+  printf '# Handoff\n\nDepois de mudar registro, `make index`.\n' > "$FA/state/handoff.md"
   repo "$FA"
   # Forma 2: contorno local; o projeto tem index e check proprios.
   FB="$STAGE/forma-contorno"; base "$FB" docs-index
   printf 'index:\n\t@python pipeline.py --only index\ncheck:\n\t@docker compose up\n\n# ---\n# metodo — alvos do ai-project-framework (ADR-14). Manter no FIM.\n# ---\ninclude metodo.mk\n' > "$FB/Makefile"
   printf 'docs-index:\n\t@python tools/gen_index.py --write\ndocs-check:\n\t@python tools/check.py\nmetodo-clean:\n\t@echo "  cache removido (docs/ e state/ intactos)"\n' > "$FB/metodo.mk"
-  printf '# Projeto B\n\n`make index` constroi o FAISS; `make check` sobe o Docker.\nO do metodo: `make docs-check` e `make docs-index`.\n' > "$FB/CLAUDE.md"
+  # O segundo paragrafo descreve a estrutura antiga: a citacao troca, o texto em
+  # volta fica falso, e isso vira pendencia.
+  printf '# Projeto B\n\n`make index` constroi o FAISS; `make check` sobe o Docker.\n\nO do metodo mora em `metodo.mk`: `make docs-check` e `make docs-index`.\n' > "$FB/CLAUDE.md"
+  # Sem VERSAO: a origem so esta na entrada de adocao do changelog.
+  printf '\n## 2026-10-20 — Adoção do método\n\nEstrutura do `ai-project-framework` (versão `2f39f84`) instalada.\n' >> "$FB/state/changelog.md"
   repo "$FB"
   # Forma 3: a versao metodo-* (6c58678), com stub de Makefile e VERSAO na raiz.
   FC="$STAGE/forma-prefixo"; base "$FC" metodo-index
@@ -302,6 +323,7 @@ EOF
     echo "--- CLAUDE.md:"; sed -n '3,$p' "$F/CLAUDE.md"
     echo "--- sobras antigas:"; ls -d "$F/tools" "$F/.template" "$F/metodo.mk" "$F/METODO.md" "$F/VERSAO" 2>/dev/null | sed "s|$STAGE/||"
     echo "--- pendencias AT:"; grep "^\*\*AT-" "$F/state/aberto.md"
+    echo "--- onde ha citacao antiga:"; grep -A1 "Citações a alvos antigos" "$F/state/aberto.md" | tail -1 | sed 's/\. Não foram.*//'
     echo "--- metodo roda:"; (cd "$F" && python -m metodo index 2>&1); echo "[exit=$?]"
   done
   echo "===== atualizar com arvore suja (deve recusar) ====="

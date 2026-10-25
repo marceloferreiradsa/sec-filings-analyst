@@ -364,3 +364,8 @@ Onde: `arquivo` (trecho). Por que pode ser problema: … Confirma ou descarta: �
 Versão do método: versão desconhecida → b00487d. Anotar o que ela removeu e acrescentou (a saída do `python -m metodo atualizar`). Depois, `python -m metodo check`.
 *aberta na atualização de 2026-10-25 (versão desconhecida → b00487d)*
 *resolvida em 2026-10-25: entrada de 2026-10-25 no `state/changelog.md`; a origem real era `2f39f84` (o `VERSAO` ainda não viajava).*
+
+**~~AT-04 — Registrar no `state/changelog.md` a atualização b00487d → 4296b9b~~**
+Versão do método: b00487d → 4296b9b. Anotar o que ela removeu e acrescentou (a saída do `python -m metodo atualizar`), e pôr uma linha sobre ela no `state/handoff.md`, no mesmo commit: senão o check acusa o handoff atrás do git. Depois, `python -m metodo check`.
+*aberta na atualização de 2026-10-25 (b00487d → 4296b9b)*
+*resolvida em 2026-10-25: entrada de 2026-10-25 no `state/changelog.md` e linha no `state/handoff.md`.*

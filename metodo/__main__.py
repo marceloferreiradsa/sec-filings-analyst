@@ -46,8 +46,8 @@ GRUPOS = [
     ("DOCUMENTAÇÃO", [
         ("index", "", "regenera docs/_index.md varrendo os canônicos"),
         ("intake", "", "confere refs/ contra o manifesto refs/_fontes.md"),
-        ("adr", "", "cria a próxima decisão arquitetural a partir do modelo"),
-        ("dt", "", "cria a próxima dívida técnica a partir do modelo"),
+        ("adr", '"TÍTULO"', "cria a próxima decisão arquitetural a partir do modelo"),
+        ("dt", '"TÍTULO"', "cria a próxima dívida técnica a partir do modelo"),
         ("doc", "NOME", "cria documento canônico novo"),
     ]),
     ("SESSÃO", [
@@ -179,8 +179,8 @@ COMANDOS = {
     "test": test,
     "index": index,
     "intake": lambda args: rodar("intake"),
-    "adr": lambda args: rodar("new_adr"),
-    "dt": lambda args: rodar("new_dt"),
+    "adr": lambda args: rodar("new_adr", *args),
+    "dt": lambda args: rodar("new_dt", *args),
     "doc": _um_argumento("new_doc"),
     "mcp-list": mcp_list,
 }

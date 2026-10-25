@@ -62,6 +62,10 @@ MODELO_CLAUDE = novo.PACOTE + "/CLAUDE.modelo.md"
 
 ALVO = re.compile(r"^([A-Za-z][\w.-]*)\s*:(?!=)")
 INCLUDE = re.compile(r"^\s*-?include\s+metodo\.mk\s*$")
+# O que so existia na estrutura antiga. Num trecho do CLAUDE.md que acabou de ter a
+# citacao trocada, isso indica que o texto em volta ainda descreve o make do metodo.
+ESTRUTURA_ANTIGA = re.compile(r"metodo\.mk|\bMakefile\b|`docs-\*`|\bdocs-(?:check|index)\b"
+                              r"|\bmetodo-(?:help|test|clean|check|index)\b")
 SECAO_SUSPEITAS = "## Suspeitas a verificar"
 SECAO_AT = "## Atualização do método"
 
@@ -203,12 +207,44 @@ def reescrever_claude(plano, mapa):
             return
         plano.fazer("CLAUDE.md", str(contagem) + " citação(ões) de alvo e " + str(caminhos)
                     + " caminho(s) reescritos", lambda: claude.write_bytes(depois))
+        trechos = trechos_antigos(bruto.decode("utf-8").splitlines(), texto.splitlines())
+        if trechos:
+            plano.pendencias.append((
+                "Trechos do `CLAUDE.md` que ainda descrevem a estrutura antiga",
+                "A citação foi trocada por `python -m metodo …`, mas o texto em volta fala de "
+                "`metodo.mk`, do `Makefile` ou dos nomes antigos: "
+                + "; ".join("«" + t + "»" for t in trechos)
+                + ". Reescrever o trecho: o `Makefile` agora é só do projeto."))
     restos = sorted({a for a in cortados if re.search(r"\bmake " + re.escape(a) + r"(?![\w-])", texto)})
     if restos:
         plano.pendencias.append((
             "Citações a comandos que deixaram de existir, no `CLAUDE.md`",
             ", ".join("`make " + a + "` (era o `" + cortados[a] + "`)" for a in restos)
             + ". Apagar ou trocar pelo equivalente direto."))
+
+
+def trechos_antigos(antes, depois):
+    """Inicio de cada bloco (paragrafo ou item) que a reescrita mudou e que ainda
+    cita a estrutura antiga. So o que mudou nesta rodada: texto que o projeto ja
+    reescreveu pode falar do Makefile de proposito. As listas tem o mesmo tamanho,
+    porque a reescrita conserva as linhas."""
+    blocos, atual = [], []
+    for i, linha in enumerate(depois):
+        if not linha.strip() or (linha.lstrip().startswith("- ") and atual):
+            if atual:
+                blocos.append(atual)
+            atual = []
+        if linha.strip():
+            atual.append(i)
+    if atual:
+        blocos.append(atual)
+    achados = []
+    for idx in blocos:
+        bloco = [depois[i] for i in idx]
+        if bloco != [antes[i] for i in idx] and ESTRUTURA_ANTIGA.search("\n".join(bloco)):
+            primeira = bloco[0].replace("**", "").strip().lstrip("-* ").strip()
+            achados.append(primeira[:70] + ("…" if len(primeira) > 70 else ""))
+    return achados
 
 
 def citacoes_fora(plano, mapa):
@@ -218,7 +254,9 @@ def citacoes_fora(plano, mapa):
         return
     rx = re.compile(r"\bmake (" + "|".join(map(re.escape, nomes)) + r")(?![\w-])")
     achados, citados = [], set()
-    candidatos = [plano.destino / "README.md"] + sorted((plano.destino / "docs").glob("*.md"))
+    # O handoff entra: e derivado, mas e o primeiro arquivo que a proxima sessao le.
+    candidatos = ([plano.destino / "README.md", plano.destino / "state" / "handoff.md"]
+                  + sorted((plano.destino / "docs").glob("*.md")))
     for p in candidatos:
         if p.is_file() and p.name != "_index.md":
             encontrados = rx.findall(p.read_text(encoding="utf-8", errors="replace"))
@@ -299,6 +337,20 @@ def versao(arquivo):
     return m.group(1) if m else "versão desconhecida"
 
 
+def versao_do_changelog(destino):
+    """Antes do VERSAO viajar, a origem so ficou escrita na entrada de adocao:
+    '(versão `2f39f84`)' ou '(commit 03b7eb0, ...)'. None se nao achar."""
+    cl = destino / "state" / "changelog.md"
+    if not cl.exists():
+        return None
+    for entrada in cl.read_text(encoding="utf-8", errors="replace").split("\n## "):
+        if entrada.split("\n", 1)[0].rstrip().endswith("Adoção do método"):
+            m = re.search(r"(?:versão|commit) `?([0-9a-f]{7,40})\b", entrada)
+            if m:
+                return m.group(1)
+    return None
+
+
 def main():
     args = [a for a in sys.argv[1:] if a != "--simular"]
     simular = "--simular" in sys.argv[1:]
@@ -344,9 +396,12 @@ def main():
         print("  AVISO      " + str(n) + " mudança(s) não commitada(s): para aplicar, commite antes.")
 
     origem_v = versao(pacote / "VERSAO") if forma_nova else versao(destino / "VERSAO")
+    fonte_v = ""
+    if origem_v == "versão desconhecida" and versao_do_changelog(destino):
+        origem_v, fonte_v = versao_do_changelog(destino), " (lida da entrada de adoção do changelog)"
     destino_v = versao(Path(novo.VERSAO)) if Path(novo.VERSAO).exists() else "repositório de desenvolvimento"
     print("  " + ("SIMULAÇÃO  nada será gravado" if simular else "ATUALIZANDO"))
-    print("  versão     " + origem_v + " → " + destino_v)
+    print("  versão     " + origem_v + " → " + destino_v + fonte_v)
     print("  forma      " + ("pasta metodo/" if forma_nova else "antiga (tools/, .template/, make)"))
     plano = Plano(destino, simular)
 
@@ -436,7 +491,8 @@ def main():
         "Registrar no `state/changelog.md` a atualização " + origem_v + " → " + destino_v,
         "Versão do método: " + origem_v + " → "
         + destino_v + ". Anotar o que ela removeu e acrescentou (a saída do `python -m metodo "
-        "atualizar`). Depois, `python -m metodo check`."))
+        "atualizar`), e pôr uma linha sobre ela no `state/handoff.md`, no mesmo commit: "
+        "senão o check acusa o handoff atrás do git. Depois, `python -m metodo check`."))
     complementar_aberto(plano, origem_v, destino_v)
 
     # O indice e derivado, e o cabecalho dele cita o comando que o gera: regerar

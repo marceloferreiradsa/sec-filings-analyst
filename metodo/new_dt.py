@@ -26,10 +26,11 @@ quanto custa, quando resolver). A acao de paga-la, enquanto estiver ativa, e uma
 pendencia em aberto.md que APONTA para o DT. Sem essa regra escrita, com poucas
 dividas e todas com acao ativa, os dois arquivos parecem duplicados.
 """
-import re
 import sys
 from datetime import date
 from pathlib import Path
+
+from new_adr import ler_titulo, proximo, sem_titulo
 
 # Windows: sem isto, o stdout sai em cp1252 e corrompe os acentos das mensagens.
 sys.stdout.reconfigure(encoding="utf-8")
@@ -89,13 +90,15 @@ acionável sem que ela precise virar tarefa.
 
 
 def main():
+    # Como no ADR: o título vem antes de criar qualquer arquivo.
+    n = proximo(DOC.read_text(encoding="utf-8") if DOC.exists() else "", "DT")
+    title = ler_titulo(f"Título da DT-{n:02d}: ")
+    if not title:
+        return sem_titulo("dt")
     if not DOC.exists():
         DOC.parent.mkdir(parents=True, exist_ok=True)
         DOC.write_text(CABECALHO, encoding="utf-8", newline="\n")
     text = DOC.read_text(encoding="utf-8")
-    numbers = [int(m) for m in re.findall(r"^## DT-(\d+)", text, re.M)]
-    n = max(numbers) + 1 if numbers else 1
-    title = input(f"Título da DT-{n:02d}: ").strip() or "TODO"
     DOC.write_text(
         text.rstrip() + "\n" + MODELO.format(n=n, title=title, today=date.today().isoformat()),
         encoding="utf-8", newline="\n",
@@ -106,4 +109,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
