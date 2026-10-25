@@ -3,7 +3,8 @@
 > **Primeiro arquivo a ler ao abrir sessão.** Regenerado do zero ao fim de cada dia
 > de trabalho, a partir de `changelog.md` e `aberto.md`. Teto ~80 linhas.
 
-**Gerado em:** 2026-10-24 (sábado, fim — v1.2.0 no ar; próxima sessão: sábado seguinte)
+**Gerado em:** 2026-10-24 (sábado, fim — v1.2.0 no ar; próxima sessão: sábado seguinte);
+atualização do método em 2026-10-25
 
 ---
 
@@ -19,6 +20,8 @@ fallback para ordem densa com aviso (ADR-22, revisa a ordem do ADR-14). Roadmap 
   (REF-01..21); o titular quer decisões amparadas: citar `REF-NN`.
 - **Feito em 2026-10-24:** teto por empresa (ADR-17); rótulos fiscais (ADR-19); BM25
   medido e fora (ADR-21); rerank SubQ no ar (ADR-22); "What's new" no app (ADR-20).
+- **Método atualizado em 2026-10-25:** comandos do método são `python -m metodo <comando>`
+  (pasta `metodo/`); o `Makefile` é só do projeto. ADR-12 superado, AB-02 fechada.
 
 ## Como o titular decide
 
