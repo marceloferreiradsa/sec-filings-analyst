@@ -1,7 +1,7 @@
 # Como adotar — passo a passo
 
 Este documento é o **dono do procedimento**. Se um comando aparece em outro lugar do
-repositório, é engano — avise. O `README.md` explica o que o método é; o `METODO.md`,
+repositório, é engano — avise. O `README.md` explica o que o método é; o `metodo/METODO.md`,
 por que cada peça existe; aqui está o que fazer.
 
 **Ele serve a dois leitores.** Se você é uma **pessoa** adotando sozinha, pule para
@@ -21,7 +21,7 @@ usar para cumpri-las.
 2. **Uma instrução por vez.** Diga o próximo passo, espere acontecer, confira, siga. Não
    despeje os seis passos de uma vez.
 3. **Não explique o método.** Quem está adotando quer adotar. O porquê está no
-   `METODO.md`, e só entra se for perguntado.
+   `metodo/METODO.md`, e só entra se for perguntado.
 4. **Não declare protocolo aqui.** Durante a adoção o índice está vazio: consultá-lo é
    teatro, e anunciar que consultou é ruído.
 5. **Não discuta a condução.** Se pediram para guiar, guie.
@@ -32,15 +32,15 @@ usar para cumpri-las.
 
 | O que você observa | Onde está | O que fazer |
 |---|---|---|
-| `CLAUDE.md` com `{NOME DO PROJETO}` e `.template/` presente | no template | primeiro passo é `make novo` |
-| `CLAUDE.md` já nomeado, `make docs-check` diz *adoção incompleta* | adoção em curso | siga do passo que falta |
-| `make docs-check` sem *adoção incompleta* | adoção terminou | ofereça `rm COMO-ADOTAR.md` |
+| `CLAUDE.md` com `{NOME DO PROJETO}` e `metodo/modelos/` presente | no template | primeiro passo é `python -m metodo novo` |
+| `CLAUDE.md` já nomeado, `python -m metodo check` diz *adoção incompleta* | adoção em curso | siga do passo que falta |
+| `python -m metodo check` sem *adoção incompleta* | adoção terminou | ofereça `rm COMO-ADOTAR.md` |
 
 **A única pergunta que abre a condução**, quando você está no template:
 
 > Qual o nome do projeto?
 
-Com ela você roda o `make novo` e o resto se descobre.
+Com ela você roda o `python -m metodo novo` e o resto se descobre.
 
 ---
 
@@ -51,25 +51,39 @@ Com ela você roda o `make novo` e o resto se descobre.
 Você parte do **clone do template**, e é de dentro dele que roda:
 
 ```bash
-make novo NOME="Meu Projeto"                  # cria ../meu-projeto
-make novo CAMINHO="C:/projetos/meu-projeto"   # ou informe o caminho completo
+python -m metodo novo "Meu Projeto"                  # cria ../meu-projeto
+python -m metodo novo --caminho "C:/projetos/meu-projeto"   # ou informe o caminho completo
 ```
 
 O comando cria a pasta, copia o método, dá o nome ao `CLAUDE.md`, zera o `state/` e gera
-o índice — o projeto nasce com `make docs-check` limpo. Depois, na pasta nova: `git init -b
+o índice — o projeto nasce com `python -m metodo check` limpo. Depois, na pasta nova: `git init -b
 main`, abra o agente e diga **"leia o `COMO-ADOTAR.md` e me guie na adoção"**.
 
 Ponha em `refs/` só o que **outra pessoa mantém**. `docs/` nasce vazio e cresce sozinho.
 
 ### B — Projeto que já existe ← **a maioria das adoções**
 
+**Antes, no projeto: `git status` limpo.** Se não estiver, commite o trabalho pendente à
+parte. A adoção sai num commit próprio e reversível, sem misturar com o que é seu.
+
 ```bash
-cp -r ai-project-framework/{CLAUDE.md,METODO.md,COMO-ADOTAR.md,Makefile,tools,.template,refs} meu-projeto/
-cd meu-projeto && make bootstrap NAME="Meu Projeto" && make docs-check
+cd ai-project-framework
+python -m metodo adotar ../meu-projeto "Meu Projeto"
 ```
 
-O `bootstrap` dá o nome ao `CLAUDE.md`, cria o `state/` a partir dos modelos e gera o
-índice. **Ele não toca no seu `README.md`** nem em nada que já estava na pasta.
+**Nada é sobrescrito.** O comando confere o destino antes de escrever e, se algum arquivo
+do método já existe lá com outro conteúdo, lista e para. O método mora inteiro na pasta
+`metodo/` e roda por `python -m metodo`: **o seu `Makefile` não é tocado**, e `make
+index`, `make check`, `make clean` continuam sendo só seus. Os três arquivos que todo
+projeto já tem recebem tratamento próprio:
+
+- **`CLAUDE.md`**: o seu vira `CLAUDE.anterior.md`, e a `AD-03` manda mesclá-lo no novo;
+- **`.gitignore`**: recebe só as linhas do método que faltam;
+- **`.gitattributes`**: copiado se você não tiver um.
+
+Ele também avisa — sem recusar — sobre árvore suja e arquivo grande fora do git, que o
+primeiro `git add -A` publicaria. Depois chama o `bootstrap`, que dá o nome ao
+`CLAUDE.md`, cria o `state/` e gera o índice. **Ele não toca no seu `README.md`.**
 
 **Seus documentos ficam onde estão** — não mova nada ainda. Só vai para `refs/` o que
 vem de fora, e a distribuição é a `AD-02`.
@@ -91,15 +105,16 @@ ordem.
 1. **`AD-01` — Traga o produto para a pasta.** O `.pbip`, o código, os notebooks: o que
    o projeto entrega. A pasta nasce só com o método, e nada mais faz sentido sem ele.
 2. **`AD-02` — Aponte onde está o material que você já tem**, sem mover nada. O agente lê
-   de onde estiver, propõe destino item a item, e roda `make docs-index`. Ver *Onde vai cada
+   de onde estiver, propõe destino item a item, e roda `python -m metodo index`. Ver *Onde vai cada
    coisa*.
 3. **`AD-03` — Preencha "O que é este projeto"** no `CLAUDE.md`: duas ou três frases.
 
-**Acabou.** Rode `make docs-check` e vá trabalhar.
+**Acabou.** Rode `python -m metodo check` e vá trabalhar.
 
 As pendências `AD-04` a `AD-06` **não são adoção** — são a ponte para o projeto, e cada
-uma acontece no seu momento: o primeiro handoff real ao fim da primeira sessão de
-trabalho, a tabela de roteamento quando você já souber quais tipos de mudança este
+uma acontece no seu momento: o primeiro handoff real ao fechar a primeira sessão que
+produziu fato novo (commit, medição, decisão, suspeita) — que pode ser a própria
+adoção —, a tabela de roteamento quando você já souber quais tipos de mudança este
 projeto tem, e a limpeza dos vestígios quando as outras caírem.
 
 **Por que o estado não entra na adoção:** quem adota pela primeira vez ainda não conhece
@@ -170,10 +185,12 @@ lista `EXTRA_SOURCES`, ela já nasce fora dele — nenhuma configuração é nec
 
 ## Escrever o `state/` — primeira sessão de trabalho, não adoção
 
-**Isto não é passo de adoção.** É o que acontece no fim da sua primeira sessão de
-trabalho de verdade, e é a `AD-04`.
+**Isto não é passo de adoção.** É o que acontece ao fechar a primeira sessão que
+produziu fato novo sobre o projeto, e é a `AD-04`. O critério é o fato, não o
+calendário: se a sessão da adoção teve commit, medição ou decisão, o handoff de
+transição já ficou falso, e o real se escreve nela.
 
-O `make init` copia os **modelos vazios**. Preencher é o que separa *"instalei o
+O `python -m metodo init` copia os **modelos vazios**. Preencher é o que separa *"instalei o
 template"* de *"adotei o método"* — e é o passo mais demorado e de maior valor da
 adoção inteira.
 
@@ -185,11 +202,11 @@ adoção inteira.
   existir: relatórios, commits, atas. Não precisa ser completo, precisa ser verdadeiro.
 
 É a única parte que não dá para automatizar, e é a que paga a adoção inteira. O
-`make docs-check` avisa enquanto o handoff ainda for o modelo.
+`python -m metodo check` avisa enquanto o handoff ainda for o modelo.
 
 ---
 
-## O primeiro `make docs-index` é diagnóstico, não configuração
+## O primeiro `python -m metodo index` é diagnóstico, não configuração
 
 Também para o caso B. No projeto novo ele gera um índice vazio e pronto; num projeto
 que já existe, **o número que ele imprime é uma medição do seu passivo**.
@@ -201,7 +218,7 @@ conseguindo consultar.
 > formato dos cabeçalhos, encontrou **130**. Três quintos da documentação estavam
 > inalcançáveis pelo passo 1 do protocolo, havia semanas, e ninguém sabia.
 
-O `make docs-check` ajuda aqui: ele aponta cabeçalho que **quase** casa com o padrão
+O `python -m metodo check` ajuda aqui: ele aponta cabeçalho que **quase** casa com o padrão
 `## ID — Título` e por isso ficou de fora. Um separador errado — ponto médio no lugar
 do travessão — é a diferença entre documentado e invisível.
 
@@ -211,7 +228,7 @@ do travessão — é a diferença entre documentado e invisível.
 
 ```bash
 cp ~/onde/estiver/* refs/
-make intake
+python -m metodo intake
 ```
 
 A pasta `refs/` já vem no template, vazia. É onde moram as especificações do projeto —
@@ -261,7 +278,7 @@ A alternativa ampla, `"task.allowAutomaticTasks": "on"` no settings do usuário,
 ressalva: passa a executar tarefas de **qualquer** pasta que você abrir, incluindo
 repositório de terceiro recém-clonado. Autorizar por pasta é mais seguro.
 
-Sem VS Code, o equivalente é `make session`.
+Sem VS Code, o equivalente é `python -m metodo session`.
 
 ---
 
@@ -273,8 +290,8 @@ Não é opcional — é o que faz o método funcionar na próxima sessão.
 1.  registrar a mudança em state/changelog.md      (append, no momento em que acontece)
 2.  atualizar state/aberto.md                      (pendência nasce e é riscada)
 3.  regenerar state/handoff.md do zero             (teto ~80 linhas)
-4.  make docs-index                                     (se algum canônico mudou)
-5.  make docs-check                                     (confirmar que está tudo de pé)
+4.  python -m metodo index                                     (se algum canônico mudou)
+5.  python -m metodo check                                     (confirmar que está tudo de pé)
 6.  commit
 ```
 
@@ -302,7 +319,7 @@ próxima sessão começa por aí.
 cp .mcp.json.example .mcp.json                 # escopo do projeto, versionável
 claude mcp add <nome> -- <comando>             # escopo local
 claude mcp add -s user <nome> -- <comando>     # escopo usuário: todos os projetos
-make mcp-list
+python -m metodo mcp-list
 ```
 
 Integração que serve a **todos** os seus projetos — gestão de tickets, API interna —
@@ -317,7 +334,7 @@ A adoção termina quando **`AD-01`, `AD-02` e `AD-03` estão riscadas** em
 `state/aberto.md`: produto na pasta, documentação distribuída e indexada, projeto
 descrito em duas ou três frases.
 
-O `make docs-check` vai continuar avisando que o estado do projeto não foi escrito. **Isso é
+O `python -m metodo check` vai continuar avisando que o estado do projeto não foi escrito. **Isso é
 correto e não é pendência de adoção** — é a `AD-04`, e ela se resolve no fim da primeira
 sessão de trabalho.
 
@@ -345,9 +362,23 @@ obriga a atualizar **na mesma sessão da mudança**, não depois.
 Isto não substitui revisão humana. O agente vai errar; o método faz o erro aparecer
 mais cedo — nas validações, no índice defasado, na pendência que não foi riscada.
 
-E **o template não se propaga**: um projeto que adota fica com cópias de `CLAUDE.md`,
-`Makefile` e `tools/`. Melhoria feita no template depois não chega sozinha. Ao
-melhorá-lo, avise quem adotou.
+E **o template não se propaga sozinho**: um projeto que adota fica com cópias de
+`CLAUDE.md` e `metodo/`, e melhoria feita no template depois não chega por conta própria.
+Para levá-la, a partir do clone novo do template:
+
+```bash
+python -m metodo atualizar ../meu-projeto --simular   # mostra o plano, não grava
+python -m metodo atualizar ../meu-projeto             # aplica; exige git status limpo
+```
+
+Ele troca o que é do método (`metodo/`, e os restos das versões antigas: `tools/`,
+`.template/`, `metodo.mk`, os alvos do método no `Makefile`), reescreve no `CLAUDE.md` as
+citações aos comandos antigos e deixa como pendência `AT-`, no `state/aberto.md`, o que
+pede julgamento: texto novo do método a mesclar (o modelo vem em
+`metodo/CLAUDE.modelo.md`) e citações em documentos do projeto. Não toca em `state/` nem
+em `docs/`, e reconhece alvo do método **pelo que ele executa**: o `make index` que
+constrói o seu índice vetorial continua sendo seu. O `metodo/VERSAO` diz de qual versão
+cada projeto veio.
 
 E **o modo de trabalho não viaja junto com o repositório.** O que o agente aprendeu
 sobre você fica no perfil do usuário, indexado pelo caminho do projeto na sua máquina —

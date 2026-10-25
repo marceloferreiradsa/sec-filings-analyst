@@ -140,7 +140,7 @@ def _check_handoff():
 def check_state():
     print("== Estado acompanha o git? ==")
     if not CHANGELOG.exists():
-        print("  --     state/changelog.md ausente — rode 'make init'")
+        print("  --     state/changelog.md ausente — rode 'python -m metodo init'")
         return 0
     if _git("rev-parse", "--git-dir") is None:
         print("  --     sem git neste projeto: nada com que cruzar")

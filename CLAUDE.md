@@ -38,8 +38,8 @@ Vale para: investigação, decisão arquitetural nova, verificação de hipótes
 modificação de código, análise.
 
 **Passo 1 — verificar o frescor do índice e consultar.** Antes de buscar, rodar
-`make docs-check`. Índice defasado é pior que índice ausente: ele responde, e responde
-errado. Se acusar `DEFASADO`, rodar `make docs-index` e só então consultar. A verificação
+`python -m metodo check`. Índice defasado é pior que índice ausente: ele responde, e responde
+errado. Se acusar `DEFASADO`, rodar `python -m metodo index` e só então consultar. A verificação
 custa ~25 bytes de saída — ela não é o que consome a janela.
 
 Buscar o tema em `docs/_index.md` por palavras-chave da ação
@@ -86,8 +86,8 @@ A atualização acontece **na mesma sessão da mudança**. Não existe backlog d
 | Estrutura de dados / contrato de interface | doc técnico · ADR novo |
 | Resolvi uma dívida técnica | doc de dívidas (status + como) |
 | Decisão sem código (escopo, prioridade, conversa) | ADR novo |
-| Arquivo entrou ou saiu de `refs/` | `refs/_fontes.md` (manifesto) · `make intake` |
-| Registro criado, apagado, renomeado ou com status alterado | `make docs-index` |
+| Arquivo entrou ou saiu de `refs/` | `refs/_fontes.md` (manifesto) · `python -m metodo intake` |
+| Registro criado, apagado, renomeado ou com status alterado | `python -m metodo index` |
 
 **Sempre, ao fim de qualquer alteração:** registrar em `state/changelog.md` (append) e,
 se algo ficou por fazer, em `state/aberto.md`.
@@ -120,10 +120,29 @@ Causa conhecida de drift: o mesmo fato escrito a mão em vários documentos.
 
 | Arquivo | Como é mantido |
 |---|---|
-| `docs/_index.md` | Gerado por `make docs-index`. Nunca editado a mão. |
+| `docs/_index.md` | Gerado por `python -m metodo index`. Nunca editado a mão. |
 | `state/changelog.md` | Append no momento da mudança. Nunca reescrito. |
 | `state/aberto.md` | Pendência escrita quando nasce, riscada quando morre. |
 | `state/handoff.md` | Regenerado do zero no fim da sessão. Teto ~80 linhas. |
+
+---
+
+## Segredo se usa, não se lê
+
+Chave, token, senha e string de conexão **nunca aparecem na saída de um comando**: nem
+inteiros, nem em parte, nem transformados. Segredo que entra no contexto está
+comprometido — o contexto é registrado, resumido e retomado em outro lugar.
+
+- **Proibido:** abrir arquivo de segredo (`.env*`, `secrets.*`, `*.key`,
+  `settings.local.json`); listar o ambiente (`env`, `printenv`, `set`,
+  `Get-ChildItem env:`); dar `echo` em variável de segredo; abrir subshell para
+  inspecionar o ambiente; comparar valores com comando que imprime os operandos.
+- **Prefixo, sufixo e hash também são proibidos.** "Os quatro últimos caracteres" é o
+  caminho natural de quem quer comparar, e hash de chave curta é revertível.
+- **Permitido, porque responde sem revelar:** *existe?* → script que imprime só
+  verdadeiro/falso; *mudou?* → script que carrega os dois valores ele mesmo e imprime só
+  `igual`/`diferente`; *funciona?* → chamada real que reporta só o status (`200`/`401`).
+- **Se vazou:** parar, avisar na hora, dizer qual chave, recomendar **rotação**.
 
 ---
 
@@ -150,7 +169,8 @@ Janela de contexto e crédito são finitos. Portanto:
   ausente, presente-mas-zero e presente-mas-órfão são três testes diferentes.
 - **Um fio por vez.** Enquanto há decisão do usuário pendente ou execução combinada
   em curso, é o único assunto. Achado colateral vira **uma linha de menção** ao fim
-  da resposta, nunca uma sequência de edições.
+  da resposta **e uma entrada em *Suspeitas a verificar*** no `aberto.md`, nunca uma
+  sequência de edições. Anotar não é mudar de assunto; o chat não sobrevive à sessão.
 - **Pertencimento de item.** O critério é **onde o item está registrado**, não qual
   arquivo ele altera. Trabalho de *construir* uma ferramenta vive no `aberto.md`
   dela; trabalho de *usá-la* vive aqui.
@@ -195,13 +215,12 @@ contagem que cresce é informação.**
 Esta seção cresce com o projeto: toda vez que uma armadilha custar tempo,
 ela vira uma linha aqui.}
 
-- **Alvos do método têm outro nome aqui** (ADR-12). Os do método estão em `metodo.mk`,
-  incluído na última linha do `Makefile`: `make docs-check`, `make docs-index`,
-  `make metodo-help`, `make metodo-test`, `make metodo-clean`. Os nomes curtos são do
-  projeto: `make check` faz build/run/test do **Docker**, `make index` reconstrói o
-  **FAISS** e `make clean` **apaga `data/raw` e `data/processed`**. Instrução de qualquer
-  ferramenta do método que diga `make check`/`make index` é texto antigo — usar o nome
-  `docs-*`.
+- **O `Makefile` é só do projeto.** O método roda por `python -m metodo <comando>` e mora
+  em `metodo/`. O ADR-12 (alvos `docs-*`/`metodo-*` num `metodo.mk`) está superado desde
+  2026-10-25. Cuidado com os nomes: `make check` faz build/run/test do **Docker**,
+  `make index` reconstrói o **FAISS** e `make clean` **apaga `data/raw` e
+  `data/processed`**. Instrução que diga `make check`/`make index`/`make docs-*` para
+  o índice ou o estado é texto antigo: usar `python -m metodo check`/`index`.
 - **`make check` não roda neste Windows** (o `$(MAKE)` expande para um caminho com espaço
   e parênteses): rodar `make build`, `make run`, `PYTHONIOENCODING=utf-8 python
   tests/test_deployment.py` e `docker rm -f sec-analyst` separadamente.
@@ -219,6 +238,6 @@ ela vira uma linha aqui.}
 2. Registrar em `state/changelog.md`.
 3. Atualizar `state/aberto.md`.
 4. Regenerar `state/handoff.md`.
-5. Rodar `make docs-index` se algum canônico mudou.
+5. Rodar `python -m metodo index` se algum canônico mudou.
 6. Se alguma mudança ficou **sem documentar**, registrar isso em destaque no
    handoff — a próxima sessão começa por aí.

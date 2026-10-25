@@ -27,7 +27,7 @@ TEMPLATE = """# {title}
 
 def main():
     if len(sys.argv) < 2:
-        print("  uso: make doc DOC=nome_do_documento")
+        print("  uso: python -m metodo doc nome_do_documento")
         return 1
     name = sys.argv[1].removesuffix(".md")
     target = Path("docs") / f"{name}.md"

@@ -26,7 +26,7 @@ o gerador reconheça.
 Consequência prática: enquanto a especificação não tiver uma versão em markdown
 indexada, ela não existe para o agente. Ele vai reconstruir por investigação —
 por dias — respostas que já estavam escritas ali. Essa falha é a origem
-documentada da regra; está contada em `METODO.md`, na seção do índice derivado.
+documentada da regra; está contada em `metodo/METODO.md`, na seção do índice derivado.
 
 ## Como usar
 
@@ -39,7 +39,7 @@ cp ~/onde/estiver/* refs/
 **2. Rode o conferidor.**
 
 ```bash
-make intake
+python -m metodo intake
 ```
 
 Na primeira vez ele cria `refs/_fontes.md`, o manifesto. Depois, a cada rodada,
@@ -56,7 +56,7 @@ Ele é escrito à mão, e não gerado, por um motivo específico: **parentesco e
 um PDF e o markdown que saiu dele não é adivinhável por nome de arquivo.** O
 script confere o que você declarou; ele não tenta descobrir sozinho.
 
-**4. Derive o que o `make intake` marcar como `DERIVAR`.**
+**4. Derive o que o `python -m metodo intake` marcar como `DERIVAR`.**
 
 Peça ao agente:
 
@@ -74,11 +74,11 @@ planilha é binária e não é alcançável por busca de texto.
 **5. Indexe.**
 
 ```bash
-make docs-index
+python -m metodo index
 ```
 
 Os markdown de `refs/` entram no índice pela lista `EXTRA_SOURCES` do
-`tools/gen_index.py`. Eles são varridos com um padrão mais frouxo que o dos
+`metodo/gen_index.py`. Eles são varridos com um padrão mais frouxo que o dos
 canônicos, porque especificação de terceiro raramente segue a convenção
 `## ID — Título` do projeto.
 
@@ -86,10 +86,14 @@ canônicos, porque especificação de terceiro raramente segue a convenção
 
 - **Documento que é seu.** Se você escreve e mantém, o lugar é `docs/`.
 - **Credencial, chave, token.** Nunca, em nenhuma pasta.
+- **Insumo do produto** — corpus, dataset, dump —, mesmo que mantido por terceiros.
+  `refs/` é o que define o que entregar, não o que o produto processa. O critério de
+  autoridade não separa os dois: o PDF de onde o RAG extrai é de outra pessoa, e ainda
+  assim é matéria-prima, não requisito.
 - **Arquivo que ninguém vai consultar.** Se não vale indexar, não vale guardar
-  aqui: vira ruído no `make intake` para sempre.
+  aqui: vira ruído no `python -m metodo intake` para sempre.
 
 ## Este README
 
-É documentação do método, não fonte externa. O `make intake` e o `make docs-index`
+É documentação do método, não fonte externa. O `python -m metodo intake` e o `python -m metodo index`
 ignoram este arquivo de propósito — ele não aparece no manifesto nem no índice.

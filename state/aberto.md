@@ -321,10 +321,46 @@ temos); post da Microsoft (só o título carregou; o número vem da REF-15).
 
 ## Ação manual
 
-**AB-02 — Migrar os alvos do método quando o framework padronizar o prefixo**
+**~~AB-02 — Migrar os alvos do método quando o framework padronizar o prefixo~~**
 O ADR-12 é exceção local (`docs-check`, `docs-index`, `metodo-*`) e diverge do
 `constituicao-stf`. A proposta 14 no `PROPOSTA-TEMPLATE.md` do `_template-claude` pede
 prefixo único para todos os alvos do método. Quando a versão sair: trazer o `metodo.mk`
 novo, refazer as citações (ou nenhuma, se o pacote já vier com os nomes novos),
 marcar o ADR-12 como superado e atualizar *Convenções do projeto*.
 *aberta desde 2026-10-20*
+*resolvida em 2026-10-25: o framework saiu do `make` em vez de padronizar o prefixo: `metodo.mk` removido, citações refeitas pelo `python -m metodo atualizar`, ADR-12 marcado `Superseded` e *Convenções do projeto* atualizada.*
+
+---
+
+## Suspeitas a verificar
+
+> Problema visto **de passagem**, sem investigar — na adoção ou no meio de outro fio.
+> **Se anota, não se investiga**: o custo de anotar é uma entrada; o de perder é
+> redescobrir no incidente. Cada uma diz o que foi visto (arquivo e trecho), por que pode
+> ser problema, e o que confirmaria ou descartaria. Verificada, vira pendência acima ou
+> é riscada com o resultado.
+
+**SU-01 — Título curto do que foi visto** · **não verificado**
+Onde: `arquivo` (trecho). Por que pode ser problema: … Confirma ou descarta: …
+*anotada em AAAA-MM-DD*
+
+---
+
+## Atualização do método
+
+> Pendências que a atualização do método deixou, com prefixo `AT-`. Riscar conforme feitas.
+
+**~~AT-01 — Citações a comandos que deixaram de existir, no `CLAUDE.md`~~**
+`make metodo-clean` (era o `clean`). Apagar ou trocar pelo equivalente direto.
+*aberta na atualização de 2026-10-25 (versão desconhecida → b00487d)*
+*resolvida em 2026-10-25: o bullet de *Convenções do projeto* sobre os alvos foi reescrito: o `Makefile` é só do projeto, os nomes curtos continuam do Docker/FAISS e o ADR-12 está superado.*
+
+**~~AT-02 — Mesclar no `CLAUDE.md` as seções novas do método~~**
+*Segredo se usa, não se lê*. O texto está em `metodo/CLAUDE.modelo.md`, que é o `CLAUDE.md` desta versão do método, sem o projeto. Comparar também as seções que existem nos dois: o método pode ter mudado dentro delas.
+*aberta na atualização de 2026-10-25 (versão desconhecida → b00487d)*
+*resolvida em 2026-10-25: seção *Segredo se usa, não se lê* inserida antes de *Economia de contexto*; a frase de *Modo de trabalho* sobre achado colateral trocada pela do método. As demais seções do método batem com o modelo.*
+
+**~~AT-03 — Registrar no `state/changelog.md` a atualização versão desconhecida → b00487d~~**
+Versão do método: versão desconhecida → b00487d. Anotar o que ela removeu e acrescentou (a saída do `python -m metodo atualizar`). Depois, `python -m metodo check`.
+*aberta na atualização de 2026-10-25 (versão desconhecida → b00487d)*
+*resolvida em 2026-10-25: entrada de 2026-10-25 no `state/changelog.md`; a origem real era `2f39f84` (o `VERSAO` ainda não viajava).*

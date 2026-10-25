@@ -13,7 +13,7 @@ o que se distribui e gerado, nunca mantido a mao. Aqui o gerado e uma arvore com
 o metodo e nada mais — sem `state/`, sem `docs/`, sem historico. Um clone dela e
 inconfundivelmente um template.
 
-    make release DESTINO=../ai-project-framework
+    python -m metodo release ../ai-project-framework
 
 Escreve por cima do destino sem tocar no `.git` dele, e lista o que sobrou la e
 nao faz mais parte do release — arquivo removido daqui precisa ser removido la, e
@@ -33,12 +33,12 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 import novo  # noqa: E402  (reaproveita as listas: um fato, um lugar)
 
-# O README do template entra no release e nao no `make novo`: la o bootstrap
+# O README do template entra no release e nao no `python -m metodo novo`: la o bootstrap
 # escreve um README do projeto; aqui ele e a porta de entrada de quem clona.
 ARQUIVOS = novo.ARQUIVOS + ["README.md"]
 PASTAS = novo.PASTAS
 
-VERSAO = "VERSAO"
+VERSAO = novo.VERSAO
 IGNORAR = {".git", ".harness-out", "__pycache__"}
 
 
@@ -67,12 +67,12 @@ def presentes(raiz):
 def main():
     destino_arg = (sys.argv[1] if len(sys.argv) > 1 else "").strip()
     if not destino_arg:
-        print('  uso: make release DESTINO="../ai-project-framework"')
+        print('  uso: python -m metodo release "../ai-project-framework"')
         print("")
         print("  Gera a árvore limpa do template no destino, sem tocar no .git dele.")
         return 1
 
-    if not Path("CLAUDE.md").exists() or not Path(".template").is_dir():
+    if not Path("CLAUDE.md").exists() or not Path(novo.MODELOS).is_dir():
         print("  Este comando roda de dentro do repositório do template.")
         return 1
     if novo.PLACEHOLDER not in Path("CLAUDE.md").read_text(encoding="utf-8"):

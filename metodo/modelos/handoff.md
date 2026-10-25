@@ -24,7 +24,7 @@ não ter sido distribuídos, e o estado real do projeto ainda não foi escrito.
 
 | Estrutura do método, vale para qualquer projeto | Este projeto |
 |---|---|
-| `CLAUDE.md` · `METODO.md` · `Makefile` · `tools/` · `.template/` | `docs/` · `refs/` · o produto na raiz |
+| `CLAUDE.md` · `metodo/` | `docs/` · `refs/` · o produto na raiz |
 
 Ler o método não ensina nada sobre o projeto. O projeto está nos outros três.
 

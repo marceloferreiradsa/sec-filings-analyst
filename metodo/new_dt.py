@@ -50,7 +50,7 @@ CABECALHO = (
     "> **`Aceita` não é o mesmo que `Paga`.** Aceita é a decisão de conviver com a\n"
     "> dívida; ela fica registrada para sempre e nunca vira tarefa.\n>\n"
     "> **Não mantenha um índice por prioridade aqui.** Ele apodrece em silêncio —\n"
-    "> a mesma entrada acaba listada em dois grupos. `make docs-index` já publica ID,\n"
+    "> a mesma entrada acaba listada em dois grupos. `python -m metodo index` já publica ID,\n"
     "> título, status e prioridade em `docs/_index.md`.\n>\n"
     "> **Divida ≠ pendência.** Aqui fica o registro canônico. A ação de pagá-la,\n"
     "> enquanto ativa, é uma pendência em `state/aberto.md` que aponta para o DT.\n\n"
@@ -102,7 +102,7 @@ def main():
     )
     print(f"  DT-{n:02d} criada em {DOC}")
     print("  Se houver ação ativa para pagá-la, abra a pendência em state/aberto.md")
-    print("  Não esqueça: make docs-index")
+    print("  Não esqueça: python -m metodo index")
 
 
 if __name__ == "__main__":

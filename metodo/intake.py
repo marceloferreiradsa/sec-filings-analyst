@@ -16,7 +16,7 @@ Dois problemas resolvidos aqui:
 Por isso refs/_fontes.md é escrito a mão e este script apenas CONFERE: arquivo sem
 declaração, declaração sem arquivo, e original pesado sem derivado.
 
-Uso: python tools/intake.py
+Uso: python metodo/intake.py
 """
 import io
 import re
@@ -40,7 +40,7 @@ HEAVY = {".pdf", ".xlsx", ".xls", ".docx", ".pptx", ".odt"}
 
 TEMPLATE = """# Fontes externas — o que há em `refs/` e de que serve
 
-> **Escrito a mão.** `make intake` confere este manifesto contra os arquivos de
+> **Escrito a mão.** `python -m metodo intake` confere este manifesto contra os arquivos de
 > `refs/`, mas não adivinha parentesco: qual markdown deriva de qual PDF só você sabe.
 >
 > **Nada em `refs/` é editado pelo agente.** São fontes externas. Se um original
@@ -169,9 +169,9 @@ def main():
         print("  %d pendência(s)." % len(issues))
         print("  Para os DERIVAR, peça ao agente: \"converta em markdown indexado,")
         print("  preservando a numeração de seção e a paginação do original\".")
-        print("  Depois: registre o derivado em refs/_fontes.md e rode make docs-index")
+        print("  Depois: registre o derivado em refs/_fontes.md e rode python -m metodo index")
         return 1
-    print("  refs/ íntegro. Rode make docs-index se algum markdown mudou.")
+    print("  refs/ íntegro. Rode python -m metodo index se algum markdown mudou.")
     return 0
 
 

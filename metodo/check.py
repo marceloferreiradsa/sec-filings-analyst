@@ -2,7 +2,7 @@
 """Verifica o que falta, se o indice esta defasado e se a adocao terminou.
 
 Roda a cada passo 1 do protocolo, entao e uma das saidas mais vistas do metodo —
-motivo de estar aqui e nao como `@echo` no Makefile, que sai pela codepage do
+motivo de ser Python e nao `@echo` num Makefile, que sai pela codepage do
 terminal e corrompe acento no Windows.
 
 Codigo de saida: falha quando o indice esta defasado ou quando o estado nao
@@ -11,6 +11,7 @@ quase casa, nem por adocao incompleta — os tres sao normais durante a adocao, 
 um check vermelho no primeiro dia ensina a ignorar o check.
 """
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -19,6 +20,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 import gen_index      # noqa: E402  (o diretorio do script entra no sys.path)
 import intake         # noqa: E402
 import check_state    # noqa: E402
+import novo           # noqa: E402
 
 ARQUIVOS = [
     "CLAUDE.md",
@@ -29,7 +31,7 @@ ARQUIVOS = [
 ]
 
 HANDOFF = Path("state/handoff.md")
-MODELO_HANDOFF = Path(".template/handoff.md")
+MODELO_HANDOFF = Path(novo.MODELOS) / "handoff.md"
 
 # Procura o marcador NO CAMPO, nao no texto: o handoff legitimamente cita
 # "AAAA-MM-DD" em prosa ao descrever o formato do changelog, e buscar a
@@ -41,12 +43,29 @@ GERADO_EM = re.compile(r"^\*\*Gerado em:\*\*\s*AAAA-MM-DD", re.M)
 # risca nem hifen. O gerador ignora em silencio e o registro fica invisivel ao
 # passo 1. Num projeto real isso deixou 37 achados fora do indice, por usarem
 # ponto medio; um caractere separava "documentado" de "inalcancavel".
-QUASE = re.compile(r"^#{2,3}\s+([A-Za-z0-9][A-Za-z0-9._-]*)\s*([^\w\s])")
+#
+# O token aceita letra acentuada e um numero solto depois de espaco, porque o
+# formato mais natural de quem numera a mao em portugues e `## Decisão 3 — …`, e
+# ele escapava por dois caminhos: o `ã` cortava o token, e o espaco antes do `3`
+# separava o ID do numero. Num projeto real, 14 decisoes ficaram fora do indice
+# com o check verde. Nesses casos o separador pode ser o certo: o defeito e o ID.
+QUASE = re.compile(r"^#{2,3}\s+([^\W_][\w.-]*(?:\s+\d+)?)\s*([^\w\s])")
 SEPARADORES = "—–-"
 
 
+# `## Step 1 — Build` (procedimento) e `## Decisão 1 — Usar FAISS` (registro) tem
+# a mesma forma, e nenhuma regra os separa. Quem separa e o autor, uma vez, com
+# este marcador no documento — e nao mexendo nos titulos para calar o aviso, que
+# foi o que um falso positivo anterior fez alguem fazer.
+SEM_REGISTROS = "<!-- metodo: sem-registros -->"
+
+
+def declarado_sem_registros(texto):
+    return SEM_REGISTROS in texto
+
+
 def quase_casando():
-    """{arquivo: [(linha, separador)]} dos cabecalhos que passaram perto."""
+    """{arquivo: [(linha, motivo)]} dos cabecalhos que passaram perto."""
     achados = {}
     docs = Path("docs")
     if not docs.is_dir():
@@ -54,7 +73,10 @@ def quase_casando():
     for doc in sorted(docs.glob("*.md")):
         if doc.name in gen_index.SKIP:
             continue
-        for line in doc.read_text(encoding="utf-8").splitlines():
+        texto = doc.read_text(encoding="utf-8")
+        if declarado_sem_registros(texto):
+            continue
+        for line in texto.splitlines():
             if gen_index.PATTERN.match(line):
                 continue
             m = QUASE.match(line)
@@ -65,10 +87,16 @@ def quase_casando():
             # que faz o usuario mutilar o proprio conteudo e pior que nenhum aviso.
             if not m:
                 continue
-            ident = m.group(1)
-            parece_id = re.search(r"[A-Za-z]", ident) and re.search(r"\d", ident)
-            if parece_id and m.group(2) not in SEPARADORES:
-                achados.setdefault(doc.as_posix(), []).append((line.strip(), m.group(2)))
+            ident, sep = m.group(1), m.group(2)
+            parece_id = re.search(r"[^\W\d_]", ident) and re.search(r"\d", ident)
+            if not parece_id:
+                continue
+            # Separador certo e PATTERN sem casar: o que falhou foi o ID.
+            if sep in SEPARADORES:
+                motivo = "ID com espaço ou acento"
+            else:
+                motivo = "separador " + sep
+            achados.setdefault(doc.as_posix(), []).append((line.strip(), motivo))
     return achados
 
 
@@ -82,9 +110,54 @@ def checar_cabecalhos():
         print("  !!     " + arquivo + ": " + str(len(linhas))
               + " cabeçalho(s) parecem registro e não foram indexados")
         print('         ex.: "' + linhas[0][0][:66] + '"')
-        seps = sorted({sep for _, sep in linhas})
-        print("         separador encontrado: " + " ".join(seps)
-              + "  — esperado: — (travessão), – ou -")
+        motivos = sorted({motivo for _, motivo in linhas})
+        print("         encontrado: " + " · ".join(motivos))
+        print("         esperado:   ## ID-NN — Título  (ID sem espaço nem acento;")
+        print("                     separador — (travessão), – ou -)")
+    print("         Não são registros (passos, etapas)? Ponha " + SEM_REGISTROS)
+    print("         no documento, e ele sai deste aviso. Não mude os títulos.")
+
+
+def checar_sem_registros():
+    """Informativo, nunca reprova: documento de procedimento cai aqui legitimamente.
+
+    Existe porque o "quase casa" sempre corre atras de formatos novos, e esta
+    comparacao pega qualquer um: num projeto real, 15 secoes e zero registros
+    num documento de decisoes foi o sinal que mostrou o defeito, e nao o aviso
+    acima. So documentos com 3 secoes ou mais, para nao falar de nota curta."""
+    print("== Documentos sem registros? ==")
+    sem = [(c, n) for c, _, n in gen_index.sem_registros()
+           if n >= 3 and not declarado_sem_registros(Path(c).read_text(encoding="utf-8"))]
+    if not sem:
+        print("  ok     todo documento com 3 seções ou mais tem registros")
+        return
+    for caminho, n in sem:
+        print("  --     " + caminho + ": " + str(n) + " seções, nenhum registro")
+    print("         Documento de procedimento? Então está certo, e ele aparece no fim")
+    print("         do índice; " + SEM_REGISTROS + " o tira daqui.")
+    print("         Documento de registros? O formato não foi reconhecido.")
+
+
+def checar_identidade():
+    """Informativo. O fechamento de sessao termina em commit, e o metodo e usado
+    em projeto pessoal e de cliente na mesma maquina: commit com o e-mail errado
+    publica historico que nao se desfaz facil. Quem tem uma conta ignora a linha;
+    quem tem duas ve na hora de onde vem a identidade."""
+    print("== Identidade git ==")
+    try:
+        r = subprocess.run(["git", "config", "--show-origin", "user.email"],
+                           capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        print("  --     git indisponível")
+        return
+    saida = r.stdout.strip()
+    if r.returncode != 0 or not saida:
+        print("  --     nenhum user.email configurado")
+        return
+    origem, _, email = saida.partition("\t")
+    print("  --     commits sairão como " + email.strip())
+    print("         definido em " + origem.replace("file:", "", 1))
 
 
 def checar_adocao():
@@ -93,16 +166,16 @@ def checar_adocao():
     adotar nao conhece os papeis dos documentos e nao teria como escrever."""
     print("== Estado do projeto escrito? ==")
     if not HANDOFF.exists():
-        print("  --     state/handoff.md ausente — rode 'make init'")
+        print("  --     state/handoff.md ausente — rode 'python -m metodo init'")
         return
     texto = HANDOFF.read_text(encoding="utf-8")
     modelo = MODELO_HANDOFF.read_text(encoding="utf-8") if MODELO_HANDOFF.exists() else ""
     if modelo and texto.strip() == modelo.strip():
         print("  !!     state/handoff.md ainda é o estado de transição da adoção")
         print("         Ninguém consegue retomar este projeto ainda. Reescreva-o do")
-        print("         zero ao fim da primeira sessão de trabalho — é a AD-04 em")
-        print("         state/aberto.md. Não é pendência de adoção: é o primeiro")
-        print("         fechamento de sessão.")
+        print("         zero ao fechar a primeira sessão que produzir fato novo —")
+        print("         commit, medição, decisão, suspeita. É a AD-04 em state/aberto.md,")
+        print("         e pode ser já a sessão da adoção.")
     elif GERADO_EM.search(texto):
         print("  !!     state/handoff.md sem data de geração — adoção incompleta")
         print("         Preencha o campo. O handoff é datado de propósito: sem data,")
@@ -113,7 +186,7 @@ def checar_adocao():
 
 def checar_refs():
     """refs/ povoado sem manifesto passa despercebido: a conferencia existe, mas
-    e o `make intake`, que so roda se alguem lembrar. O check roda por obrigacao,
+    e o `python -m metodo intake`, que so roda se alguem lembrar. O check roda por obrigacao,
     antes de toda acao nova — e ate aqui nunca olhou para refs/.
 
     Compara so presenca: arquivo sem declaracao, declaracao sem arquivo. A
@@ -128,7 +201,7 @@ def checar_refs():
     decl = intake.declared()
     if decl is None:
         print("  !!     " + str(len(arquivos)) + " arquivo(s) em refs/ e nenhum manifesto")
-        print("         Rode 'make intake': ele cria o modelo de refs/_fontes.md.")
+        print("         Rode 'python -m metodo intake': ele cria o modelo de refs/_fontes.md.")
         print("         Sem manifesto, ninguém sabe de que serve cada arquivo nem")
         print("         qual ainda vale — e o agente relê tudo para descobrir.")
         return
@@ -145,7 +218,7 @@ def checar_refs():
     if sumidos:
         print("  !!     " + str(len(sumidos)) + " declarado(s) que não estão em refs/: "
               + ", ".join(sumidos[:4]) + ("…" if len(sumidos) > 4 else ""))
-    print("         Rode 'make intake' para o detalhe.")
+    print("         Rode 'python -m metodo intake' para o detalhe.")
 
 
 def main():
@@ -155,18 +228,22 @@ def main():
         print(("  ok     " if Path(f).exists() else "  FALTA  ") + f)
     if faltando:
         print("")
-        print("  " + str(len(faltando)) + " arquivo(s) faltando — rode 'make init'.")
+        print("  " + str(len(faltando)) + " arquivo(s) faltando — rode 'python -m metodo init'.")
     print("")
     print("== Índice defasado? ==")
     indice = gen_index.check_index()
     print("")
     checar_cabecalhos()
     print("")
+    checar_sem_registros()
+    print("")
     checar_adocao()
     print("")
     checar_refs()
     print("")
     estado = check_state.check_state()
+    print("")
+    checar_identidade()
     # So indice e estado reprovam. Ver o docstring: check vermelho no primeiro
     # dia de adocao ensina a ignorar o check.
     return indice or estado

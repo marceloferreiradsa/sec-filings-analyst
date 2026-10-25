@@ -1,0 +1,21 @@
+{
+  "_comentario": [
+    "Renomeie para .mcp.json para ativar. Servidores aqui são de ESCOPO DO PROJETO:",
+    "quem clonar o repositório recebe a mesma configuração.",
+    "",
+    "Alternativas de escopo, via CLI:",
+    "  claude mcp add <nome> -- <comando>            escopo local (só você)",
+    "  claude mcp add -s user <nome> -- <comando>    escopo usuário (todos os seus projetos)",
+    "  claude mcp list                               lista o que está ativo",
+    "",
+    "NUNCA colocar token ou senha aqui — este arquivo é versionado.",
+    "Use ${VARIAVEL} e defina no ambiente."
+  ],
+  "mcpServers": {
+    "exemplo-stdio": {
+      "command": "python",
+      "args": ["mcp/servidor_exemplo.py"],
+      "env": { "API_TOKEN": "${MEU_TOKEN}" }
+    }
+  }
+}

@@ -6,8 +6,8 @@ bootstrap la dentro.
 
 Por que existe: o passo 1 da adocao era um `cp -r` manual com uma armadilha
 documentada — o ponto depois da barra, que decide se os arquivos ocultos vao
-junto. Quem esquece perde `.template/` e `.vscode/`, e so descobre depois. Um
-comando remove a armadilha.
+junto. Quem esquece perde `.vscode/` e `.gitattributes`, e so descobre depois.
+Um comando remove a armadilha.
 
 E resolve um furo maior: quem adota nao tem uma pasta de projeto padronizada, e
 por isso nao tem o COMO-ADOTAR.md em maos no momento em que precisa dele. Aqui o
@@ -15,12 +15,9 @@ ponto de partida e o proprio template, entao o guia viaja junto e e apagado no
 fim da adocao — igual ao PRIMEIRA-SESSAO.md.
 
 Uso:
-    make novo NOME="Meu Projeto"                 # cria ../meu-projeto
-    make novo CAMINHO="C:/projetos/meu-projeto"  # caminho completo
-    make novo NOME="Meu Projeto" CAMINHO=...     # os dois
-
-`-n` e `-f` nao servem como opcoes aqui: sao flags do proprio make (dry-run e
-"qual Makefile usar"). A forma nativa e VAR=valor.
+    python -m metodo novo "Meu Projeto"                          # cria ../meu-projeto
+    python -m metodo novo --caminho C:/projetos/meu-projeto      # caminho completo
+    python -m metodo novo "Meu Projeto" --caminho ...            # os dois
 """
 import re
 import shutil
@@ -39,9 +36,18 @@ PLACEHOLDER = "{NOME DO PROJETO}"
 # O que o metodo leva para o projeto novo. Lista explicita, e nao "tudo menos":
 # assim nada do template vaza para o projeto por esquecimento — nem os docs/ e
 # state/ deste repositorio, nem integracoes locais.
-ARQUIVOS = ["CLAUDE.md", "METODO.md", GUIA, "Makefile",
-            ".gitattributes", ".gitignore", ".mcp.json.example"]
-PASTAS = ["tools", ".template", "refs", "mcp", ".vscode"]
+#
+# Tudo o que e do metodo mora numa pasta so — scripts, modelos, racional e
+# VERSAO. `metodo/` e `metodo/modelos/` na raiz colidiam com pastas do projeto, como
+# o Makefile colidia com o dele. Na raiz fica so o que o Claude Code e o VS Code
+# procuram ali (CLAUDE.md, mcp/, .vscode/) e o que e do projeto.
+PACOTE = "metodo"
+MODELOS = PACOTE + "/modelos"
+# O VERSAO so existe no pacote publicado (o release o grava). Viaja dentro da
+# pasta: sem ele, o projeto nao sabia de que versao veio.
+VERSAO = PACOTE + "/VERSAO"
+ARQUIVOS = ["CLAUDE.md", GUIA, ".gitattributes", ".gitignore", ".mcp.json.example"]
+PASTAS = [PACOTE, "refs", "mcp", ".vscode"]
 
 
 def apelido(nome):
@@ -68,16 +74,16 @@ def main():
     caminho = (sys.argv[2] if len(sys.argv) > 2 else "").strip()
 
     if not nome and not caminho:
-        print('  uso: make novo NOME="Meu Projeto"')
-        print('       make novo CAMINHO="C:/projetos/meu-projeto"')
+        print('  uso: python -m metodo novo "Meu Projeto"')
+        print('       python -m metodo novo --caminho "C:/projetos/meu-projeto"')
         print("")
         print("  NOME sozinho cria a pasta ao lado do template.")
         print("  CAMINHO sozinho deriva o nome do projeto da última pasta.")
         return 1
 
-    if not Path("CLAUDE.md").exists() or not Path(".template").is_dir():
+    if not Path("CLAUDE.md").exists() or not Path(MODELOS).is_dir():
         print("  Este comando roda de dentro do clone do template.")
-        print("  Não encontrei CLAUDE.md e .template/ aqui.")
+        print("  Não encontrei CLAUDE.md e " + MODELOS + "/ aqui.")
         return 1
 
     # Sem esta guarda, rodar a partir de um projeto ja adotado copiaria o
@@ -110,7 +116,7 @@ def main():
     # flush obrigatório: sem ele o buffer do pai solta depois do que o filho já
     # escreveu direto no terminal, e a saída sai fora de ordem.
     sys.stdout.flush()
-    r = subprocess.run([sys.executable, "tools/bootstrap.py", nome],
+    r = subprocess.run([sys.executable, "-m", PACOTE, "bootstrap", nome],
                        cwd=str(destino), encoding="utf-8")
     if r.returncode != 0:
         print("  O bootstrap falhou. A pasta ficou criada em " + str(destino) + ".")

@@ -20,9 +20,12 @@
 
 ## AAAA-MM-DD — Adoção do método
 
-**Mudança:** a estrutura do `_template-claude` foi instalada neste projeto —
-`CLAUDE.md`, `METODO.md`, `Makefile`, `tools/`, `.template/` e `refs/`. O estado nasceu
+**Mudança:** a estrutura do `ai-project-framework` foi instalada neste projeto —
+`CLAUDE.md`, a pasta `metodo/` (scripts, modelos e racional) e `refs/`. Os comandos do
+método rodam por `python -m metodo`; o `Makefile` é só do projeto. O estado nasceu
 com as pendências da adoção em `aberto.md`, prefixadas `AD-`.
+
+**Versão do template:** {VERSAO}
 
 **Por quê:** *(uma frase sua sobre por que este projeto precisa de continuidade
 documentada. Pode ficar para depois — mas se ficar vazia, ninguém saberá em seis meses

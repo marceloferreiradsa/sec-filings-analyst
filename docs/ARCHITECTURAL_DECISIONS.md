@@ -642,7 +642,7 @@ project itself is run, and are kept apart so the narrative above stays about the
 
 ## ADR-12 — Continuity-method make targets live in `metodo.mk`, with colliding names renamed
 
-**Status:** Active
+**Status:** Superseded — on 2026-10-25 the method left `make` altogether (`python -m metodo <command>`, in `metodo/`); `metodo.mk` was removed and the `Makefile` belongs only to the project
 
 ### Context (2026-10-20)
 The project adopted the `ai-project-framework` continuity method (`CLAUDE.md`, `state/`,

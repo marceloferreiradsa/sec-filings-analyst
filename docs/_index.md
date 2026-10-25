@@ -1,7 +1,7 @@
 # Índice dos documentos canônicos
 
-> **Arquivo derivado — nunca editar a mão.** Gerado por `make docs-index`
-> (`tools/gen_index.py`), varrendo os cabeçalhos de `docs/`.
+> **Arquivo derivado — nunca editar a mão.** Gerado por `python -m metodo index`
+> (`metodo/gen_index.py`), varrendo os cabeçalhos de `docs/`.
 >
 > **Para que serve:** permitir leitura dirigida. Ache o registro aqui pelo
 > título ou pelo status, e leia só o trecho — em vez de carregar o documento
@@ -33,7 +33,7 @@
 | ADR-09 | Per-company retrieval for multi-company queries | Active |
 | ADR-10 | Temperature=0 for the generator | Active |
 | ADR-11 | Grounding prompt design | Active |
-| ADR-12 | Continuity-method make targets live in `metodo.mk`, with colliding names renamed | Active |
+| ADR-12 | Continuity-method make targets live in `metodo.mk`, with colliding names renamed | Superseded — on 2026-10-25 the method left `make |
 | ADR-13 | Adopt the evidence-driven roadmap, under VPS and budget constraints | Active |
 | ADR-14 | Rerank through hosted APIs in a fallback chain; local cross-encoders rejected | Active — provider order revised by ADR-22 |
 | ADR-15 | Golden set labelled by section + literal evidence, not chunk IDs | Active |
@@ -109,6 +109,17 @@
 | P2 | Query understanding *(Feature 9a + 9b + 9f; skip Feature 8, ~4–6h)* |
 | P3 | Structured data as a tool *(Feature 1, go straight to step 4; + Feature 6, ~1.5 days)* |
 | P4 | "Retrieve, then read" with a larger context *(new, ~0.5–1 day, experimental)* |
+
+
+## Documentos sem registros
+
+> Vivem em `docs/` sem nenhum cabeçalho `ID — Título`: procedimento,
+> guia, narrativa. Estão aqui para que se saiba que existem.
+
+| Documento | Título |
+|---|---|
+| `docs/DEPLOYMENT.md` | Deployment Guide |
+| `docs/EDGAR_TRACK_A_DESIGN.md` | Track A — XBRL Financial Data: Design Specification |
 
 
 ---

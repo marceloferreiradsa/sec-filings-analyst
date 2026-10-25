@@ -561,3 +561,25 @@ Convenções; nota de adoção removida) · `state/aberto.md`
 framework padronizar o prefixo) · AD-04 (primeiro handoff real) · AD-05 · AD-06.
 
 ---
+
+## 2026-10-25 — Atualização do método: sai o `make`, entra `python -m metodo`
+
+**Mudança:** `python -m metodo atualizar`, rodado do `ai-project-framework` (`9954c7c`,
+gerado de `b00487d`). Origem: `2f39f84`, a versão da adoção; a ferramenta registrou
+"versão desconhecida" porque o `VERSAO` ainda não viajava. Removido: `METODO.md`, `tools/` (12 scripts), `.template/` (4 modelos), `metodo.mk` e as 2 linhas do `include` no fim do `Makefile`; o resto do `Makefile` é do projeto e não mudou.
+Entrou: a pasta `metodo/` (scripts, modelos, `VERSAO`, `CLAUDE.modelo.md`), `refs/README.md`,
+`mcp/README.md`, `.mcp.json.example` e *Suspeitas a verificar* no `aberto.md`. Comandos do
+método agora são `python -m metodo <comando>`; `session`, `tree` e `clean` foram cortados.
+
+**Por quê:** os alvos do método no `make` colidiam com os do projeto. O `Makefile` passa a
+ser só do projeto.
+
+**Documentos tocados:** `CLAUDE.md` (10 citações; *Segredo se usa, não se lê*; *Convenções do projeto*) · `Makefile` (−2 linhas) · `.gitignore` · `docs/ARCHITECTURAL_DECISIONS.md` (ADR-12 `Superseded`) · `docs/DEPLOYMENT.md` (marcador `sem-registros`: são passos, não registros) · `state/aberto.md` · `docs/_index.md` (regenerado)
+
+**Registros:** AT-01, AT-02, AT-03 abertas e resolvidas · AB-02 resolvida · ADR-12 superado
+
+**Verificado:** `python -m metodo check` com exit 0 depois da atualização.
+
+**Pendente:** nenhuma pendência da atualização.
+
+---

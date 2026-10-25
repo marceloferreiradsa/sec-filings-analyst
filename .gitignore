@@ -65,3 +65,6 @@ secrets.json
 
 # Experiments — derived samples (regenerate with make-sample); results/ stays versioned
 experiments/*/sample.json
+
+# Metodo (ai-project-framework)
+.claude/settings.local.json

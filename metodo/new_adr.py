@@ -60,7 +60,7 @@ def main():
     title = input(f"Título do ADR-{n:02d}: ").strip() or "TODO"
     DOC.write_text(text.rstrip() + "\n" + TEMPLATE.format(n=n, title=title, today=date.today().isoformat()), encoding="utf-8", newline="\n")
     print(f"  ADR-{n:02d} criado em {DOC}")
-    print("  Não esqueça: make docs-index")
+    print("  Não esqueça: python -m metodo index")
 
 
 if __name__ == "__main__":

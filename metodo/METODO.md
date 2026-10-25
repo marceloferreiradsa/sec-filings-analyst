@@ -349,7 +349,10 @@ Se este repositório se perder, o essencial em ordem de importância:
 2. **`CLAUDE.md`** com protocolo, regra de roteamento e economia de contexto.
 3. **Gerador de índice** — script que varre os cabeçalhos dos documentos canônicos
    e emite ID, título e status. Cem linhas de Python.
-4. **Makefile** amarrando `index` e `check`, com o `check` acusando índice defasado.
+4. **Um ponto de entrada** amarrando `index` e `check`, com o `check` acusando índice
+   defasado. **Não um Makefile:** o projeto quase sempre já tem o dele, com `index`,
+   `check` e `clean` que fazem outra coisa. Aqui é `python -m metodo`, numa pasta só
+   do método.
 
 Os itens 1 e 2 são o método. Os itens 3 e 4 são o que impede o método de apodrecer.
 

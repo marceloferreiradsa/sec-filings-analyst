@@ -1,5 +1,7 @@
 # Deployment Guide
 
+<!-- metodo: sem-registros -->
+
 This document covers deploying the SEC Filings Analyst to a Linux VPS
 alongside an existing site, using Docker for isolation and nginx as the
 reverse proxy.
